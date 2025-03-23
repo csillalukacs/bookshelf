@@ -1,5 +1,6 @@
 import { fetchAuthors } from "@/app/lib/data";
 import Link from "next/link";
+import DeleteButton from "./delete-button";
 
 export default async function Page() 
 {
@@ -11,7 +12,14 @@ export default async function Page()
           <Link href="/author/new">here</Link>.
       </p>
       <ul>
-          {authors.map(a=><li key={a.id}><Link href={`/author/${a.id}`}>{a.name}</Link></li>)}
+          {authors.map(a=>
+            <li key={a.id}>
+              <DeleteButton id={a.id}/>
+              <Link href={`/author/${a.id}`}>
+                {a.name}
+              </Link>
+            </li>
+          )}
       </ul>
     </>
   )

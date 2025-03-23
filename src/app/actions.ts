@@ -2,6 +2,7 @@
 
 import postgres from "postgres";
 import { Author } from "./lib/definitions";
+import { revalidatePath } from "next/cache";
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -35,5 +36,21 @@ export async function addAuthor(prevState: AuthorSubmitState, formData: FormData
     console.error('Database Error:', error);
     return  {status: 'error'};
   }
- 
+}
+
+export async function deleteAuthor(id: string)
+{
+  console.log(id);
+  try 
+  {
+    console.log(`Deleting author with id ${id}...`);
+    const result = await sql`DELETE FROM author WHERE id = ${id}`;
+    console.log(result);
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    return  {status: 'error'};
+  }
+  revalidatePath('/author/list')
 }

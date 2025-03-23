@@ -9,7 +9,7 @@ export default function SignIn() {
         await signIn("google", { redirectTo: "/" })
       }}
     >
-      <button type="submit">Signin with Google</button>
+      <button type="submit" className="text-xl cursor-pointer">Sign in with Google</button>
     </form>
   )
 } 
