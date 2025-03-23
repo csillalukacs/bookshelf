@@ -11,7 +11,7 @@ export default async function Page()
       <p>Is your favourite author missing? You can add them{" "}
           <Link href="/author/new">here</Link>.
       </p>
-      <ul>
+      <ul className="self-start">
           {authors.map(a=>
             <li key={a.id}>
               <DeleteButton id={a.id}/>

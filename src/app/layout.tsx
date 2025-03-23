@@ -32,10 +32,10 @@ export default function RootLayout({
       >
         <NavBar/>
             <div className="grid grid-rows-[2px_1fr_20px] items-center justify-items-center min-h-90 p-1 pb-1 gap-1 sm:p-2 font-[family-name:var(--font-geist-sans)]">
-              <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+              <main className="flex flex-col gap-[32px] row-start-2 items-center">
                 <Image
                   src="/stack-of-books-on-a-brown-background-concept-for-world-book-day-photo.jpg"
-                  alt="Next.js logo"
+                  alt="books"
                   width={357}
                   height={200}
                   priority
