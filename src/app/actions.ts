@@ -4,7 +4,7 @@ import postgres from "postgres";
 import { Author } from "./lib/definitions";
 import { revalidatePath } from "next/cache";
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+const sql = postgres(process.env.POSTGRES_URL!); // see data.ts
 
 export type AuthorSubmitState = 
 {
