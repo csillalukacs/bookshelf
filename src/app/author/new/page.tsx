@@ -3,6 +3,8 @@
 import { useActionState } from "react";
 import { addAuthor } from "@/app/actions";
 import Link from "next/link";
+import { SubmitButton } from "@/components/SubmitButton";
+import { TextInput } from "@/components/TextInput";
 
 export default function Page() {
 
@@ -21,21 +23,13 @@ function Form() {
         <p>
           To add a new author to the database, enter their name here.
         </p>
-        <form action={formAction}>
-          <textarea
+        <form action={formAction} className="flex flex-col gap-4 text-black">
+          <TextInput
             name="name"
             disabled={isPending}
-            className="bg-white text-black"
           />
           <br />
-          <button 
-            disabled={isPending} 
-            className={!isPending ? 
-                "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full cursor-pointer"
-            : "bg-blue-500 text-white font-bold py-2 px-4 rounded-full opacity-50 cursor-not-allowed"}
-            >
-                Submit
-          </button>
+          <SubmitButton isPending={isPending} />
           {formState.status === 'error' &&
             <p className="Error">
               An error occurred.
