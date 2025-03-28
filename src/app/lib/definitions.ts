@@ -8,9 +8,9 @@ export type Book =
 {
   id: string;
   title: string;
-  authorId: string;
-  firstPub: number;
-  origLangId: string;
+  author_id: string;
+  first_pub: number;
+  orig_lang_id: string;
 };
 
 export type Language =

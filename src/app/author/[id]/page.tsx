@@ -1,9 +1,11 @@
-import { fetchAuthorById } from "@/app/lib/data";
+import { fetchAuthorById, fetchBooksByAuthorId } from "@/app/lib/data";
+import Link from "next/link";
 
 export default async function Page({ params }: { params: { id: string } }) 
 {
     const id = params.id;
     const author = await fetchAuthorById(id);
+    const books = await fetchBooksByAuthorId(id);
 
     return (
         <main>
@@ -11,6 +13,15 @@ export default async function Page({ params }: { params: { id: string } })
             <button>
                 Edit details
             </button>
+            <ul>
+                {books.map((book) => (
+                    <li key={book.id}>
+                        <Link href={`/book/${book.id}`}>
+                            {book.title}
+                        </Link>
+                    </li>
+                ))}
+            </ul>
         </main>
     )
 }
