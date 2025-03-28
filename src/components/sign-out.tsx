@@ -1,13 +1,15 @@
 import { signOut } from "../app/auth"
  
-export function SignOut() {
+export function SignOut() 
+{
   return (
     <form
-      action={async () => {
+      action={async () => 
+      {
         "use server"
         await signOut(
           { 
-            redirectTo: "/login" 
+            redirectTo: "/" 
           }
         )
       }}

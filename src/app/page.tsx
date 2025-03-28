@@ -1,30 +1,23 @@
-import UserAvatar from "@/components/UserAvatar";
-import { SignOut } from "@/components/sign-out";
-import Link from "next/link";
+import SignIn from "@/components/sign-in"
 
 export default function Home() {
   return (
-    <div >
-        <UserAvatar/>
+    <div className="items-center justify-items-center p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <div>
-          <div className="flex gap-4 items-center flex-col sm:flex-row">
+          <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
+            <li className="mb-2 tracking-[-.01em]">
+              Get started by signing in with google
+            </li>
+            <li className="tracking-[-.01em]">
+              Add the books you own to your bookshelf
+            </li>
+          </ol>
+          <div className="m-4">
+            <SignIn/>
           </div>
         </div>
-      <div className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <Link
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="/author/new"
-        >
-          Add author
-        </Link>
-        <Link
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="/book/new"
-        >
-          Add book
-        </Link>
-        <SignOut />
-      </div>
+      </main>
     </div>
   );
 }
