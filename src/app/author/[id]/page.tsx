@@ -7,7 +7,7 @@ export default async function Page({ params }: { params: { id: string } })
 
     return (
         <main>
-            <h3 className="text-white text-2xl">{author.name}</h3>
+            <h3 className="text-2xl">{author.name}</h3>
             <button>
                 Edit details
             </button>
