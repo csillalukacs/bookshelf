@@ -1,10 +1,13 @@
 import { fetchAuthors } from "@/app/lib/data";
 import Link from "next/link";
 import DeleteButton from "./delete-button";
+import { auth } from "@/app/auth";
 
 export default async function Page() 
 {
   const authors = await fetchAuthors();
+  const session = await auth();
+
   return (
     <>
       <h1>Authors</h1>
@@ -14,7 +17,7 @@ export default async function Page()
       <ul className="self-start">
           {authors.map(a=>
             <li key={a.id}>
-              <DeleteButton id={a.id}/>
+              {session && <DeleteButton id={a.id}/>}
               <Link href={`/author/${a.id}`}>
                 {a.name}
               </Link>

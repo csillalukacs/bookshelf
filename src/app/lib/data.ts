@@ -1,15 +1,15 @@
 import { Author, Book, Language } from './definitions';
-import sql from '../postgres';
+import { pool } from '../postgres';
  
  
-export async function fetchAuthors() 
+export async function fetchAuthors(): Promise<Author[]>
 {
   try 
   {
     console.log('Fetching authors...');
-    const data = await sql<Author[]>`SELECT * FROM author`;
-    console.log(data);
-    return data;
+    const data = await pool.query('SELECT * FROM author');
+    console.log(data.rows);
+    return data.rows;
   } 
   catch (error) 
   {
@@ -18,14 +18,14 @@ export async function fetchAuthors()
   }
 }
 
-export async function fetchBooks()
+export async function fetchBooks(): Promise<Book[]>
 {
   try 
   {
     console.log('Fetching books...');
-    const data = await sql<Book[]>`SELECT * FROM book`;
-    console.log(data);
-    return data;
+    const data = await pool.query('SELECT * FROM book');
+    console.log(data.rows);
+    return data.rows;
   } 
   catch (error) 
   {
@@ -34,14 +34,13 @@ export async function fetchBooks()
   }
 }
 
-export async function fetchLanguages() 
+export async function fetchLanguages(): Promise<Language[]>
 {
   try 
   {
     console.log('Fetching languages...');
-    const data = await sql<Author[]>`SELECT * FROM language`;
-    console.log(data);
-    return data;
+    const data = await pool.query('SELECT * FROM language');
+    return data.rows;
   } 
   catch (error) 
   {
@@ -50,13 +49,13 @@ export async function fetchLanguages()
   }
 }
 
-export async function fetchAuthorById(id: string) {
+export async function fetchAuthorById(id: string): Promise<Author>
+{
   try 
   {
     console.log(`Fetching author with id ${id}...`);
-    const data = await sql<Author[]>`SELECT * FROM author WHERE id = ${id}`;
-    console.log(data);
-    return data[0];
+    const data = await pool.query('SELECT * FROM author WHERE id = $1', [id]);
+    return data.rows[0];
   } 
   catch (error) 
   {
@@ -66,14 +65,13 @@ export async function fetchAuthorById(id: string) {
 }
 
 
-export async function fetchBookById(id: string) 
+export async function fetchBookById(id: string): Promise<Book>
 {
   try 
   {
     console.log(`Fetching book with id ${id}...`);
-    const data = await sql<Book[]>`SELECT * FROM book WHERE id = ${id}`;
-    console.log(data);
-    return data[0];
+    const data = await pool.query('SELECT * FROM book WHERE id = $1', [id]);
+    return data.rows[0];
   } 
   catch (error) 
   {
@@ -82,14 +80,13 @@ export async function fetchBookById(id: string)
   }
 }
 
-export async function fetchLanguageById(id: string)
+export async function fetchLanguageById(id: string): Promise<Language>
 {
   try 
   {
     console.log(`Fetching language with id ${id}...`);
-    const data = await sql<Language[]>`SELECT * FROM language WHERE id = ${id}`;
-    console.log(data);
-    return data[0];
+    const data = await pool.query('SELECT * FROM language WHERE id = $1', [id]);
+    return data.rows[0];
   } 
   catch (error) 
   {
@@ -99,14 +96,14 @@ export async function fetchLanguageById(id: string)
 }
 
 
-export async function getAuthorByName(name: string) {
+export async function getAuthorByName(name: string): Promise<Author | null>
+{
   try 
   {
     console.log(`Fetching author with name ${name}...`);
-    const data = await sql<Author[]>`SELECT * FROM author WHERE name = ${name}`;
-    console.log(data);
-    if (data.length === 0) return null;
-    return data[0];
+    const data = await pool.query('SELECT * FROM author WHERE name = $1', [name]);
+    if (data.rows.length === 0) return null;
+    return data.rows[0];
   } 
   catch (error) 
   {
@@ -115,14 +112,13 @@ export async function getAuthorByName(name: string) {
   }
 }
 
-export async function fetchBooksByAuthorId(id: string) 
+export async function fetchBooksByAuthorId(id: string): Promise<Book[]>
 {
   try 
   {
     console.log(`Fetching books by author with id ${id}...`);
-    const data = await sql<Book[]>`SELECT * FROM book WHERE author_id = ${id}`;
-    console.log(data);
-    return data;
+    const data = await pool.query('SELECT * FROM book WHERE author_id = $1', [id]);
+    return data.rows;
   } 
   catch (error) 
   {

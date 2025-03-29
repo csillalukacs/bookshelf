@@ -1,17 +1,8 @@
-import { auth } from "./app/auth"
+import NextAuth from "next-auth"
+import authConfig from "./app/auth.config"
  
-export default auth((req) => 
-{
-    console.log(req.nextUrl.pathname)
-    if (!req.auth) 
-    {
-      console.log("Redirecting to log in page");
+export const { auth: middleware } = NextAuth(authConfig)
 
-      const newUrl = new URL("/", req.nextUrl.origin)
-      return Response.redirect(newUrl)
-    }
-})
-
-export const config = {
-  matcher: ['/book/:path*', '/profile', '/author/:path*', '/home']
-};
+// export const config = {
+//   matcher: ['/book/:path*', '/profile', '/author/:path*', '/home']
+// };

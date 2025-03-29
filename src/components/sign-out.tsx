@@ -9,7 +9,7 @@ export function SignOut()
         "use server"
         await signOut(
           { 
-            redirectTo: "/" 
+            //redirectTo: "/" 
           }
         )
       }}

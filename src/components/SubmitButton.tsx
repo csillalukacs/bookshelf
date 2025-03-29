@@ -1,5 +1,6 @@
 'use client';
-export function SubmitButton({isPending}: { isPending: boolean }) {
+export function SubmitButton({isPending}: { isPending: boolean }) 
+{
     return <button
         disabled={isPending}
         className={!isPending ?

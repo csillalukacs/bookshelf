@@ -1,32 +1,23 @@
-import postgres from "postgres"
+import { Pool } from "pg";
 
-// Extend the global scope to include the 'sql' property
-declare global 
-{
-  var sql: ReturnType<typeof postgres> | undefined;
+declare global {
+  var pool: Pool | undefined;
 }
 
-let sql: ReturnType<typeof postgres>;
+// Ensure the pool is created only once
+export const pool =
+  global.pool ||
+  new Pool({
+    host: process.env.DATABASE_HOST,
+    user: process.env.DATABASE_USER,
+    password: process.env.DATABASE_PASSWORD,
+    database: process.env.DATABASE_NAME,
+    max: 20,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 2000,
+  })
 
-if (process.env.NODE_ENV === "production") 
-{
-    sql = postgres(process.env.POSTGRES_URL!); 
-} 
-else 
-{
-  if (!global.sql) 
-{
-    // const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
-    // above doesn't work on mac, todo figure out why
-    // neither does const sql = postgres(process.env.POSTGRES_URL!, { ssl: { rejectUnauthorized: false } });
-    // we are rambling to ourselves in comments now
+if (process.env.NODE_ENV !== "production") global.pool = pool;
 
-    // btw the ! means this is not null or undefined, a "non-null assertion operator"
-    // in case the type checker doesn't know that. but i do 😈
-    global.sql = postgres(process.env.POSTGRES_URL!);
-  }
-
-  sql = global.sql;
-}
-
-export default sql;
+console.log("Pool total count, idle count, waiting count: ",
+   pool.totalCount, pool.idleCount, pool.waitingCount)

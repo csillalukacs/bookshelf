@@ -1,8 +1,13 @@
 import UserAvatar from "@/components/UserAvatar";
 import { SignOut } from "@/components/sign-out";
 import Link from "next/link";
+import { auth } from "@/app/auth";
+import SignIn from "@/components/sign-in";
 
-export default function Home() {
+export default async function Home() 
+{
+  const session = await auth();
+  
   return (
     <div >
         <UserAvatar/>
@@ -23,7 +28,7 @@ export default function Home() {
         >
           Add book
         </Link>
-        <SignOut />
+        {session ? <SignOut /> : <SignIn />}
       </div>
     </div>
   );

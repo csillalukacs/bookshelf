@@ -3,7 +3,7 @@
 import { Author, Book } from "./lib/definitions";
 import { revalidatePath } from "next/cache";
 import { getAuthorByName } from "./lib/data";
-import sql from "./postgres";
+import { pool } from "./postgres";
 
 
 export type AuthorSubmitState = 
@@ -31,9 +31,8 @@ export async function addAuthor(prevState: AuthorSubmitState, formData: FormData
   try 
   {
     console.log('Adding new author...');
-    const result = await sql<Author[]>`INSERT INTO author (name) 
-    VALUES (${nameStr}) RETURNING *`;
-    const state = {author: {...result[0]}, status: 'success'}
+    const result = await pool.query('INSERT INTO author (name) VALUES ($1) RETURNING *', [nameStr]);
+    const state = {author: {...result.rows[0]}, status: 'success'}
     return state;
   } 
   catch (error) 
@@ -66,9 +65,10 @@ export async function addBook(prevState: BookSubmitState, formData: FormData): P
     try 
     {
       console.log('Adding new author...');
-      const result = await sql<Author[]>`INSERT INTO author (name) 
-      VALUES (${authorStr}) RETURNING *`;
-      authorId = result[0].id;
+      const result = await pool.query(
+        'INSERT INTO author (name) VALUES ($1) RETURNING *', [authorStr]
+      );
+      authorId = result.rows[0].id;
     } 
     catch (error) 
     {
@@ -83,10 +83,11 @@ export async function addBook(prevState: BookSubmitState, formData: FormData): P
   try 
   {
     console.log('Adding new book...');
-    const result = await sql<Book[]>`INSERT INTO book 
-      (title, author_id, first_pub, orig_lang_id) 
-      VALUES (${titleStr}, ${authorId}, ${yearStr}, ${langId} ) RETURNING *`;
-    const state = {book: {...result[0]}, status: 'success'}
+    const result = await pool.query(
+      'INSERT INTO book (title, author_id, first_pub, orig_lang_id) VALUES ($1, $2, $3, $4) RETURNING *', 
+      [titleStr, authorId, yearStr, langId]
+    );
+    const state = {book: {...result.rows[0]}, status: 'success'}
     return state;
   } 
   catch (error) 
@@ -98,12 +99,10 @@ export async function addBook(prevState: BookSubmitState, formData: FormData): P
 
 export async function deleteAuthor(id: string)
 {
-  console.log(id);
   try 
   {
     console.log(`Deleting author with id ${id}...`);
-    const result = await sql`DELETE FROM author WHERE id = ${id}`;
-    console.log(result);
+    const result = await pool.query('DELETE FROM author WHERE id = $1', [id]);
   } 
   catch (error) 
   {
