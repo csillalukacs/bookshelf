@@ -1,14 +1,14 @@
 'use client'
 
-import { Author, Book, Edition, Language } from "@/app/lib/definitions";
+import { Author, Book, Edition, Language, Publisher } from "@/app/lib/definitions";
 import Link from "next/link";
 import { useState } from "react";
 import UploadForm from "./UploadForm";
 import Image from "next/image";
 
 
-export default function EditionPage( {coverUrl, edition, book, author, language}:
-    {coverUrl: string, edition: Edition, book: Book, author: Author, language: Language}) 
+export default function EditionPage( {coverUrl, edition, book, author, language, publisher}:
+    {coverUrl: string, edition: Edition, book: Book, author: Author, language: Language, publisher: Publisher}) 
 {
     const [uploadOpen, setUploadOpen] = useState(false);
 
@@ -24,7 +24,7 @@ export default function EditionPage( {coverUrl, edition, book, author, language}
                     {author.name}
                 </Link>
                 <p>
-                    Published: {edition.year_pub}
+                    Published: {edition.year_pub} by {publisher.name}
                 </p>
                 <p>
                     Language: {language.name}

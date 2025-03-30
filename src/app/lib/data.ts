@@ -1,4 +1,4 @@
-import { Author, Book, Edition, Language } from './definitions';
+import { Author, Book, Edition, Language, Publisher } from './definitions';
 import { pool } from '../postgres';
  
  
@@ -65,6 +65,21 @@ export async function fetchLanguages(): Promise<Language[]>
   }
 }
 
+export async function fetchPublishers(): Promise<Publisher[]>
+{
+  try 
+  {
+    console.log('Fetching publishers...');
+    const data = await pool.query('SELECT * FROM publisher');
+    return data.rows;
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch publishers.');
+  }
+}
+
 export async function fetchAuthorById(id: string): Promise<Author>
 {
   try 
@@ -93,6 +108,21 @@ export async function fetchBookById(id: string): Promise<Book>
   {
     console.error('Database Error:', error);
     throw new Error(`Failed to fetch book with id ${id}`);
+  }
+}
+
+export async function fetchPublisherById(id: string): Promise<Publisher>
+{
+  try 
+  {
+    console.log(`Fetching publisher with id ${id}...`);
+    const data = await pool.query('SELECT * FROM publisher WHERE id = $1', [id]);
+    return data.rows[0];
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    throw new Error(`Failed to fetch publisher with id ${id}`);
   }
 }
 
@@ -126,6 +156,21 @@ export async function getAuthorByName(name: string): Promise<Author | null>
     console.error('Database Error:', error);
     throw new Error(`Failed to fetch author with name ${name}`);
   }
+}
+
+export async function getPublisherByName(name: string) : Promise<Publisher | null>
+{
+  try
+  {
+    const data = await pool.query('SELECT * FROM publisher WHERE name = $1', [name])
+    if (data.rows.length === 0) return null;
+    return data.rows[0];
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    throw new Error(`Failed to fetch publisher with name ${name}`);
+  } 
 }
 
 export async function fetchBooksByAuthorId(id: string): Promise<Book[]>

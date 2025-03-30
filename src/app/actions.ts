@@ -1,8 +1,8 @@
 'use server'
 
-import { Author, Book, Edition } from "./lib/definitions";
+import { Author, Book, Edition, Publisher } from "./lib/definitions";
 import { revalidatePath } from "next/cache";
-import { getAuthorByName } from "./lib/data";
+import { getAuthorByName, getPublisherByName } from "./lib/data";
 import { pool } from "./postgres";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
@@ -23,6 +23,12 @@ export type BookSubmitState =
 export type EditionSubmitState =
 {
   edition?: Edition;
+  status: string;
+}
+
+export type PublisherSubmitState =
+{
+  publisher?: Publisher;
   status: string;
 }
 
@@ -98,11 +104,32 @@ export async function addAuthor(prevState: AuthorSubmitState, formData: FormData
   nameStr.trim();
   if (nameStr.length === 0) return  {status: 'error'};
 
+  return insertAuthorIntoDb(nameStr);
+}
+
+async function insertAuthorIntoDb(nameStr: string) : Promise<AuthorSubmitState>
+{
   try 
   {
     console.log('Adding new author...');
     const result = await pool.query('INSERT INTO author (name) VALUES ($1) RETURNING *', [nameStr]);
     const state = {author: {...result.rows[0]}, status: 'success'}
+    return state;
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    return  {status: 'error'};
+  }
+}
+
+async function insertPublisherIntoDb(nameStr: string) : Promise<PublisherSubmitState>
+{
+  try 
+  {
+    console.log('Adding new publisher...');
+    const result = await pool.query('INSERT INTO publisher (name) VALUES ($1) RETURNING *', [nameStr]);
+    const state = {publisher: {...result.rows[0]}, status: 'success'}
     return state;
   } 
   catch (error) 
@@ -132,19 +159,7 @@ export async function addBook(prevState: BookSubmitState, formData: FormData): P
 
   if (!authorId) 
   {
-    try 
-    {
-      console.log('Adding new author...');
-      const result = await pool.query(
-        'INSERT INTO author (name) VALUES ($1) RETURNING *', [authorStr]
-      );
-      authorId = result.rows[0].id;
-    } 
-    catch (error) 
-    {
-      console.error('Database Error:', error);
-      return  {status: 'error'};
-    }  
+    authorId = (await insertAuthorIntoDb(authorStr))?.author?.id;
   }
 
   const langId = language.toString();
@@ -178,7 +193,7 @@ export async function addEdition(prevState: BookSubmitState, formData: FormData)
   const translator = formData.get('translator');
 
 
-  if (!title || !year || !language || !isbn) return {status: 'error'};
+  if (!title || !year || !language || !isbn || !publisher) return {status: 'error'};
 
   const titleStr = title.toString();
   titleStr.trim();
@@ -187,14 +202,25 @@ export async function addEdition(prevState: BookSubmitState, formData: FormData)
   const langId = language.toString();
   const yearStr = year.toString();
 
+  const publisherStr = publisher.toString();
+  publisherStr.trim();
+  if (publisherStr.length === 0) return  {status: 'error'};
+
+  let publisherId = (await getPublisherByName(publisherStr))?.id;
+
+  if (!publisherId)
+  {
+    publisherId = (await insertPublisherIntoDb(publisherStr))?.publisher?.id;
+  }
+
   try 
   {
     console.log('Adding new book...');
     const result = await pool.query(
       'INSERT INTO edition ' +
       '(ed_title, year_pub, lang_id, publisher_id, book_id, isbn) ' +
-      'VALUES ($1, $2, $3, 1, $4, $5) RETURNING *', 
-      [titleStr, yearStr, langId, bookId, isbn]
+      'VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', 
+      [titleStr, yearStr, langId, publisherId, bookId, isbn]
     );
     const state = {edition: {...result.rows[0]}, status: 'success'}
     return state;

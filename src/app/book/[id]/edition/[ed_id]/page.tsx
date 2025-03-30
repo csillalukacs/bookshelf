@@ -1,5 +1,4 @@
-import { fetchAuthorById, fetchBookById, fetchEditionById, fetchLanguageById, getCoverUrl } from "@/app/lib/data";
-import { Edition, Book, Author, Language } from "@/app/lib/definitions";
+import { fetchAuthorById, fetchBookById, fetchEditionById, fetchLanguageById, fetchPublisherById, getCoverUrl, getPublisherByName } from "@/app/lib/data";
 import EditionPage from "./EditionPage";
 
 export default async function Page({ params }: { params: { id: string, ed_id: string } }) 
@@ -11,6 +10,7 @@ export default async function Page({ params }: { params: { id: string, ed_id: st
     const author = await fetchAuthorById(book.author_id);
     const language = await fetchLanguageById(edition.lang_id);
     const coverUrl = await getCoverUrl(edition);
+    const publisher = await fetchPublisherById(edition.publisher_id);
 
 
     return (
@@ -19,6 +19,7 @@ export default async function Page({ params }: { params: { id: string, ed_id: st
             book={book}
             author={author}
             language={language}
+            publisher={publisher}
         />
     )
 }

@@ -1,6 +1,6 @@
 'use server'
 
-import { fetchAuthors, fetchBookById, fetchLanguages } from "@/app/lib/data";
+import { fetchAuthors, fetchBookById, fetchLanguages, fetchPublishers } from "@/app/lib/data";
 import NewEditionForm from "./NewEditionForm";
 import { auth } from "@/app/auth";
 
@@ -23,8 +23,9 @@ export default async function Page({params}: { params: { id: string } })
   const authors = await fetchAuthors();
   const languages = await fetchLanguages();
   const book = await fetchBookById(bookId);
+  const publishers = await fetchPublishers();
 
   return (
-    <NewEditionForm authors={authors} languages={languages} book={book} publishers={[]}/>
+    <NewEditionForm authors={authors} languages={languages} book={book} publishers={publishers}/>
   )
 }

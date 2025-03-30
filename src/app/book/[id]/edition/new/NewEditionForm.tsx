@@ -34,11 +34,11 @@ export default function NewEditionForm(
           disabled={isPending}
           list={authors}
         />
-        {/* <TextInput 
-            name="publisher"
-            disabled={isPending}
-            list={publishers}
-          /> */}
+        <TextInput 
+          name="publisher"
+          disabled={isPending}
+          list={publishers}
+        />
         <NumberInput
           name="year"
           label="publication year"
