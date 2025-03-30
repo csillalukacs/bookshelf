@@ -4,6 +4,8 @@ import { Author, Book, Edition } from "./lib/definitions";
 import { revalidatePath } from "next/cache";
 import { getAuthorByName } from "./lib/data";
 import { pool } from "./postgres";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { randomUUID } from "crypto";
 
 
 export type AuthorSubmitState = 
@@ -22,6 +24,68 @@ export type EditionSubmitState =
 {
   edition?: Edition;
   status: string;
+}
+
+const s3 = new S3Client({
+  region: process.env.AWS_DEFAULT_REGION!,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
+  },
+});
+
+export async function uploadImage(prevState: any, formData: FormData) 
+{
+  const file = formData.get("file") as File;
+  if (!file) return { error: "No file provided." };
+
+  const buffer = await file.arrayBuffer();
+  const fileKey = `${randomUUID()}-${file.name}`;
+
+  try 
+  {
+    await s3.send(
+      new PutObjectCommand({
+        Bucket: process.env.AWS_BUCKET_NAME!,
+        Key: fileKey,
+        Body: Buffer.from(buffer),
+        ContentType: file.type,
+      })
+    );
+
+    await updateCoverImg(fileKey, formData.get('editionId') as string);
+
+    // Return CloudFront URL instead of S3 URL
+    const imageUrl = `${process.env.CLOUDFRONT_URL}${fileKey}`;
+
+    // Optionally revalidate paths if needed
+    revalidatePath("/");
+
+    return { success: true, imageUrl };
+  } 
+  catch (error) 
+  {
+    console.error("Upload error:", error);
+    return { error: "Upload failed." };
+  }
+}
+
+export async function updateCoverImg(newCoverImg: string, editionId: string) 
+{
+  try 
+  {
+    console.log(`Updating cover image for edition with id ${editionId}...`);
+    const result = await pool.query(
+      'UPDATE edition SET cover_img = $1 WHERE id = $2 RETURNING *', 
+      [newCoverImg, editionId]
+    );
+    return {status: 'success'};
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    return {status: 'error'};
+  }
 }
 
 export async function addAuthor(prevState: AuthorSubmitState, formData: FormData): Promise<AuthorSubmitState> 

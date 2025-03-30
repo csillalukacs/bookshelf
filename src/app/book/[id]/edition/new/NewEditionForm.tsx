@@ -64,7 +64,7 @@ export default function NewEditionForm(
         {formState.status === 'success' && formState.edition &&
           <p className="Error">
             Successfully added{" "}
-            <Link href={`/book/${formState.edition.id}`}>{formState.edition.ed_title}</Link>
+            <Link href={`/book/${book.id}/edition/${formState.edition.id}`}>{formState.edition.ed_title}</Link>
             !
           </p>
         }

@@ -26,6 +26,7 @@ export default async function Page({ params }: { params: { id: string } })
                 <button>
                     Edit details
                 </button>
+                <Link href={`/book/${id}/edition/new`}>Add a new edition</Link>
                 <p>Editions</p>
                 <ul>
                     {editions.map(async (edition) => {
