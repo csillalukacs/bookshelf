@@ -1,6 +1,6 @@
 import { fetchAuthorById, fetchBookById, fetchBookEditionsByBookId, fetchLanguageById, getCoverUrl } from "@/app/lib/data";
 import Link from "next/link";
-import Image from "next/image";
+import EditionCard from "@/components/EditionCard";
 
 export default async function Page({ params }: { params: { id: string } }) 
 {
@@ -28,19 +28,11 @@ export default async function Page({ params }: { params: { id: string } })
                 </button>
                 <Link href={`/book/${id}/edition/new`}>Add a new edition</Link>
                 <p>Editions</p>
-                <ul>
-                    {editions.map(async (edition) => {
-                        const coverUrl = await getCoverUrl(edition);
-                        return (
-                            <li key={edition.id}>
-                                <Image src={coverUrl} alt={edition.ed_title} width={100} height={150}></Image>
-                                <Link href={`/book/${id}/edition/${edition.id}`}>
-                                    {edition.ed_title}
-                                </Link>
-                            </li>
+                <ul className="flex flex-row flex-wrap gap-4">
+                    {editions.map(async (edition) => 
+                            <EditionCard key={edition.id} edition={edition} book={book} />
                         )
                     }
-                    )}
                 </ul>
             </div>
         </main>

@@ -34,6 +34,22 @@ export async function fetchBooks(): Promise<Book[]>
   }
 }
 
+export async function getOneEdition(bookId: string): Promise<Edition>
+{
+  // todo: get the first result with a cover
+  try 
+  {
+    console.log(`Fetching one edition for book with id ${bookId}...`);
+    const data = await pool.query('SELECT * FROM edition WHERE book_id = $1', [bookId]);
+    return data.rows[0];
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    throw new Error(`Failed to fetch edition for book with id ${bookId}`);
+  }
+}
+
 export async function fetchLanguages(): Promise<Language[]>
 {
   try 
