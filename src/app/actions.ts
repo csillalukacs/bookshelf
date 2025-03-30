@@ -1,6 +1,6 @@
 'use server'
 
-import { Author, Book } from "./lib/definitions";
+import { Author, Book, Edition } from "./lib/definitions";
 import { revalidatePath } from "next/cache";
 import { getAuthorByName } from "./lib/data";
 import { pool } from "./postgres";
@@ -17,6 +17,12 @@ export type BookSubmitState =
   book?: Book;
   status: string;
 };
+
+export type EditionSubmitState =
+{
+  edition?: Edition;
+  status: string;
+}
 
 export async function addAuthor(prevState: AuthorSubmitState, formData: FormData): Promise<AuthorSubmitState> 
 {
@@ -88,6 +94,45 @@ export async function addBook(prevState: BookSubmitState, formData: FormData): P
       [titleStr, authorId, yearStr, langId]
     );
     const state = {book: {...result.rows[0]}, status: 'success'}
+    return state;
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    return  {status: 'error'};
+  }
+}
+
+export async function addEdition(prevState: BookSubmitState, formData: FormData): Promise<EditionSubmitState>
+{
+  const title = formData.get('title');
+  const year = formData.get('year');
+  const language = formData.get('language');
+  const bookId = formData.get('bookId');
+  const isbn = formData.get('isbn');
+  const publisher = formData.get('publisher');
+  const translator = formData.get('translator');
+
+
+  if (!title || !year || !language || !isbn) return {status: 'error'};
+
+  const titleStr = title.toString();
+  titleStr.trim();
+  if (titleStr.length === 0) return  {status: 'error'};
+
+  const langId = language.toString();
+  const yearStr = year.toString();
+
+  try 
+  {
+    console.log('Adding new book...');
+    const result = await pool.query(
+      'INSERT INTO edition ' +
+      '(ed_title, year_pub, lang_id, publisher_id, book_id, isbn) ' +
+      'VALUES ($1, $2, $3, 1, $4, $5) RETURNING *', 
+      [titleStr, yearStr, langId, bookId, isbn]
+    );
+    const state = {edition: {...result.rows[0]}, status: 'success'}
     return state;
   } 
   catch (error) 

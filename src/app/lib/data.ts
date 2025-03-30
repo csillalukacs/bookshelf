@@ -1,4 +1,4 @@
-import { Author, Book, Language } from './definitions';
+import { Author, Book, Edition, Language } from './definitions';
 import { pool } from '../postgres';
  
  
@@ -125,4 +125,41 @@ export async function fetchBooksByAuthorId(id: string): Promise<Book[]>
     console.error('Database Error:', error);
     throw new Error(`Failed to fetch books by author with id ${id}`);
   }
+}
+
+export async function fetchBookEditionsByBookId(id: string): Promise<Edition[]>
+{
+  try
+  {
+    console.log(`Fetching editions by book with id ${id}...`);
+    const data = await pool.query('SELECT * FROM edition WHERE book_id = $1', [id]);
+    return data.rows;
+  }
+  catch (error)
+  {
+    console.error('Database Error:', error);
+    throw new Error(`Failed to fetch editions by book with id ${id}`);
+  }
+}
+
+export async function fetchEditionById(id: string): Promise<Edition>
+{
+  try
+  {
+    console.log(`Fetching edition with id ${id}...`);
+    const data = await pool.query('SELECT * FROM edition WHERE id = $1', [id]);
+    console.log(data.rows);
+    return data.rows[0];
+  }
+  catch (error)
+  {
+    console.error('Database Error:', error);
+    throw new Error(`Failed to fetch edition with id ${id}`);
+  }
+}
+
+export async function getCoverUrl(edition: Edition): Promise<string>
+{
+  if (edition.cover_img) return process.env.CLOUDFRONT_URL + edition.cover_img;
+  else return `https://covers.openlibrary.org/b/isbn/${edition.isbn}-M.jpg`;
 }

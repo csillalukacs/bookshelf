@@ -1,13 +1,14 @@
-import { fetchAuthorById, fetchBookById, fetchLanguageById } from "@/app/lib/data";
+import { fetchAuthorById, fetchBookById, fetchBookEditionsByBookId, fetchLanguageById, getCoverUrl } from "@/app/lib/data";
 import Link from "next/link";
+import Image from "next/image";
 
 export default async function Page({ params }: { params: { id: string } }) 
 {
     const id = params.id;
     const book = await fetchBookById(id);
-    console.log(book);
     const author = await fetchAuthorById(book.author_id);
     const language = await fetchLanguageById(book.orig_lang_id);
+    const editions = await fetchBookEditionsByBookId(id);
 
     return (
         <main>
@@ -25,6 +26,21 @@ export default async function Page({ params }: { params: { id: string } })
                 <button>
                     Edit details
                 </button>
+                <p>Editions</p>
+                <ul>
+                    {editions.map(async (edition) => {
+                        const coverUrl = await getCoverUrl(edition);
+                        return (
+                            <li key={edition.id}>
+                                <Image src={coverUrl} alt={edition.ed_title} width={100} height={150}></Image>
+                                <Link href={`/book/${id}/edition/${edition.id}`}>
+                                    {edition.ed_title}
+                                </Link>
+                            </li>
+                        )
+                    }
+                    )}
+                </ul>
             </div>
         </main>
     )
