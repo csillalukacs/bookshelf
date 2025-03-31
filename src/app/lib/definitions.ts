@@ -38,3 +38,12 @@ export type Publisher =
   id: string;
   name: string;
 }
+
+export type List = 
+{
+  id: string;
+  name: string;
+  created: string;
+  edited: string;
+  userId: string;
+}

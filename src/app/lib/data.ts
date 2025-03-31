@@ -80,6 +80,21 @@ export async function fetchPublishers(): Promise<Publisher[]>
   }
 }
 
+export async function fetchListsByUserId(id: string)
+{
+  try
+  {
+    console.log(`Fetching lists by user with id ${id}...`);
+    const data = await pool.query('SELECT * FROM list WHERE user_id = $1', [id]);
+    return data.rows; 
+  }
+  catch (error)
+  {
+    console.error('Database Error:', error);
+    throw new Error(`Failed to fetch lists by user with id ${id}`);
+  }
+}
+
 export async function fetchAuthorById(id: string): Promise<Author>
 {
   try 

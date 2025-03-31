@@ -1,6 +1,6 @@
 'use server'
 
-import { Author, Book, Edition, Publisher } from "./lib/definitions";
+import { Author, Book, Edition, List, Publisher } from "./lib/definitions";
 import { revalidatePath } from "next/cache";
 import { getAuthorByName, getPublisherByName } from "./lib/data";
 import { pool } from "./postgres";
@@ -30,6 +30,12 @@ export type EditionSubmitState =
 export type PublisherSubmitState =
 {
   publisher?: Publisher;
+  status: string;
+}
+
+export type ListSubmitState =
+{
+  list?: List;
   status: string;
 }
 
@@ -109,12 +115,24 @@ export async function addAuthor(prevState: AuthorSubmitState, formData: FormData
   const name = formData.get('name');
 
   if (!name) return {status: 'error'};
-  if (name=="test") return  {status: 'error'};
   const nameStr = name.toString();
   nameStr.trim();
   if (nameStr.length === 0) return  {status: 'error'};
 
   return insertAuthorIntoDb(nameStr);
+}
+
+export async function addList(prevState: ListSubmitState, formData: FormData): Promise<ListSubmitState> 
+{
+  const name = formData.get('name');
+  const user_id = formData.get('userId')?.toString();
+
+  if (!name || !user_id) return {status: 'error'};
+  const nameStr = name.toString();
+  nameStr.trim();
+  if (nameStr.length === 0) return  {status: 'error'};
+
+  return insertListIntoDb(nameStr, user_id);
 }
 
 async function insertAuthorIntoDb(nameStr: string) : Promise<AuthorSubmitState>
@@ -124,6 +142,23 @@ async function insertAuthorIntoDb(nameStr: string) : Promise<AuthorSubmitState>
     console.log('Adding new author...');
     const result = await pool.query('INSERT INTO author (name) VALUES ($1) RETURNING *', [nameStr]);
     const state = {author: {...result.rows[0]}, status: 'success'}
+    return state;
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    return  {status: 'error'};
+  }
+}
+
+async function insertListIntoDb(nameStr: string, user_id: string) : Promise<ListSubmitState>
+{
+  try 
+  {
+    console.log('Adding new list...');
+    const result = await pool.query('INSERT INTO list (name, created, user_id) VALUES ($1, $2, $3) RETURNING *', 
+      [nameStr, new Date(), user_id]);
+    const state = {list: {...result.rows[0]}, status: 'success'}
     return state;
   } 
   catch (error) 
