@@ -6,6 +6,7 @@ import { getAuthorByName, getPublisherByName } from "./lib/data";
 import { pool } from "./postgres";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
+import { signOut } from "./auth";
 
 
 export type AuthorSubmitState = 
@@ -39,6 +40,15 @@ const s3 = new S3Client({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
   },
 });
+
+export async function logOut ()  
+  {
+    await signOut(
+      { 
+        redirectTo: "/home" 
+      }
+    )
+  }
 
 export async function uploadImage(prevState: any, formData: FormData) 
 {

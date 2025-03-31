@@ -1,13 +1,28 @@
+'use client'
+
+import { useSession } from "next-auth/react"
 import { auth } from "../app/auth"
+import Image from "next/image"
  
-export default async function UserAvatar() {
-  const session = await auth()
+export default function UserAvatar({image}: {image?: string}) 
+{
+  const session = useSession();
  
-  if (!session?.user) return null
+  // if (!session?.user) return null
+
  
   return (
-    <div>
-      <img src={session.user.image || undefined} alt="User Avatar" />
-    </div>
+    <div className="">
+        {session.data?.user?.image ? 
+          <Image 
+            src={session.data?.user?.image} 
+            alt="profile picture" 
+            width={50} 
+            height={50}
+            className="rounded-full"
+          /> 
+          : <div className="rounded-full w-10 h-10 bg-gray-400 flex items-center justify-center"></div>
+        }   
+      </div>
   )
-}
+} 

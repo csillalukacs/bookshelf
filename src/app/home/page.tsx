@@ -1,4 +1,3 @@
-import UserAvatar from "@/components/UserAvatar";
 import { SignOut } from "@/components/sign-out";
 import Link from "next/link";
 import { auth } from "@/app/auth";
@@ -10,7 +9,6 @@ export default async function Home()
   
   return (
     <div >
-        <UserAvatar/>
         <div>
           <div className="flex gap-4 items-center flex-col sm:flex-row">
           </div>

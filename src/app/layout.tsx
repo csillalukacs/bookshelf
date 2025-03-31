@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Image from "next/image";
-
 import "./globals.css";
 import NavBar from "@/components/NavBar";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,23 +30,25 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <NavBar/>
-            <div className="grid grid-rows-[2px_1fr_20px] items-center justify-items-center min-h-90 p-1 pb-1 gap-1 sm:p-2 font-[family-name:var(--font-geist-sans)]">
-              <main className="flex flex-col gap-[32px] row-start-2 items-center">
-                <Image
-                  src="/stack-of-books-on-a-brown-background-concept-for-world-book-day-photo.jpg"
-                  alt="books"
-                  width={357}
-                  height={200}
-                  priority
-                />
-                <div>
-                  <div className="flex gap-4 items-center flex-col sm:flex-row">
-                  </div>
+        <SessionProvider>
+          <NavBar/>
+          <div className="grid grid-rows-[2px_1fr_20px] items-center justify-items-center min-h-90 p-1 pb-1 gap-1 sm:p-2 font-[family-name:var(--font-geist-sans)]">
+            <main className="flex flex-col gap-[32px] row-start-2 items-center">
+              <Image
+                src="/stack-of-books-on-a-brown-background-concept-for-world-book-day-photo.jpg"
+                alt="books"
+                width={357}
+                height={200}
+                priority
+              />
+              <div>
+                <div className="flex gap-4 items-center flex-col sm:flex-row">
                 </div>
-                {children}
-              </main>
               </div>
+              {children}
+            </main>
+          </div>
+        </SessionProvider>
       </body>
     </html>
   );
