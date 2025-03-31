@@ -1,5 +1,5 @@
 import { fetchAuthorById, fetchBooksByAuthorId } from "@/app/lib/data";
-import Link from "next/link";
+import BookCard from "@/components/BookCard";
 
 export default async function Page({ params }: { params: { id: string } }) 
 {
@@ -13,14 +13,8 @@ export default async function Page({ params }: { params: { id: string } })
             <button>
                 Edit details
             </button>
-            <ul>
-                {books.map((book) => (
-                    <li key={book.id}>
-                        <Link href={`/book/${book.id}`}>
-                            {book.title}
-                        </Link>
-                    </li>
-                ))}
+            <ul className="flex flex-row flex-wrap gap-4">
+                {books.map(book => <BookCard key={book.id} book={book} /> )}
             </ul>
         </main>
     )
