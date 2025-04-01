@@ -115,8 +115,8 @@ export async function addAuthor(prevState: AuthorSubmitState, formData: FormData
   const name = formData.get('name');
 
   if (!name) return {status: 'error'};
-  const nameStr = name.toString();
-  nameStr.trim();
+  let nameStr = name.toString();
+  nameStr = nameStr.trim();
   if (nameStr.length === 0) return  {status: 'error'};
 
   return insertAuthorIntoDb(nameStr);
