@@ -1,6 +1,7 @@
 import { fetchAuthorById, fetchBookById, fetchBookEditionsByBookId, fetchLanguageById, getCoverUrl } from "@/app/lib/data";
 import Link from "next/link";
 import EditionCard from "@/components/EditionCard";
+import CardList from "@/components/CardList";
 
 export default async function Page({ params }: { params: { id: string } }) 
 {
@@ -28,12 +29,12 @@ export default async function Page({ params }: { params: { id: string } })
                 </button>
                 <Link href={`/book/${id}/edition/new`}>Add a new edition</Link>
                 <p>Editions</p>
-                <ul className="flex flex-row flex-wrap gap-4">
+                <CardList>
                     {editions.map(async (edition) => 
                             <EditionCard key={edition.id} edition={edition} book={book} />
                         )
                     }
-                </ul>
+                </CardList>
             </div>
         </main>
     )
