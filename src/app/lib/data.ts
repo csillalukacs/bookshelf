@@ -1,4 +1,4 @@
-import { Author, Book, Edition, Language, Publisher } from './definitions';
+import { Author, Book, Edition, Language, List, Publisher } from './definitions';
 import { pool } from '../postgres';
  
  
@@ -238,4 +238,36 @@ export async function getCoverUrl(edition: Edition): Promise<string>
 {
   if (edition.cover_img) return process.env.CLOUDFRONT_URL + edition.cover_img;
   else return `https://covers.openlibrary.org/b/isbn/${edition.isbn}-M.jpg`;
+}
+
+export async function fetchListById(id: string): Promise<List>
+{
+  try
+  {
+    console.log(`Fetching list with id ${id}...`);
+    const data = await pool.query('SELECT * FROM list WHERE id = $1', [id]);
+    return data.rows[0];
+  }
+  catch (error)
+  {
+    console.error('Database Error:', error);
+    throw new Error(`Failed to fetch list with id ${id}`);
+  }
+}
+
+export async function fetchEditionsByListId(id: string): Promise<Edition[]>
+{
+  try
+  {
+    console.log(`Fetching editions by list with id ${id}...`);
+    const data = await pool.query(
+      'SELECT e.*FROM edition e JOIN list_edition le ON e.id = le.edition_id WHERE le.list_id = $1;',
+      [id]);
+    return data.rows;
+  }
+  catch (error)
+  {
+    console.error('Database Error:', error);
+    throw new Error(`Failed to fetch editions by list with id ${id}`);
+  }
 }

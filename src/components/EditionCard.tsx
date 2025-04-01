@@ -1,16 +1,26 @@
-import { getCoverUrl } from "@/app/lib/data";
+import { fetchBookById, fetchListsByUserId, getCoverUrl } from "@/app/lib/data";
 import  Image from "next/image";
-import { Book, Edition } from "@/app/lib/definitions";
+import { Edition, List } from "@/app/lib/definitions";
 import Link from "next/link";
+import CardMenu from "./CardMenu";
+import { auth } from "@/app/auth";
 
 
-export default async function EditionCard({ edition, book, linkToBook = false }: 
-    { edition: Edition, book: Book, linkToBook?: boolean })
+export default async function EditionCard(
+    { edition, linkToBook = false }: 
+    { edition: Edition, linkToBook?: boolean })
 {
     const coverUrl = await getCoverUrl(edition);
+    const session = await auth();
+    const book = await fetchBookById(edition.book_id);
+    let list: List[] = [];
+    if (session?.user?.id) list = await fetchListsByUserId(session.user.id!);
 
     return (
-        <div key={edition.id} className="inline-block bg-white w-[100px] h-[150px] rounded-lg">
+        <div key={edition.id} className="relative inline-block bg-white w-[100px] h-[150px] rounded-lg">
+            {!linkToBook && session?.user?.id &&
+                <CardMenu edition={edition} list={list} />
+            }
             <Link 
                 href={`/book/${book.id}` + (linkToBook ? '' : `/edition/${edition.id}`)} 
             >

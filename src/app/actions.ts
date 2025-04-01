@@ -10,6 +10,7 @@ import { signOut } from "./auth";
 import { redirect, RedirectType } from "next/navigation";
 
 export type Result<T> = {success: true, value: T} | {success: false, error: string};
+export type SimpleResult = {success: true} | {success: false, error: string};
 
 const s3 = new S3Client({
   region: process.env.AWS_DEFAULT_REGION!,
@@ -249,6 +250,25 @@ export async function addEdition(prevState: Result<Edition>, formData: FormData)
     const state = {success: true as const, value: {...result.rows[0]}}
     return state;
   } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    return  {success: false, error: 'Unknown database error'};
+  }
+}
+
+export async function addEditionToList(prevState: SimpleResult, formData: FormData): Promise<SimpleResult>
+{
+  try {
+    const listId = formData.get('list');
+    const editionId = formData.get('editionId');
+    console.log(`Adding edition ${editionId} to list ${listId}...`);
+    const result = await pool.query(
+      'INSERT INTO list_edition (list_id, edition_id) VALUES ($1, $2) RETURNING *', 
+      [listId, editionId]
+    );
+    return {success: true};
+  }
   catch (error) 
   {
     console.error('Database Error:', error);
