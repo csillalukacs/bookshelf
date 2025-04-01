@@ -59,7 +59,7 @@ export default function NewEditionForm(
         <Button disabled={isPending} label="Submit" />
         {!formState.success &&
           <p className="Error">
-            An error occurred.
+            {formState.error}
           </p>
         }
         {formState.success && 
