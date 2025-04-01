@@ -1,7 +1,7 @@
 'use client';
 
 import { addList } from "@/app/actions";
-import { SubmitButton } from "@/components/SubmitButton";
+import Button from "@/components/Button";
 import { TextInput } from "@/components/TextInput";
 import Link from "next/link";
 import { useActionState } from "react";
@@ -21,7 +21,7 @@ export default function NewListForm({userId} : {userId: string})
           name="name"
           disabled={isPending}
         />
-        <SubmitButton isPending={isPending} />
+        <Button disabled={isPending} label="Submit" />
         {formState.status === 'error' &&
           <p className="Error">
             An error occurred.

@@ -2,6 +2,7 @@ import { fetchAuthorById, fetchBookById, fetchBookEditionsByBookId, fetchLanguag
 import Link from "next/link";
 import EditionCard from "@/components/EditionCard";
 import CardList from "@/components/CardList";
+import Button from "@/components/Button";
 
 export default async function Page({ params }: { params: { id: string } }) 
 {
@@ -27,7 +28,7 @@ export default async function Page({ params }: { params: { id: string } })
                 <button>
                     Edit details
                 </button>
-                <Link href={`/book/${id}/edition/new`}>Add a new edition</Link>
+                <Link href={`/book/${id}/edition/new`}><Button label="Add a new edition" disabled={false} /></Link>
                 <p>Editions</p>
                 <CardList>
                     {editions.map(async (edition) => 

@@ -10,14 +10,18 @@ export default async function EditionCard({ edition, book, linkToBook = false }:
     const coverUrl = await getCoverUrl(edition);
 
     return (
-        <div key={edition.id}>
-            <Link href={`/book/${book.id}` + (linkToBook ? '' : `/edition/${edition.id}`)}>
+        <div key={edition.id} className="inline-block bg-white w-[100px] h-[150px] rounded-lg">
+            <Link 
+                href={`/book/${book.id}` + (linkToBook ? '' : `/edition/${edition.id}`)} 
+            >
                 <Image 
                     src={coverUrl} 
                     alt={edition.ed_title} 
                     title={edition.ed_title + ', ' + edition.year_pub + ', ISBN:' + edition.isbn} 
                     width={100} 
                     height={150}
+                    className="rounded-lg object-cover w-full h-full hover:border-white hover:border-2 hover:shadow-md"
+                    style={{objectFit: 'cover'}}
                 />
             </Link>
         </div>

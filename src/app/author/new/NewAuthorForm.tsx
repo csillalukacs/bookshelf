@@ -1,6 +1,6 @@
 'use client'
 import { addAuthor } from "@/app/actions";
-import { SubmitButton } from "@/components/SubmitButton";
+import Button from "@/components/Button";
 import { TextInput } from "@/components/TextInput";
 import Link from "next/link";
 import { useActionState } from "react";
@@ -22,7 +22,7 @@ export default function Form()
             disabled={isPending}
           />
           <br />
-          <SubmitButton isPending={isPending} />
+          <Button label="Submit" disabled={isPending} />
           {formState.status === 'error' &&
             <p className="Error">
               An error occurred.

@@ -1,5 +1,6 @@
 import { fetchBooks } from "@/app/lib/data";
 import BookCard from "@/components/BookCard";
+import Button from "@/components/Button";
 import CardList from "@/components/CardList";
 import Link from "next/link";
 
@@ -9,9 +10,7 @@ export default async function Page()
   return (
     <>
       <h1>Books</h1>
-      <p>Is your favourite book missing? You can add it{" "}
-          <Link href="/book/new">here</Link>.
-      </p>
+      <Link href="/book/new"><Button label="Add a new book" disabled={false} /></Link>.
       <CardList>
           {books.map(book => <BookCard key={book.id} book={book} /> )}
       </CardList>

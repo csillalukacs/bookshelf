@@ -2,9 +2,9 @@
 
 import { addBook } from "@/app/actions";
 import { Author, Language } from "@/app/lib/definitions";
+import Button from "@/components/Button";
 import { NumberInput } from "@/components/NumberInput";
 import { SelectInput } from "@/components/SelectInput";
-import { SubmitButton } from "@/components/SubmitButton";
 import { TextInput } from "@/components/TextInput";
 import Link from "next/link";
 import { useActionState } from "react";
@@ -42,7 +42,7 @@ export default function NewBookForm(
                 list={languages}
                 disabled={isPending}
             />
-          <SubmitButton isPending={isPending} />
+          <Button label="Submit" disabled={isPending} />
           {formState.status === 'error' &&
             <p className="Error">
               An error occurred.

@@ -2,6 +2,7 @@ import { fetchAuthors } from "@/app/lib/data";
 import Link from "next/link";
 import DeleteButton from "./delete-button";
 import { auth } from "@/app/auth";
+import Button from "@/components/Button";
 
 export default async function Page() 
 {
@@ -11,9 +12,7 @@ export default async function Page()
   return (
     <>
       <h1>Authors</h1>
-      <p>Is your favourite author missing? You can add them{" "}
-          <Link href="/author/new">here</Link>.
-      </p>
+      <Link href="/author/new"><Button label="Add a new author" disabled={false} /></Link>.
       <ul className="self-start">
           {authors.map(a=>
             <li key={a.id}>
