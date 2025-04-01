@@ -45,5 +45,5 @@ export type List =
   name: string;
   created: string;
   edited: string;
-  userId: string;
+  user_id: string;
 }

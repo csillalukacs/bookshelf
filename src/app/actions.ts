@@ -2,11 +2,11 @@
 
 import { Author, Book, Edition, List, Publisher } from "./lib/definitions";
 import { revalidatePath } from "next/cache";
-import { getAuthorByName, getPublisherByName } from "./lib/data";
+import { fetchListById, getAuthorByName, getPublisherByName } from "./lib/data";
 import { pool } from "./postgres";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
-import { signOut } from "./auth";
+import { auth, signOut } from "./auth";
 import { redirect, RedirectType } from "next/navigation";
 
 export type Result<T> = {success: true, value: T} | {success: false, error: string};
@@ -31,6 +31,9 @@ export async function logOut ()
 
 export async function uploadImage(prevState: any, formData: FormData) 
 {
+  const session = await auth();
+  if (!session?.user) return { error: "You must be logged in to perform this action." };
+  
   const file = formData.get("file") as File;
   if (!file) return { error: "No file provided." };
 
@@ -53,9 +56,6 @@ export async function uploadImage(prevState: any, formData: FormData)
     // Return CloudFront URL instead of S3 URL
     const imageUrl = `${process.env.CLOUDFRONT_URL}${fileKey}`;
 
-    // Optionally revalidate paths if needed
-    revalidatePath("/");
-
     return { success: true, imageUrl };
   } 
   catch (error) 
@@ -67,6 +67,8 @@ export async function uploadImage(prevState: any, formData: FormData)
 
 export async function updateCoverImg(newCoverImg: string, editionId: string) 
 {
+  const session = await auth();
+  if (!session?.user) return { error: "You must be logged in to perform this action." };
   try 
   {
     console.log(`Updating cover image for edition with id ${editionId}...`);
@@ -85,6 +87,9 @@ export async function updateCoverImg(newCoverImg: string, editionId: string)
 
 export async function addAuthor(prevState: Result<Author>, formData: FormData): Promise<Result<Author>> 
 {
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+
   const name = formData.get('name');
 
   if (!name) return {success: false, error: 'Name is required'};
@@ -97,6 +102,9 @@ export async function addAuthor(prevState: Result<Author>, formData: FormData): 
 
 export async function addList(prevState: Result<List>, formData: FormData): Promise<Result<List>> 
 {
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+
   const name = formData.get('name');
   const user_id = formData.get('userId')?.toString();
  
@@ -111,6 +119,9 @@ export async function addList(prevState: Result<List>, formData: FormData): Prom
 
 async function insertAuthorIntoDb(nameStr: string) : Promise<Result<Author>>
 {
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+
   try 
   {
     console.log('Adding new author...');
@@ -127,6 +138,9 @@ async function insertAuthorIntoDb(nameStr: string) : Promise<Result<Author>>
 
 async function insertListIntoDb(nameStr: string, user_id: string) : Promise<Result<List>>
 {
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+
   try 
   {
     console.log('Adding new list...');
@@ -144,6 +158,9 @@ async function insertListIntoDb(nameStr: string, user_id: string) : Promise<Resu
 
 async function insertPublisherIntoDb(nameStr: string) : Promise<Result<Publisher>>
 {
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+
   try 
   {
     console.log('Adding new publisher...');
@@ -160,6 +177,9 @@ async function insertPublisherIntoDb(nameStr: string) : Promise<Result<Publisher
 
 export async function addBook(prevState: Result<Book>, formData: FormData): Promise<Result<Book>>
 {
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+
   const title = formData.get('title');
   const author = formData.get('author');
   const year = formData.get('year');
@@ -207,6 +227,9 @@ export async function addBook(prevState: Result<Book>, formData: FormData): Prom
 
 export async function addEdition(prevState: Result<Edition>, formData: FormData): Promise<Result<Edition>>
 {
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+
   const title = formData.get('title');
   const year = formData.get('year');
   const language = formData.get('language');
@@ -259,6 +282,15 @@ export async function addEdition(prevState: Result<Edition>, formData: FormData)
 
 export async function addEditionToList(prevState: SimpleResult, formData: FormData): Promise<SimpleResult>
 {
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+  const listId = formData.get('list');
+  if (!listId) return {success: false, error: "List ID was not provided." };
+  const list = await fetchListById(listId.toString());
+  if (!list) return {success: false, error: "List not found." };
+  if (list.user_id !== session.user.id) 
+    return {success: false, error: "You are not authorized to add editions to this list." };
+
   try {
     const listId = formData.get('list');
     const editionId = formData.get('editionId');
@@ -278,6 +310,9 @@ export async function addEditionToList(prevState: SimpleResult, formData: FormDa
 
 export async function deleteAuthor(id: string)
 {
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+
   try 
   {
     console.log(`Deleting author with id ${id}...`);
@@ -293,6 +328,9 @@ export async function deleteAuthor(id: string)
 
 export async function deleteBook(id: string)
 {
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+  
   try 
   {
     console.log(`Deleting book with id ${id}...`);
