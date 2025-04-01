@@ -5,6 +5,9 @@ import CardList from "@/components/CardList";
 import Button from "@/components/Button";
 import LinkComponent from "@/components/LinkComponent";
 import Heading from "@/components/Heading";
+import { deleteBook } from "@/app/actions";
+import { Book } from "@/app/lib/definitions";
+import { DeleteBookButton } from "./delete-button";
 
 export default async function Page({ params }: { params: { id: string } }) 
 {
@@ -38,6 +41,7 @@ export default async function Page({ params }: { params: { id: string } })
                         )
                     }
                 </CardList>
+                <DeleteBookButton book={book} />
             </div>
         </div>
     )

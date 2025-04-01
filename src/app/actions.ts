@@ -7,6 +7,7 @@ import { pool } from "./postgres";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
 import { signOut } from "./auth";
+import { redirect, RedirectType } from "next/navigation";
 
 export type Result<T> = {success: true, value: T} | {success: false, error: string};
 
@@ -268,4 +269,19 @@ export async function deleteAuthor(id: string)
     return  {error: 'Unknown database error'};
   }
   revalidatePath('/author/list')
+}
+
+export async function deleteBook(id: string)
+{
+  try 
+  {
+    console.log(`Deleting book with id ${id}...`);
+    const result = await pool.query('DELETE FROM book WHERE id = $1', [id]);
+    redirect('/book/list', RedirectType.push)
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    return  {error: 'Unknown database error'};
+  }
 }
