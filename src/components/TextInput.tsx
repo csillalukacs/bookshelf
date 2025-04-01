@@ -1,8 +1,8 @@
 
 
 export function TextInput(
-    { disabled, name, list, label } : 
-    { disabled: boolean, name: string, list?: any[], label? : string }
+    { disabled, name, list, label, required } : 
+    { disabled: boolean, name: string, list?: any[], label? : string, required?: boolean }
 ) 
 {
     return (
@@ -18,6 +18,7 @@ export function TextInput(
                 disabled={disabled}
                 id={name + "Input"}
                 autoComplete="off"
+                required={required}
             />
             {  
             list &&          

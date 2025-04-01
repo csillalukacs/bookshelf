@@ -16,7 +16,8 @@ export default function Form()
           To add a new author to the database, enter their name here.
         </p>
         <form action={formAction} className="flex flex-col gap-4 text-black">
-          <TextInput
+          <TextInput 
+            required={true}
             name="name"
             disabled={isPending}
           />
