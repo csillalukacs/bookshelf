@@ -15,7 +15,7 @@ export default async function Page({ params }: { params: { id: string } })
     const editions = await fetchBookEditionsByBookId(id);
 
     return (
-        <main>
+        <div>
             <div className="flex flex-col gap-4">
                 <Heading size={2}>{book.title}</Heading>
                 <LinkComponent href={`/author/${author.id}`}>
@@ -39,6 +39,6 @@ export default async function Page({ params }: { params: { id: string } })
                     }
                 </CardList>
             </div>
-        </main>
+        </div>
     )
 }

@@ -1,6 +1,7 @@
 import { fetchAuthorById, fetchBooksByAuthorId } from "@/app/lib/data";
 import BookCard from "@/components/BookCard";
 import CardList from "@/components/CardList";
+import Heading from "@/components/Heading";
 
 export default async function Page({ params }: { params: { id: string } }) 
 {
@@ -9,14 +10,14 @@ export default async function Page({ params }: { params: { id: string } })
     const books = await fetchBooksByAuthorId(id);
 
     return (
-        <main>
-            <h3 className="text-2xl">{author.name}</h3>
+        <div>
+            <Heading size={2}>{author.name}</Heading>
             <button>
                 Edit details
             </button>
             <CardList>
                 {books.map(book => <BookCard key={book.id} book={book} /> )}
             </CardList>
-        </main>
+        </div>
     )
 }
