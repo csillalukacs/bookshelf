@@ -13,7 +13,7 @@ export default async function Page()
 
   return (
     <>
-      <Heading>Authors</Heading>
+      <Heading size={3}>Authors</Heading>
       <Link href="/author/new"><Button label="Add a new author" disabled={false} /></Link>
       <ul className="self-start">
           {authors.map(a=>
