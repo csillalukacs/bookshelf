@@ -15,7 +15,7 @@ export default function NewEditionForm(
     { authors: Author[], languages: Language[], book: Book, publishers: Publisher[] }
 ) 
 {
-  const [formState, formAction, isPending] = useActionState(addEdition, { status: '' });
+  const [formState, formAction, isPending] = useActionState(addEdition, { success: false, error: '' });
 
   return (
     <>
@@ -57,15 +57,15 @@ export default function NewEditionForm(
           disabled={isPending}
         />
         <Button disabled={isPending} label="Submit" />
-        {formState.status === 'error' &&
+        {!formState.success &&
           <p className="Error">
             An error occurred.
           </p>
         }
-        {formState.status === 'success' && formState.edition &&
+        {formState.success && 
           <p className="Error">
             Successfully added{" "}
-            <Link href={`/book/${book.id}/edition/${formState.edition.id}`}>{formState.edition.ed_title}</Link>
+            <Link href={`/book/${book.id}/edition/${formState.value.id}`}>{formState.value.ed_title}</Link>
             !
           </p>
         }

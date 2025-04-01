@@ -8,36 +8,7 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
 import { signOut } from "./auth";
 
-
-export type AuthorSubmitState = 
-{
-  author?: Author;
-  status: string;
-};
-
-export type BookSubmitState =
-{
-  book?: Book;
-  status: string;
-};
-
-export type EditionSubmitState =
-{
-  edition?: Edition;
-  status: string;
-}
-
-export type PublisherSubmitState =
-{
-  publisher?: Publisher;
-  status: string;
-}
-
-export type ListSubmitState =
-{
-  list?: List;
-  status: string;
-}
+export type Result<T> = {success: true, value: T} | {success: false, error: string};
 
 const s3 = new S3Client({
   region: process.env.AWS_DEFAULT_REGION!,
@@ -101,110 +72,115 @@ export async function updateCoverImg(newCoverImg: string, editionId: string)
       'UPDATE edition SET cover_img = $1 WHERE id = $2 RETURNING *', 
       [newCoverImg, editionId]
     );
-    return {status: 'success'};
+    return {error: 'success'};
   } 
   catch (error) 
   {
     console.error('Database Error:', error);
-    return {status: 'error'};
+    return {error: 'error'};
   }
 }
 
-export async function addAuthor(prevState: AuthorSubmitState, formData: FormData): Promise<AuthorSubmitState> 
+export async function addAuthor(prevState: Result<Author>, formData: FormData): Promise<Result<Author>> 
 {
   const name = formData.get('name');
 
-  if (!name) return {status: 'error'};
+  if (!name) return {success: false, error: 'Name is required'};
   let nameStr = name.toString();
   nameStr = nameStr.trim();
-  if (nameStr.length === 0) return  {status: 'error'};
+  if (nameStr.length === 0) return  {success: false, error: 'Name is required'};
 
   return insertAuthorIntoDb(nameStr);
 }
 
-export async function addList(prevState: ListSubmitState, formData: FormData): Promise<ListSubmitState> 
+export async function addList(prevState: Result<List>, formData: FormData): Promise<Result<Author>> 
 {
   const name = formData.get('name');
   const user_id = formData.get('userId')?.toString();
-
-  if (!name || !user_id) return {status: 'error'};
+ 
+  if (!user_id) return {success: false, error: 'User ID was null (maybe you are not logged in)'}
+  if (!name) return  {success: false, error: 'Name is required'};
   const nameStr = name.toString();
   nameStr.trim();
-  if (nameStr.length === 0) return  {status: 'error'};
+  if (nameStr.length === 0) return  {success: false, error: 'Name is required'};;
 
   return insertListIntoDb(nameStr, user_id);
 }
 
-async function insertAuthorIntoDb(nameStr: string) : Promise<AuthorSubmitState>
+async function insertAuthorIntoDb(nameStr: string) : Promise<Result<Author>>
 {
   try 
   {
     console.log('Adding new author...');
-    const result = await pool.query('INSERT INTO author (name) VALUES ($1) RETURNING *', [nameStr]);
-    const state = {author: {...result.rows[0]}, status: 'success'}
+    const result = await pool.query<Author>('INSERT INTO author (name) VALUES ($1) RETURNING *', [nameStr]);
+    const state = {success: true as const, value: result.rows[0]}
     return state;
   } 
   catch (error) 
   {
     console.error('Database Error:', error);
-    return  {status: 'error'};
+    return  {success: false, error: 'Unknown database error'};
   }
 }
 
-async function insertListIntoDb(nameStr: string, user_id: string) : Promise<ListSubmitState>
+async function insertListIntoDb(nameStr: string, user_id: string) : Promise<Result<List>>
 {
   try 
   {
     console.log('Adding new list...');
     const result = await pool.query('INSERT INTO list (name, created, user_id) VALUES ($1, $2, $3) RETURNING *', 
       [nameStr, new Date(), user_id]);
-    const state = {list: {...result.rows[0]}, status: 'success'}
+    const state = {success: true as const, value: {...result.rows[0]}}
     return state;
   } 
   catch (error) 
   {
     console.error('Database Error:', error);
-    return  {status: 'error'};
+    return  {success: false, error: 'Unknown database error'};
   }
 }
 
-async function insertPublisherIntoDb(nameStr: string) : Promise<PublisherSubmitState>
+async function insertPublisherIntoDb(nameStr: string) : Promise<Result<Publisher>>
 {
   try 
   {
     console.log('Adding new publisher...');
     const result = await pool.query('INSERT INTO publisher (name) VALUES ($1) RETURNING *', [nameStr]);
-    const state = {publisher: {...result.rows[0]}, status: 'success'}
+    const state = {success: true as const, value: {...result.rows[0]}}
     return state;
   } 
   catch (error) 
   {
     console.error('Database Error:', error);
-    return  {status: 'error'};
+    return  {success: false, error: 'Unknown database error'};
   }
 }
 
-export async function addBook(prevState: BookSubmitState, formData: FormData): Promise<BookSubmitState>
+export async function addBook(prevState: Result<Book>, formData: FormData): Promise<Result<Book>>
 {
   const title = formData.get('title');
   const author = formData.get('author');
   const year = formData.get('year');
   const language = formData.get('language');
 
-  if (!title || !author || !year || !language) return {status: 'error'};
+  if (!title || !author || !year || !language) return {success: false, error: 'One or more fields are missing'};
 
   const titleStr = title.toString();
   titleStr.trim();
-  if (titleStr.length === 0) return  {status: 'error'};
+  if (titleStr.length === 0) return  {success: false, error: 'Title is required'};
 
   const authorStr = author.toString();
   authorStr.trim();
-  if (authorStr.length === 0) return  {status: 'error'};
+  if (authorStr.length === 0) return  {success: false, error: 'Author is required'};
   let authorId = (await getAuthorByName(authorStr))?.id;
 
   if (!authorId) 
   {
-    authorId = (await insertAuthorIntoDb(authorStr))?.author?.id;
+    console.log('Author not found, inserting...');
+
+    const result = await insertAuthorIntoDb(authorStr);
+    if (!result.success) return result;
+    authorId = result.value.id;
   }
 
   const langId = language.toString();
@@ -217,17 +193,17 @@ export async function addBook(prevState: BookSubmitState, formData: FormData): P
       'INSERT INTO book (title, author_id, first_pub, orig_lang_id) VALUES ($1, $2, $3, $4) RETURNING *', 
       [titleStr, authorId, yearStr, langId]
     );
-    const state = {book: {...result.rows[0]}, status: 'success'}
+    const state = {success: true as const, value: {...result.rows[0]}}
     return state;
   } 
   catch (error) 
   {
     console.error('Database Error:', error);
-    return  {status: 'error'};
+    return  {success: false, error: 'Unknown database error'};
   }
 }
 
-export async function addEdition(prevState: BookSubmitState, formData: FormData): Promise<EditionSubmitState>
+export async function addEdition(prevState: Result<Edition>, formData: FormData): Promise<Result<Edition>>
 {
   const title = formData.get('title');
   const year = formData.get('year');
@@ -238,24 +214,26 @@ export async function addEdition(prevState: BookSubmitState, formData: FormData)
   const translator = formData.get('translator');
 
 
-  if (!title || !year || !language || !isbn || !publisher) return {status: 'error'};
+  if (!title || !year || !language || !isbn || !publisher) return {success: false, error: 'One or more fields are missing'};
 
   const titleStr = title.toString();
   titleStr.trim();
-  if (titleStr.length === 0) return  {status: 'error'};
+  if (titleStr.length === 0) return  {success: false, error: 'Title is required'};
 
   const langId = language.toString();
   const yearStr = year.toString();
 
   const publisherStr = publisher.toString();
   publisherStr.trim();
-  if (publisherStr.length === 0) return  {status: 'error'};
+  if (publisherStr.length === 0) return  {success: false, error: 'Publisher is required'};
 
   let publisherId = (await getPublisherByName(publisherStr))?.id;
 
   if (!publisherId)
   {
-    publisherId = (await insertPublisherIntoDb(publisherStr))?.publisher?.id;
+    const result = await insertPublisherIntoDb(publisherStr);
+    if (!result.success) return result;
+    publisherId = result.value.id;
   }
 
   try 
@@ -267,13 +245,13 @@ export async function addEdition(prevState: BookSubmitState, formData: FormData)
       'VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', 
       [titleStr, yearStr, langId, publisherId, bookId, isbn]
     );
-    const state = {edition: {...result.rows[0]}, status: 'success'}
+    const state = {success: true as const, value: {...result.rows[0]}}
     return state;
   } 
   catch (error) 
   {
     console.error('Database Error:', error);
-    return  {status: 'error'};
+    return  {success: false, error: 'Unknown database error'};
   }
 }
 
@@ -287,7 +265,7 @@ export async function deleteAuthor(id: string)
   catch (error) 
   {
     console.error('Database Error:', error);
-    return  {status: 'error'};
+    return  {error: 'Unknown database error'};
   }
   revalidatePath('/author/list')
 }

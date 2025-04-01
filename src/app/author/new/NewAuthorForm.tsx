@@ -2,13 +2,13 @@
 import { addAuthor } from "@/app/actions";
 import Button from "@/components/Button";
 import Heading from "@/components/Heading";
+import LinkComponent from "@/components/LinkComponent";
 import { TextInput } from "@/components/TextInput";
-import Link from "next/link";
 import { useActionState } from "react";
 
 export default function Form() 
 {
-    const [formState, formAction, isPending] = useActionState(addAuthor, {status: ''});
+    const [formState, formAction, isPending] = useActionState(addAuthor, {success: false, error: ''});
 
     return (
       <>
@@ -23,15 +23,15 @@ export default function Form()
             disabled={isPending}
           />
           <Button label="Submit" disabled={isPending} />
-          {formState.status === 'error' &&
+          {!formState.success &&
             <p className="Error">
-              An error occurred.
+              {formState.error}
             </p>
           }
-          {formState.status === 'success' && formState.author &&
-            <p className="Error">
+          {formState.success &&
+            <p>
               Successfully added{" "}
-                <Link href={`/author/${formState.author.id}`}>{formState.author.name}</Link> 
+                <LinkComponent href={`/author/${formState.value.id}`}>{formState.value.name}</LinkComponent> 
               !
             </p>
           }

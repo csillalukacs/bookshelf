@@ -16,7 +16,7 @@ export default function EditionPage( {coverUrl, edition, book, author, language,
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col gap-1 items-center">
                 <Image 
                     src={coverUrl} 
                     alt={edition.ed_title} 

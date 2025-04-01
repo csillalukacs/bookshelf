@@ -14,7 +14,7 @@ export default function NewBookForm(
     {authors, languages}: {authors: Author[], languages: Language[]}
 )
 {
-    const [formState, formAction, isPending] = useActionState(addBook, {status: ''});
+    const [formState, formAction, isPending] = useActionState(addBook, {success: false, error: ''});
 
     return (
       <>
@@ -44,15 +44,15 @@ export default function NewBookForm(
                 disabled={isPending}
             />
           <Button label="Submit" disabled={isPending} />
-          {formState.status === 'error' &&
+          {!formState.success  &&
             <p className="Error">
-              An error occurred.
+              {formState.error}
             </p>
           }
-          {formState.status === 'success' && formState.book &&
-            <p className="Error">
+          {formState.success &&
+            <p>
               Successfully added{" "}
-                <Link href={`/book/${formState.book.id}`}>{formState.book.title}</Link> 
+                <Link href={`/book/${formState.value.id}`}>{formState.value.title}</Link> 
               !
             </p>
           }
