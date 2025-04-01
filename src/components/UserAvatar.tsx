@@ -17,9 +17,9 @@ export default function UserAvatar({image}: {image?: string})
           <Image 
             src={session.data?.user?.image} 
             alt="profile picture" 
-            width={50} 
-            height={50}
-            className="rounded-full"
+            width={40} 
+            height={40}
+            className="rounded-full border-2 shadow-sm"
           /> 
           : <div className="rounded-full w-10 h-10 bg-gray-400 flex items-center justify-center"></div>
         }   

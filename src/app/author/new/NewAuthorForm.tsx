@@ -1,6 +1,7 @@
 'use client'
 import { addAuthor } from "@/app/actions";
 import Button from "@/components/Button";
+import Heading from "@/components/Heading";
 import { TextInput } from "@/components/TextInput";
 import Link from "next/link";
 import { useActionState } from "react";
@@ -11,7 +12,7 @@ export default function Form()
 
     return (
       <>
-        <h2>Add a new author</h2>
+        <Heading size={2}>Add a new author</Heading>
         <p>
           To add a new author to the database, enter their name here.
         </p>
@@ -21,7 +22,6 @@ export default function Form()
             name="name"
             disabled={isPending}
           />
-          <br />
           <Button label="Submit" disabled={isPending} />
           {formState.status === 'error' &&
             <p className="Error">

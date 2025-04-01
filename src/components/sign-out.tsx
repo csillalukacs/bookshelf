@@ -8,7 +8,7 @@ export function SignOut()
     >
       <button 
         type="submit" 
-        className="flex items-center gap-2 hover:underline hover:underline-offset-4  cursor-pointer"
+        className="flex items-center gap-2 text-sm  cursor-pointer"
       >
         Sign Out
       </button>

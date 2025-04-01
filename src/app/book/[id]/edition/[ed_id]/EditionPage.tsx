@@ -1,11 +1,12 @@
 'use client'
 
 import { Author, Book, Edition, Language, Publisher } from "@/app/lib/definitions";
-import Link from "next/link";
 import { useState } from "react";
 import UploadForm from "./UploadForm";
 import Image from "next/image";
 import Button from "@/components/Button";
+import LinkComponent from "@/components/LinkComponent";
+import Heading from "@/components/Heading";
 
 
 export default function EditionPage( {coverUrl, edition, book, author, language, publisher}:
@@ -13,22 +14,22 @@ export default function EditionPage( {coverUrl, edition, book, author, language,
 {
     const [uploadOpen, setUploadOpen] = useState(false);
 
-    return <main>
+    return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
+            <div className="flex flex-col items-center">
                 <Image 
                     src={coverUrl} 
                     alt={edition.ed_title} 
-                    width={100} 
-                    height={150}
+                    width={150} 
+                    height={200}
                 />
                 <Button label="Upload New Cover" onClick={() => setUploadOpen(true)} disabled={false}/>
             </div>
             <div className="flex flex-col gap-4">
-                <h3 className="text-2xl">{book.title}</h3>
-                <Link href={`/author/${author.id}`}>
+                <Heading size={2}>{book.title}</Heading>
+                <LinkComponent href={`/author/${author.id}`}>
                     {author.name}
-                </Link>
+                </LinkComponent>
                 <p>
                     Published: {edition.year_pub} by {publisher.name}
                 </p>
@@ -38,12 +39,12 @@ export default function EditionPage( {coverUrl, edition, book, author, language,
                 <button>
                     Edit details
                 </button>
-                <Link href={`/book/${book.id}`}>See all editions</Link>
+                <LinkComponent href={`/book/${book.id}`}>See all editions</LinkComponent>
                 {uploadOpen &&
                     <>
                         <UploadForm editionId={edition.id} close={() => setUploadOpen(false)}></UploadForm>
                     </>}
             </div>
         </div>
-    </main>;
+    )
 }

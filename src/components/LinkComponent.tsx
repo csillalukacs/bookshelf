@@ -5,7 +5,7 @@ export default function LinkComponent({href, nav, children}: {href: string, nav?
     return (
         <Link 
             href={href}
-            className={"text-amber-700 hover:text-amber-900" + (nav ? " text-xl font-bold " : "")}
+            className={"text-amber-900 hover:text-amber-500" + (nav ? " text-xl font-bold " : "")}
         >
             {children}
         </Link>)

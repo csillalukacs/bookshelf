@@ -3,7 +3,7 @@ export function NumberInput({ disabled, name, label } :
 ) 
 {
     return (
-        <>
+        <div className="flex flex-col gap-1">
             <label className="text-black" htmlFor={name + "Input"}>
                 {label || name}
             </label>
@@ -15,6 +15,6 @@ export function NumberInput({ disabled, name, label } :
                 id={name + "Input"}
             >
             </input>
-        </>
+        </div>
     );
 }

@@ -14,7 +14,8 @@ export default async function Page({ params }: { params: { id: string, ed_id: st
 
 
     return (
-        <EditionPage coverUrl={coverUrl}
+        <EditionPage 
+            coverUrl={coverUrl}
             edition={edition}
             book={book}
             author={author}

@@ -3,6 +3,7 @@
 import { addBook } from "@/app/actions";
 import { Author, Language } from "@/app/lib/definitions";
 import Button from "@/components/Button";
+import Heading from "@/components/Heading";
 import { NumberInput } from "@/components/NumberInput";
 import { SelectInput } from "@/components/SelectInput";
 import { TextInput } from "@/components/TextInput";
@@ -17,7 +18,7 @@ export default function NewBookForm(
 
     return (
       <>
-        <h2>Add a new book</h2>
+        <Heading size={2}>Add a new book</Heading>
         <p>
           Fill out this form to add a new book to the database.
         </p>

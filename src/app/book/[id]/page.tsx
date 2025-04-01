@@ -3,6 +3,8 @@ import Link from "next/link";
 import EditionCard from "@/components/EditionCard";
 import CardList from "@/components/CardList";
 import Button from "@/components/Button";
+import LinkComponent from "@/components/LinkComponent";
+import Heading from "@/components/Heading";
 
 export default async function Page({ params }: { params: { id: string } }) 
 {
@@ -15,10 +17,10 @@ export default async function Page({ params }: { params: { id: string } })
     return (
         <main>
             <div className="flex flex-col gap-4">
-                <h3 className="text-2xl">{book.title}</h3>
-                <Link href={`/author/${author.id}`}>
+                <Heading size={2}>{book.title}</Heading>
+                <LinkComponent href={`/author/${author.id}`}>
                     {author.name}
-                </Link>
+                </LinkComponent>
                 <p>
                     First published: {book.first_pub}
                 </p>

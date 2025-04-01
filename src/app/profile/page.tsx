@@ -3,6 +3,8 @@ import { SignOut } from "@/components/sign-out";
 import { auth } from "@/app/auth";
 import Link from "next/link";
 import { fetchListsByUserId } from "../lib/data";
+import Button from "@/components/Button";
+import LinkComponent from "@/components/LinkComponent";
 
 export default async function Profile() 
 {
@@ -22,9 +24,9 @@ export default async function Profile()
       <p>Hello {session.user.name}</p>
       <h1 className="text-xl">My lists</h1>
       <ul>
-        {lists.map(list => <li key={list.id}><Link href={`/list/${list.id}`}>{list.name}</Link></li>)}
+        {lists.map(list => <li key={list.id}><LinkComponent href={`/list/${list.id}`}>{list.name}</LinkComponent></li>)}
       </ul>
-      <Link href={'/list/new'}>Create a new list</Link>
+      <Link href={'/list/new'}><Button label="Create a new list" disabled={false} /></Link>
     </div>
   );
 }

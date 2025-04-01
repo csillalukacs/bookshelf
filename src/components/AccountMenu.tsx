@@ -1,9 +1,10 @@
 'use client';
 
-import { IconButton, Link, Menu, MenuItem } from '@mui/material';
+import { IconButton, Menu, MenuItem } from '@mui/material';
 import { useState } from 'react';
 import { SignOut } from './sign-out';
 import UserAvatar from './UserAvatar';
+import Link from 'next/link';
 
 export default function AccountMenu() 
 {

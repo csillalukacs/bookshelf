@@ -3,6 +3,7 @@
 import { addEdition } from "@/app/actions";
 import { Author, Book, Language, Publisher } from "@/app/lib/definitions";
 import Button from "@/components/Button";
+import Heading from "@/components/Heading";
 import { NumberInput } from "@/components/NumberInput";
 import { SelectInput } from "@/components/SelectInput";
 import { TextInput } from "@/components/TextInput";
@@ -18,7 +19,7 @@ export default function NewEditionForm(
 
   return (
     <>
-      <h2>Add a new Edition</h2>
+      <Heading size={2}>Add a new Edition</Heading>
       <p>
         Fill out this form to add a new Edition to the database.
       </p>

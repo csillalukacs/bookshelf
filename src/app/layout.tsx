@@ -31,26 +31,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="">
-        <SessionProvider>
-          <NavBar/>
-          <div 
-            className="bg-orange-50 container w-m mx-auto h-xxl p-4">
-            <main className="flex flex-col gap-2 row-start-2 items-center">
-              <Image
-                src="/stack-of-books-on-a-brown-background-concept-for-world-book-day-photo.jpg"
-                alt="books"
-                width={357}
-                height={200}
-                priority
-              />
-              <div>
-                <div className="flex gap-4 items-center flex-col sm:flex-row">
-                </div>
-              </div>
-              {children}
-            </main>
-          </div>
-        </SessionProvider>
+          <SessionProvider>
+            <NavBar />
+            <div
+              className="bg-orange-50 container w-m mx-auto h-xxl p-4 shadow-md">
+              <main className="flex flex-col gap-2 row-start-2 items-start">
+                {children}
+              </main>
+            </div>
+          </SessionProvider>
         </div>
       </body>
     </html>

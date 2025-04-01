@@ -2,6 +2,8 @@
 
 import { addList } from "@/app/actions";
 import Button from "@/components/Button";
+import Heading from "@/components/Heading";
+import LinkComponent from "@/components/LinkComponent";
 import { TextInput } from "@/components/TextInput";
 import Link from "next/link";
 import { useActionState } from "react";
@@ -12,7 +14,7 @@ export default function NewListForm({userId} : {userId: string})
 
   return (
     <>
-      <h2>Create a new list</h2>
+      <Heading size={2}>Create a new list</Heading>
 
       <form action={formAction} className="flex flex-col gap-4 text-black">
         <input type="hidden" name="userId" value={userId} />
@@ -30,7 +32,7 @@ export default function NewListForm({userId} : {userId: string})
         {formState.status === 'success' && formState.list &&
           <p className="Error">
             Successfully created{" "}
-            <Link href={`/list/${formState.list.id}`}>{formState.list.name}</Link>
+            <LinkComponent href={`/list/${formState.list.id}`}>{formState.list.name}</LinkComponent>
             !
           </p>
         }
