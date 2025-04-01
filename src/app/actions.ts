@@ -93,7 +93,7 @@ export async function addAuthor(prevState: Result<Author>, formData: FormData): 
   return insertAuthorIntoDb(nameStr);
 }
 
-export async function addList(prevState: Result<List>, formData: FormData): Promise<Result<Author>> 
+export async function addList(prevState: Result<List>, formData: FormData): Promise<Result<List>> 
 {
   const name = formData.get('name');
   const user_id = formData.get('userId')?.toString();

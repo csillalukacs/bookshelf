@@ -1,4 +1,4 @@
-import { fetchAuthorById, fetchBookById, fetchEditionById, fetchLanguageById, fetchPublisherById, getCoverUrl, getPublisherByName } from "@/app/lib/data";
+import { fetchAuthorById, fetchBookById, fetchEditionById, fetchLanguageById, fetchPublisherById, getCoverUrl } from "@/app/lib/data";
 import EditionPage from "./EditionPage";
 
 export default async function Page({ params }: { params: { id: string, ed_id: string } }) 

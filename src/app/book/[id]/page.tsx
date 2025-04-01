@@ -1,4 +1,4 @@
-import { fetchAuthorById, fetchBookById, fetchBookEditionsByBookId, fetchLanguageById, getCoverUrl } from "@/app/lib/data";
+import { fetchAuthorById, fetchBookById, fetchBookEditionsByBookId, fetchLanguageById } from "@/app/lib/data";
 import Link from "next/link";
 import EditionCard from "@/components/EditionCard";
 import CardList from "@/components/CardList";

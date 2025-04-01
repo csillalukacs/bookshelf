@@ -4,10 +4,10 @@ import { addBook } from "@/app/actions";
 import { Author, Language } from "@/app/lib/definitions";
 import Button from "@/components/Button";
 import Heading from "@/components/Heading";
+import LinkComponent from "@/components/LinkComponent";
 import { NumberInput } from "@/components/NumberInput";
 import { SelectInput } from "@/components/SelectInput";
 import { TextInput } from "@/components/TextInput";
-import Link from "next/link";
 import { useActionState } from "react";
 
 export default function NewBookForm(
@@ -52,7 +52,7 @@ export default function NewBookForm(
           {formState.success &&
             <p>
               Successfully added{" "}
-                <Link href={`/book/${formState.value.id}`}>{formState.value.title}</Link> 
+                <LinkComponent href={`/book/${formState.value.id}`}>{formState.value.title}</LinkComponent> 
               !
             </p>
           }

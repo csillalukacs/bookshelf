@@ -5,12 +5,11 @@ import Button from "@/components/Button";
 import Heading from "@/components/Heading";
 import LinkComponent from "@/components/LinkComponent";
 import { TextInput } from "@/components/TextInput";
-import Link from "next/link";
 import { useActionState } from "react";
 
 export default function NewListForm({userId} : {userId: string}) 
 {
-  const [formState, formAction, isPending] = useActionState(addList, { status: '' });
+  const [formState, formAction, isPending] = useActionState(addList, {success: false, error: '' });
 
   return (
     <>
@@ -24,15 +23,15 @@ export default function NewListForm({userId} : {userId: string})
           disabled={isPending}
         />
         <Button disabled={isPending} label="Submit" />
-        {formState.status === 'error' &&
+        {!formState.success &&
           <p className="Error">
             An error occurred.
           </p>
         }
-        {formState.status === 'success' && formState.list &&
+        {formState.success &&
           <p className="Error">
             Successfully created{" "}
-            <LinkComponent href={`/list/${formState.list.id}`}>{formState.list.name}</LinkComponent>
+            <LinkComponent href={`/list/${formState.value.id}`}>{formState.value.name}</LinkComponent>
             !
           </p>
         }

@@ -1,15 +1,11 @@
 'use client'
 
 import { useSession } from "next-auth/react"
-import { auth } from "../app/auth"
 import Image from "next/image"
  
-export default function UserAvatar({image}: {image?: string}) 
+export default function UserAvatar() 
 {
   const session = useSession();
- 
-  // if (!session?.user) return null
-
  
   return (
     <div className="">
