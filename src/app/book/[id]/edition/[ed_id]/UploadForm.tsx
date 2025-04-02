@@ -1,6 +1,6 @@
 "use client";
 
-import { uploadImage } from "@/app/actions";
+import { uploadImage } from "@/app/actions/actions";
 import Button from "@/components/Button";
 import { useActionState, useState } from "react";
 

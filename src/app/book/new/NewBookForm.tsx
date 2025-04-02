@@ -1,6 +1,6 @@
 'use client';
 
-import { addBook } from "@/app/actions";
+import { addBook } from "@/app/actions/book-actions";
 import { Author, Language } from "@/app/lib/definitions";
 import Button from "@/components/Button";
 import Heading from "@/components/Heading";

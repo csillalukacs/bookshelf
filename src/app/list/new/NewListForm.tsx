@@ -1,6 +1,6 @@
 'use client';
 
-import { addList } from "@/app/actions";
+import { addList } from "@/app/actions/actions";
 import Button from "@/components/Button";
 import Heading from "@/components/Heading";
 import LinkComponent from "@/components/LinkComponent";

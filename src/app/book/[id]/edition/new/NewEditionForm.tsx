@@ -1,6 +1,6 @@
 'use client';
 
-import { addEdition } from "@/app/actions";
+import { addEdition } from "@/app/actions/actions";
 import { Author, Book, Language, Publisher } from "@/app/lib/definitions";
 import Button from "@/components/Button";
 import Heading from "@/components/Heading";

@@ -1,5 +1,5 @@
 'use client'
-import { addAuthor } from "@/app/actions";
+import { addAuthor } from "@/app/actions/author-actions";
 import Button from "@/components/Button";
 import Heading from "@/components/Heading";
 import LinkComponent from "@/components/LinkComponent";

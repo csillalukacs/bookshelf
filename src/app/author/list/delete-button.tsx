@@ -1,6 +1,6 @@
 'use client'
 
-import { deleteAuthor } from "@/app/actions"
+import { deleteAuthor } from "@/app/actions/author-actions"
 
 
 export default function DeleteButton({ id }: { id: string })

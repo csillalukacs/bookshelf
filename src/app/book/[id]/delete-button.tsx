@@ -1,6 +1,6 @@
 'use client'
 
-import { deleteBook } from "@/app/actions";
+import { deleteBook } from "@/app/actions/book-actions";
 import { Book } from "@/app/lib/definitions";
 import Button from "@/components/Button";
 

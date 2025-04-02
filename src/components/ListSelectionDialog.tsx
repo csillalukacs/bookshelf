@@ -1,6 +1,6 @@
 "use client";
 
-import { addEditionToList } from "@/app/actions";
+import { addEditionToList } from "@/app/actions/list-actions";
 import Button from "@/components/Button";
 import { useActionState } from "react";
 import Heading from "./Heading";
