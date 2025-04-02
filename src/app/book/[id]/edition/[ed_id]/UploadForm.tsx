@@ -2,16 +2,24 @@
 
 import { uploadImage } from "@/app/actions/actions";
 import Button from "@/components/Button";
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 
-export default function UploadForm({editionId, close}: { editionId: string, close: () => void }) 
+export default function UploadForm({editionId, closeSelf}: { editionId: string, closeSelf: () => void }) 
 {
   const [state, formAction, isPending] = useActionState(uploadImage, null);
   const [preview, setPreview] = useState<string | null>(null);
 
+  useEffect(() => 
+  {
+    if (state?.success) 
+    {
+      closeSelf();
+    }
+  }, [state])
+  
   return (
-    <div className="fixed inset-0 flex flex-col justify-center items-center bg-black/35 z-50">
-        <form action={formAction} className="bg-white bg-opacity-100 p-4 rounded shadow-md flex flex-col gap-4 z-51">
+    <div>
+        <form action={formAction} className="flex flex-col gap-4 ">
         <h1 className="text-2xl text-black">Upload New Cover</h1>
         <input 
             type="file"
@@ -29,7 +37,6 @@ export default function UploadForm({editionId, close}: { editionId: string, clos
         {preview && <img src={preview} alt="Preview" width="100" />}
         <div className="flex flex-row gap-2">
             <Button disabled={isPending} onClick={()=>{}} label={"Submit"}/> 
-            <button onClick={close}>Close</button>
         </div>
 
         {state?.imageUrl && (
