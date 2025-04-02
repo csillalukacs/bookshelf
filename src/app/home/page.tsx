@@ -4,6 +4,7 @@ import { auth } from "@/app/auth";
 import SignIn from "@/components/sign-in";
 import AddABook from "@/components/AddABook";
 import { fetchAuthors, fetchLanguages } from "../lib/data";
+import Heading from "@/components/Heading";
 
 export default async function Home() 
 {
@@ -13,19 +14,9 @@ export default async function Home()
   
   return (
     <div >
-        <div>
-          <div className="flex gap-4 items-center flex-col sm:flex-row">
-          </div>
-        </div>
-      <div className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <Link
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="/author/new"
-        >
-          Add author
-        </Link>
-        <AddABook authors={authors} languages={languages} />
-        {session ? <SignOut /> : <SignIn />}
+      <div className="flex flex-col gap-[24px] items-center justify-start">
+        <Heading size={4}>What's on your shelf?</Heading>
+        <img src="/bookshelf.svg"></img>
       </div>
     </div>
   );
