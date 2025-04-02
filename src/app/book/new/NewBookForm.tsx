@@ -8,13 +8,22 @@ import LinkComponent from "@/components/LinkComponent";
 import { NumberInput } from "@/components/NumberInput";
 import { SelectInput } from "@/components/SelectInput";
 import { TextInput } from "@/components/TextInput";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 export default function NewBookForm(
-    {authors, languages}: {authors: Author[], languages: Language[]}
+    {authors, languages, isDialog = false, closeSelf}: 
+    {authors: Author[], languages: Language[], isDialog?: boolean, closeSelf?: () => void}
 )
 {
     const [formState, formAction, isPending] = useActionState(addBook, {success: false, error: ''});
+
+    useEffect(() => 
+    {
+      if (isDialog && closeSelf && formState?.success) 
+      {
+        closeSelf();
+      }
+    }, [formState])
 
     return (
       <>
