@@ -126,8 +126,7 @@ async function insertAuthorIntoDb(nameStr: string) : Promise<Result<Author>>
   {
     console.log('Adding new author...');
     const result = await pool.query<Author>('INSERT INTO author (name) VALUES ($1) RETURNING *', [nameStr]);
-    const state = {success: true as const, value: result.rows[0]}
-    return state;
+    return {success: true, value: result.rows[0]};
   } 
   catch (error) 
   {
@@ -146,8 +145,7 @@ async function insertListIntoDb(nameStr: string, user_id: string) : Promise<Resu
     console.log('Adding new list...');
     const result = await pool.query('INSERT INTO list (name, created, user_id) VALUES ($1, $2, $3) RETURNING *', 
       [nameStr, new Date(), user_id]);
-    const state = {success: true as const, value: {...result.rows[0]}}
-    return state;
+    return {success: true as const, value: {...result.rows[0]}}
   } 
   catch (error) 
   {
@@ -165,8 +163,7 @@ async function insertPublisherIntoDb(nameStr: string) : Promise<Result<Publisher
   {
     console.log('Adding new publisher...');
     const result = await pool.query('INSERT INTO publisher (name) VALUES ($1) RETURNING *', [nameStr]);
-    const state = {success: true as const, value: {...result.rows[0]}}
-    return state;
+    return {success: true, value: {...result.rows[0]}}
   } 
   catch (error) 
   {
@@ -215,8 +212,7 @@ export async function addBook(prevState: Result<Book>, formData: FormData): Prom
       'INSERT INTO book (title, author_id, first_pub, orig_lang_id) VALUES ($1, $2, $3, $4) RETURNING *', 
       [titleStr, authorId, yearStr, langId]
     );
-    const state = {success: true as const, value: {...result.rows[0]}}
-    return state;
+    return {success: true, value: {...result.rows[0]}}
   } 
   catch (error) 
   {
@@ -270,8 +266,7 @@ export async function addEdition(prevState: Result<Edition>, formData: FormData)
       'VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', 
       [titleStr, yearStr, langId, publisherId, bookId, isbn]
     );
-    const state = {success: true as const, value: {...result.rows[0]}}
-    return state;
+    return {success: true, value: {...result.rows[0]}}
   } 
   catch (error) 
   {
