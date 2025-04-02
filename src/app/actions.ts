@@ -126,6 +126,7 @@ async function insertAuthorIntoDb(nameStr: string) : Promise<Result<Author>>
   {
     console.log('Adding new author...');
     const result = await pool.query<Author>('INSERT INTO author (name) VALUES ($1) RETURNING *', [nameStr]);
+    revalidatePath('/author/list')
     return {success: true, value: result.rows[0]};
   } 
   catch (error) 

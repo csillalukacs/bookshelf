@@ -20,7 +20,6 @@ export default async function BookCard({ book }:
     return (
         <EditionCard 
             edition={edition} 
-            book={book} 
             linkToBook={true}
         />
     )

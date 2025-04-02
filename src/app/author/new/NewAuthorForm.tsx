@@ -4,11 +4,19 @@ import Button from "@/components/Button";
 import Heading from "@/components/Heading";
 import LinkComponent from "@/components/LinkComponent";
 import { TextInput } from "@/components/TextInput";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
-export default function Form() 
+export default function Form({isDialog = false, closeSelf}: {isDialog?: boolean, closeSelf?: () => void})
 {
     const [formState, formAction, isPending] = useActionState(addAuthor, {success: false, error: ''});
+
+    useEffect(() => 
+    {
+      if (isDialog && closeSelf && formState?.success) 
+      {
+        closeSelf();
+      }
+    }, [formState])
 
     return (
       <>

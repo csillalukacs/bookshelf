@@ -1,18 +1,17 @@
 'use client'
 
 import { Dialog, DialogContent, IconButton } from "@mui/material";
-import NewBookForm from "@/app/book/new/NewBookForm";
 import Button from "./Button";
 import { useState } from "react";
-import { Author, Language } from "@/app/lib/definitions";
 import CloseIcon from '@mui/icons-material/Close';
+import NewAuthorForm from "@/app/author/new/NewAuthorForm";
 
-export default function AddABook({ authors, languages }: { authors: Author[], languages: Language[] }) 
+export default function AddAuthor() 
 {
     const [open, setOpen] = useState(false);
 
     return (<>
-        <Button label="Add a book" disabled={false} onClick={() => setOpen(true)} />
+        <Button label="Add author" disabled={false} onClick={() => setOpen(true)} />
         <Dialog open={open} onClose={() => setOpen(false)} >
             <IconButton
                 aria-label="close"
@@ -27,7 +26,7 @@ export default function AddABook({ authors, languages }: { authors: Author[], la
                 <CloseIcon />
             </IconButton>
             <DialogContent>
-                <NewBookForm authors={authors} languages={languages} isDialog={true} closeSelf={() => setOpen(false)} />
+                <NewAuthorForm isDialog={true} closeSelf={() => setOpen(false)} />
             </DialogContent>
         </Dialog>
     </>
