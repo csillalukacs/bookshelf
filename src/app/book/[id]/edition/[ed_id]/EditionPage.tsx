@@ -3,13 +3,19 @@ import Image from "next/image";
 import LinkComponent from "@/components/LinkComponent";
 import Heading from "@/components/Heading";
 import UploadImage from "./UploadImage";
+import AddToList from "@/components/AddToList";
+import { fetchListsByUserId } from "@/app/lib/data";
+import { auth } from "@/app/auth";
 
 
-export default function EditionPage( 
+export default async function EditionPage( 
     {coverUrl, spineUrl, edition, book, author, language, publisher}:
     {coverUrl: string, spineUrl: string, edition: Edition, book: Book, author: Author, language: Language, publisher: Publisher}
 ) 
 {
+    const session = await auth();
+    const lists = await fetchListsByUserId(session?.user?.id!);
+    
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col gap-1 items-center">
@@ -29,6 +35,7 @@ export default function EditionPage(
                 </div>
                 <UploadImage edition={edition} type="cover" />
                 <UploadImage edition={edition} type="spine" />
+                <AddToList edition={edition} lists={lists}/>
             </div>
             <div className="flex flex-col gap-4">
                 <Heading size={2}>{edition.ed_title}</Heading>

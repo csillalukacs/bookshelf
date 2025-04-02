@@ -1,9 +1,10 @@
 'use client';
-import { MoreVert } from "@mui/icons-material";
+import { Add, MoreVert } from "@mui/icons-material";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
 import ListSelectionDialog from "./ListSelectionDialog";
 import { Edition, List } from "@/app/lib/definitions";
+import AddToList from "./AddToList";
 
 export default function CardMenu({list, edition} : {list: List[], edition: Edition}) 
 {
@@ -20,16 +21,6 @@ export default function CardMenu({list, edition} : {list: List[], edition: Editi
         setAnchorEl(null);
     };
 
-    const openListDialog = () =>
-    {
-        setShowListSelection(true);
-    }
-
-    const closeListDialog = () =>
-    {
-        setShowListSelection(false);
-    }
-
     return (
         <div className="absolute top-0 right-0">
             <IconButton onClick={handleClick}>
@@ -41,17 +32,16 @@ export default function CardMenu({list, edition} : {list: List[], edition: Editi
                 onClose={handleClose}
                 onClick={handleClose}
             >
-                <MenuItem onClick={openListDialog}>
+                <MenuItem onClick={() => setShowListSelection(true)}>
                     Add to list
                 </MenuItem>
             </Menu>
-            {showListSelection && 
                 <ListSelectionDialog 
-                    list={list} 
-                    close={closeListDialog}
+                    lists={list} 
                     edition={edition}
+                    open={showListSelection}
+                    setOpen={setShowListSelection}
                 />
-            }
         </div>
     )
 }
