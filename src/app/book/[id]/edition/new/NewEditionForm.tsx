@@ -8,14 +8,22 @@ import LinkComponent from "@/components/LinkComponent";
 import { NumberInput } from "@/components/NumberInput";
 import { SelectInput } from "@/components/SelectInput";
 import { TextInput } from "@/components/TextInput";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
 export default function NewEditionForm(
-  { authors, languages, book, publishers }:
-    { authors: Author[], languages: Language[], book: Book, publishers: Publisher[] }
+  { authors, languages, book, publishers, isDialog = false, closeSelf }:
+    { authors: Author[], languages: Language[], book: Book, publishers: Publisher[], isDialog?: boolean, closeSelf?: () => void }
 ) 
 {
   const [formState, formAction, isPending] = useActionState(addEdition, { success: false, error: '' });
+
+  useEffect(() => 
+  {
+    if (isDialog && closeSelf && formState?.success) 
+    {
+      closeSelf();
+    }
+  }, [formState])
 
   return (
     <>

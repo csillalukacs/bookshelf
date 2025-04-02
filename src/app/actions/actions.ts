@@ -6,6 +6,7 @@ import { pool } from "../postgres";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { randomUUID } from "crypto";
 import { auth, signOut } from "../auth";
+import { revalidatePath } from "next/cache";
 
 export type Result<T> = {success: true, value: T} | {success: false, error: string};
 export type SimpleResult = {success: true} | {success: false, error: string};
@@ -146,6 +147,7 @@ export async function addEdition(prevState: Result<Edition>, formData: FormData)
       'VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', 
       [titleStr, yearStr, langId, publisherId, bookId, isbn]
     );
+    revalidatePath('/book/${bookId}');
     return {success: true, value: {...result.rows[0]}}
   } 
   catch (error) 
