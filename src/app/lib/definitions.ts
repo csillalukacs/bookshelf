@@ -25,6 +25,7 @@ export type Edition =
   translator_id?: string;
   cover_img?: string;
   spine_img?: string;
+  thickness: number;
 }
 
 export type Language =

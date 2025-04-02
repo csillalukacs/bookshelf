@@ -28,18 +28,29 @@ export async function logOut ()
     )
   }
 
-export async function uploadImage(prevState: any, formData: FormData) 
+export async function uploadImage(prevState: any, formData: FormData): Promise<SimpleResult>
 {
   const session = await auth();
-  if (!session?.user) return { error: "You must be logged in to perform this action." };
+  if (!session?.user) return { success: false, error: "You must be logged in to perform this action." };
   
   const file = formData.get("file") as File;
-  if (!file) return { error: "No file provided." };
+  if (!file) return { success: false, error: "No file provided." };
+
+  const editionId = formData.get('editionId');
+  if (!editionId) return { success: false, error: "No edition ID provided." };
+
+  const bookId = formData.get('bookId');
+  if (!bookId) return { success: false, error: "No book ID provided." };
+  
+  const type: "cover" | "spine" = formData.get('type') as "cover" | "spine";
+  if (!type) return { success: false, error: "No type provided." };
 
   const buffer = await file.arrayBuffer();
-  const fileKey = `${randomUUID()}-${file.name}`;
+  const fileExt = file.name.split('.').pop();
 
-  try 
+  const fileKey = `${type}-${editionId}.${fileExt}`;
+
+  try  
   {
     await s3.send(
       new PutObjectCommand({
@@ -50,17 +61,23 @@ export async function uploadImage(prevState: any, formData: FormData)
       })
     );
 
-    await updateCoverImg(fileKey, formData.get('editionId') as string);
 
-    // Return CloudFront URL instead of S3 URL
-    const imageUrl = `${process.env.CLOUDFRONT_URL}${fileKey}`;
+    if (type === "cover") 
+    {
+      await updateCoverImg(fileKey, editionId.toString());
+    }
+    else if (type === "spine") 
+    {
+      await updateSpineImg(fileKey, editionId.toString());
+    }
 
-    return { success: true, imageUrl };
+    revalidatePath(`/book/${bookId}/edition/${editionId}`);
+    return { success: true };
   } 
   catch (error) 
   {
     console.error("Upload error:", error);
-    return { error: "Upload failed." };
+    return { success: false, error: "Upload failed." };
   }
 }
 
@@ -81,6 +98,26 @@ export async function updateCoverImg(newCoverImg: string, editionId: string)
   {
     console.error('Database Error:', error);
     return {error: 'error'};
+  }
+}
+
+export async function updateSpineImg(newSpineImg: string, editionId: string): Promise<SimpleResult>
+{
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+  try 
+  {
+    console.log(`Updating spine image for edition with id ${editionId}...`);
+    const result = await pool.query(
+      'UPDATE edition SET spine_img = $1 WHERE id = $2 RETURNING *', 
+      [newSpineImg, editionId]
+    );
+    return {success: true};
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    return {success: false, error: 'Unknown database error'};
   }
 }
 

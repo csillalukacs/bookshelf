@@ -8,14 +8,14 @@ import { Dialog, DialogContent, IconButton } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 
 
-export default function UploadCoverImage({ edition }:
-    { edition: Edition}) 
+export default function UploadImage({ edition, type }:
+    { edition: Edition, type: "cover" | "spine"})
 {
     const [open, setOpen] = useState(false);
 
     return (
         <>
-            <Button label="Upload New Cover" onClick={() => setOpen(true)} disabled={false} />
+            <Button label={`Upload New ${type==="cover" ? "Cover" : "Spine"}`} onClick={() => setOpen(true)} disabled={false} />
             
             <Dialog open={open} onClose={() => setOpen(false)} >
             <IconButton
@@ -31,7 +31,7 @@ export default function UploadCoverImage({ edition }:
                 <CloseIcon />
             </IconButton>
                 <DialogContent>
-                  <UploadForm editionId={edition.id} closeSelf={() => setOpen(false)}></UploadForm>
+                  <UploadForm edition={edition} type={type} closeSelf={() => setOpen(false)}></UploadForm>
                 </DialogContent>
             </Dialog>
         </>

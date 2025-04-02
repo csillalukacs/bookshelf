@@ -2,26 +2,36 @@ import { Author, Book, Edition, Language, Publisher } from "@/app/lib/definition
 import Image from "next/image";
 import LinkComponent from "@/components/LinkComponent";
 import Heading from "@/components/Heading";
-import UploadCoverImage from "./UploadCoverImage";
+import UploadImage from "./UploadImage";
 
 
-export default function EditionPage( {coverUrl, edition, book, author, language, publisher}:
-    {coverUrl: string, edition: Edition, book: Book, author: Author, language: Language, publisher: Publisher}) 
+export default function EditionPage( 
+    {coverUrl, spineUrl, edition, book, author, language, publisher}:
+    {coverUrl: string, spineUrl: string, edition: Edition, book: Book, author: Author, language: Language, publisher: Publisher}
+) 
 {
-
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col gap-1 items-center">
-                <Image 
-                    src={coverUrl} 
-                    alt={edition.ed_title} 
-                    width={150} 
-                    height={200}
-                />
-                <UploadCoverImage edition={edition} />
+                <div className="flex flex-row gap-2">
+                    {spineUrl && <Image 
+                        src={spineUrl} 
+                        alt={edition.ed_title} 
+                        width={edition.thickness * 10} 
+                        height={200}
+                    />}
+                    <Image 
+                        src={coverUrl} 
+                        alt={edition.ed_title} 
+                        width={150} 
+                        height={200}
+                    />
+                </div>
+                <UploadImage edition={edition} type="cover" />
+                <UploadImage edition={edition} type="spine" />
             </div>
             <div className="flex flex-col gap-4">
-                <Heading size={2}>{book.title}</Heading>
+                <Heading size={2}>{edition.ed_title}</Heading>
                 <LinkComponent href={`/author/${author.id}`}>
                     {author.name}
                 </LinkComponent>
