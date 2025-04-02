@@ -1,6 +1,6 @@
 'use client';
 
-import { addList } from "@/app/actions/actions";
+import { addList } from "@/app/actions/list-actions";
 import Button from "@/components/Button";
 import Heading from "@/components/Heading";
 import LinkComponent from "@/components/LinkComponent";
@@ -25,7 +25,7 @@ export default function NewListForm({userId} : {userId: string})
         <Button disabled={isPending} label="Submit" />
         {!formState.success &&
           <p className="Error">
-            An error occurred.
+            {formState.error}
           </p>
         }
         {formState.success &&
