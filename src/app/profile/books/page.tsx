@@ -1,5 +1,3 @@
-import UserAvatar from "@/components/UserAvatar";
-import { SignOut } from "@/components/sign-out";
 import { auth } from "@/app/auth";
 import Link from "next/link";
 import { fetchEditionsByListId, fetchListsByUserId } from "@/app/lib/data";
@@ -16,12 +14,6 @@ export default async function Profile()
 
   return (
     <div >
-      <div>
-      </div>
-      <div className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <UserAvatar />
-        <SignOut />
-      </div>
       <Heading size={3}>My lists</Heading>
       <div className="flex flex-col gap-4">
         {lists.map(async list => 

@@ -22,7 +22,11 @@ export default function BookList({list, showSpines, editions} :
                 </div> :
                 <CardList>
                     {editions.map(async (edition) => 
-                            <EditionCard key={edition.id} edition={edition} />
+                            <EditionCard 
+                                key={edition.id} 
+                                edition={edition} 
+                                currentList={list}
+                            />
                         )
                     }
                 </CardList>

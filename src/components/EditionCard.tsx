@@ -7,8 +7,8 @@ import { auth } from "@/app/auth";
 
 
 export default async function EditionCard(
-    { edition, linkToBook = false }: 
-    { edition: Edition, linkToBook?: boolean })
+    { edition, linkToBook = false, currentList }: 
+    { edition: Edition, linkToBook?: boolean, currentList?: List })
 {
     const coverUrl = await getCoverUrl(edition);
     const session = await auth();
@@ -19,7 +19,7 @@ export default async function EditionCard(
     return (
         <div key={edition.id} className="relative inline-block bg-white w-[100px] h-[150px] rounded-lg">
             {!linkToBook && session?.user?.id &&
-                <CardMenu edition={edition} list={list} />
+                <CardMenu edition={edition} lists={list} currentList={currentList} />
             }
             <Link 
                 href={`/book/${book.id}` + (linkToBook ? '' : `/edition/${edition.id}`)} 

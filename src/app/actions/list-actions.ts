@@ -53,7 +53,8 @@ export async function addEditionToList(prevState: SimpleResult, formData: FormDa
   const list = await fetchListById(listId.toString());
   if (!list) return {success: false, error: "List not found." };
   if (list.user_id !== session.user.id) 
-    return {success: false, error: "You are not authorized to add editions to this list." };
+    return {success: false, error: "You are not authorized to perform this action." };
+
   const edtions = await fetchEditionsByListId(listId.toString());
   const editionId = formData.get('editionId');
   if (edtions.some(e => e.id === editionId)) return {success: false, error: "Already in list." };
@@ -62,6 +63,33 @@ export async function addEditionToList(prevState: SimpleResult, formData: FormDa
     console.log(`Adding edition ${editionId} to list ${listId}...`);
     const result = await pool.query(
       'INSERT INTO list_edition (list_id, edition_id) VALUES ($1, $2) RETURNING *', 
+      [listId, editionId]
+    );
+    revalidatePath(('/profile/books'));
+    return {success: true};
+  }
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    return  {success: false, error: 'Unknown database error'};
+  }
+}
+
+export async function removeEditionFromList(editionId: string, listId: string) : Promise<SimpleResult>
+{
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+
+  const list = await fetchListById(listId.toString());
+  if (!list) return {success: false, error: "List not found." };
+  
+  if (list.user_id !== session.user.id) 
+    return {success: false, error: "You are not authorized to perform this action." };
+
+  try {
+    console.log(`Removing edition ${editionId} from list ${listId}...`);
+    const result = await pool.query(
+      'DELETE FROM list_edition WHERE list_id = $1 AND edition_id = $2',
       [listId, editionId]
     );
     revalidatePath(('/profile/books'));

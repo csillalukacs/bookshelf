@@ -1,12 +1,15 @@
 'use client';
-import { Add, MoreVert } from "@mui/icons-material";
+import {  MoreVert } from "@mui/icons-material";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
 import ListSelectionDialog from "./ListSelectionDialog";
 import { Edition, List } from "@/app/lib/definitions";
-import AddToList from "./AddToList";
+import { removeEditionFromList } from "@/app/actions/list-actions";
 
-export default function CardMenu({list, edition} : {list: List[], edition: Edition}) 
+export default function CardMenu(
+    {lists, edition, currentList} : 
+    {lists: List[], edition: Edition, currentList?: List}
+) 
 {
     const [showListSelection, setShowListSelection] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -35,9 +38,12 @@ export default function CardMenu({list, edition} : {list: List[], edition: Editi
                 <MenuItem onClick={() => setShowListSelection(true)}>
                     Add to list
                 </MenuItem>
+                {currentList && <MenuItem onClick={() => removeEditionFromList(edition.id, currentList.id)}>
+                    Remove from list
+                </MenuItem>}
             </Menu>
                 <ListSelectionDialog 
-                    lists={list} 
+                    lists={lists} 
                     edition={edition}
                     open={showListSelection}
                     setOpen={setShowListSelection}
