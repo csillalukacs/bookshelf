@@ -31,6 +31,11 @@ export default function ListSelectionForm(
                 <div className="flex flex-row gap-2">
                     <Button disabled={isPending} onClick={() => { }} label={"Submit"} />
                 </div>
+                {!formState.success &&
+                    <p className="Error">
+                        {formState.error}
+                    </p>
+                }
             </form>
         </div>
     );
