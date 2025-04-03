@@ -21,6 +21,7 @@ export default async function NavBar()
                     </LinkComponent>
                 </div>
                 <div className="flex gap-[24px] flex-wrap items-center justify-center ">
+                    {session && <LinkComponent href="/profile/books" nav={true}>My Books</LinkComponent>}
                     <LinkComponent href="/author/list" nav={true}>Authors</LinkComponent>
                     <LinkComponent href="/book/list" nav={true}>Books</LinkComponent>
                     {session ? <AccountMenu /> : <SignIn/>}
