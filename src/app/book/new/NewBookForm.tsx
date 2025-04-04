@@ -28,9 +28,6 @@ export default function NewBookForm(
     return (
       <>
         <Heading size={2}>Add a new book</Heading>
-        <p>
-          Fill out this form to add a new book to the database.
-        </p>
         <form action={formAction} className="flex flex-col gap-4 text-black">
           <TextInput
             name="title"
@@ -41,6 +38,7 @@ export default function NewBookForm(
             disabled={isPending}
             list={authors}
           />
+          <div className="flex flex-row gap-2 justify-between">
             <NumberInput
                 name="year"
                 label="first published"
@@ -52,6 +50,7 @@ export default function NewBookForm(
                 list={languages}
                 disabled={isPending}
             />
+          </div>  
           <Button label="Submit" disabled={isPending} />
           {!formState.success  &&
             <p className="Error">
