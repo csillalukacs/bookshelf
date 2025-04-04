@@ -151,19 +151,36 @@ export async function addEdition(prevState: Result<Edition>, formData: FormData)
   const isbn = formData.get('isbn');
   const publisher = formData.get('publisher');
   const translator = formData.get('translator');
+  const pages = formData.get('pages');
+  const height = formData.get('height');
+  const width = formData.get('width');
+  const thickness = formData.get('thickness');
 
 
-  if (!title || !year || !language || !isbn || !publisher) return {success: false, error: 'One or more fields are missing'};
+  if (!title || !year || !language || !isbn || !publisher || !pages || !height || !width || !thickness)
+  {
+    return {success: false, error: 'One or more fields are missing!'};
+  } 
 
-  const titleStr = title.toString();
-  titleStr.trim();
+  const pagesNum = parseInt(pages.toString());
+  const heightNum = parseInt(height.toString());
+  const widthNum = parseInt(width.toString());
+  const thicknessNum = parseInt(thickness.toString());
+
+  if (pagesNum <= 0) return {success: false, error: 'Pages must be greater than 0'};
+  if (heightNum <= 0) return {success: false, error: 'Height must be greater than 0'};
+  if (widthNum <= 0) return {success: false, error: 'Width must be greater than 0'};
+  if (thicknessNum <= 0) return {success: false, error: 'Thickness must be greater than 0'};
+
+  let titleStr = title.toString();
+  titleStr = titleStr.trim();
   if (titleStr.length === 0) return  {success: false, error: 'Title is required'};
 
   const langId = language.toString();
   const yearStr = year.toString();
 
-  const publisherStr = publisher.toString();
-  publisherStr.trim();
+  let publisherStr = publisher.toString();
+  publisherStr =publisherStr.trim();
   if (publisherStr.length === 0) return  {success: false, error: 'Publisher is required'};
 
   let publisherId = (await getPublisherByName(publisherStr))?.id;
@@ -180,9 +197,9 @@ export async function addEdition(prevState: Result<Edition>, formData: FormData)
     console.log('Adding new book...');
     const result = await pool.query(
       'INSERT INTO edition ' +
-      '(ed_title, year_pub, lang_id, publisher_id, book_id, isbn) ' +
-      'VALUES ($1, $2, $3, $4, $5, $6) RETURNING *', 
-      [titleStr, yearStr, langId, publisherId, bookId, isbn]
+      '(ed_title, year_pub, lang_id, publisher_id, book_id, isbn, height, width, pages, thickness) ' +
+      'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *', 
+      [titleStr, yearStr, langId, publisherId, bookId, isbn, height, width, pages, thickness]
     );
     revalidatePath('/book/${bookId}');
     return {success: true, value: {...result.rows[0]}}

@@ -28,42 +28,89 @@ export default function NewEditionForm(
   return (
     <>
       <Heading size={2}>Add a new Edition</Heading>
-      <p>
-        Fill out this form to add a new Edition to the database.
-      </p>
       <form action={formAction} className="flex flex-col gap-4 text-black">
         <input type="hidden" name="bookId" value={book.id} />
 
         <TextInput
           name="title"
           disabled={isPending}
+          defaultValue={book.title}
+          required={true}
         />
-        <TextInput
-          name="translator (optional)"
-          disabled={isPending}
-          list={authors}
-        />
-        <TextInput 
-          name="publisher"
-          disabled={isPending}
-          list={publishers}
-        />
-        <NumberInput
-          name="year"
-          label="publication year"
-          disabled={isPending}
-        />
-        <SelectInput
-          name="language"
-          label="language"
-          list={languages}
-          disabled={isPending}
-        />
-        <TextInput
-          name="isbn"
-          label="isbn"
-          disabled={isPending}
-        />
+        <div className="flex flex-row justify-between align-center">
+          <SelectInput
+            name="language"
+            label="language"
+            list={languages}
+            disabled={isPending}
+            className="w-[30%]"
+          />
+          <TextInput
+            name="translator (optional)"
+            disabled={isPending}
+            list={authors}
+            className="w-[65%]"
+          />
+        </div>
+        <div className="flex flex-row justify-between">
+          <TextInput 
+            name="publisher"
+            disabled={isPending}
+            list={publishers}
+            className="w-[65%]"
+            required={true}
+          />
+          <NumberInput
+            name="year"
+            label="publication year"
+            disabled={isPending}
+            className="w-[30%]"
+            required={true}
+          />
+        </div>
+        <div className="flex flex-row gap-2 justify-between">
+          <TextInput
+            name="isbn"
+            label="isbn"
+            disabled={isPending}
+            className="w-[70%]"
+            required={true}
+          />
+          <NumberInput
+            name="pages"
+            label="pages"
+            disabled={isPending}
+            className="w-[25%]"
+            required={true}
+            defaultValue={200}
+          />
+        </div>
+        <div className="flex flex-row gap-2 justify-between">
+          <NumberInput
+            name="height"
+            label="height (mm)"
+            disabled={isPending}
+            className="w-[100px]"
+            defaultValue={198}
+            required={true}
+          />
+          <NumberInput
+            name="width"
+            label="width (mm)"
+            disabled={isPending}
+            className="w-[100px]"
+            defaultValue={130}
+            required={true}
+          />          
+          <NumberInput
+            name="thickness"
+            label="thickness (mm)"
+            disabled={isPending}
+            className="w-[100px]"
+            defaultValue={20}
+            required={true}
+          />
+        </div>
         <Button disabled={isPending} label="Submit" />
         {!formState.success &&
           <p className="Error">

@@ -1,10 +1,10 @@
-export function NumberInput({ disabled, name, label } : 
-    { disabled: boolean, name: string, label? : string }
+export function NumberInput({ disabled, name, label, className = "", defaultValue, required } : 
+    { disabled: boolean, name: string, label? : string, className? : string, defaultValue? : number, required? : boolean }
 ) 
 {
     return (
-        <div className="flex flex-col gap-1">
-            <label className="text-black" htmlFor={name + "Input"}>
+        <div className={"flex flex-col gap-1 " + className}>
+            <label className="text-gray-500 text-sm" htmlFor={name + "Input"}>
                 {label || name}
             </label>
             <input 
@@ -13,6 +13,8 @@ export function NumberInput({ disabled, name, label } :
                 disabled={disabled}
                 type="number"
                 id={name + "Input"}
+                defaultValue={defaultValue}
+                required={required}
             >
             </input>
         </div>

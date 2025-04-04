@@ -1,12 +1,12 @@
 
 
-export function SelectInput({ disabled, name, list, label } : 
-    { disabled: boolean, name: string, list: any[], label? : string }
+export function SelectInput({ disabled, name, list, label, className = "" } : 
+    { disabled: boolean, name: string, list: any[], label? : string, className? : string }
 ) 
 {
     return (
-        <div className="flex flex-col gap-1">
-            <label className="text-black" htmlFor={name + "Input"}>
+        <div className={"flex flex-col gap-1 " + className}>
+            <label className="text-gray-500 text-sm" htmlFor={name + "Input"}>
                 {label || name}
             </label>
             <select 
