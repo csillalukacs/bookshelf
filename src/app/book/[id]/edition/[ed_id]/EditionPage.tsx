@@ -4,8 +4,10 @@ import LinkComponent from "@/components/LinkComponent";
 import Heading from "@/components/Heading";
 import UploadImage from "./UploadImage";
 import AddToList from "@/components/AddToList";
-import { fetchAuthors, fetchListsByUserId } from "@/app/lib/data";
+import { fetchListsByUserId, fetchPublishers } from "@/app/lib/data";
 import { auth } from "@/app/auth";
+import { Edit } from "@mui/icons-material";
+import EditPublisher from "./EditPublisher";
 
 
 export default async function EditionPage( 
@@ -15,7 +17,7 @@ export default async function EditionPage(
 {
     const session = await auth();
     const lists = await fetchListsByUserId(session?.user?.id!);
-    const authors = await fetchAuthors();
+    const publishers = await fetchPublishers();
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -45,9 +47,12 @@ export default async function EditionPage(
                         {author.name}
                     </LinkComponent>
                 </div>
-                <p>
-                    Published: {edition.year_pub} by {publisher.name}
-                </p>
+                <div className="flex flex-row gap-2">
+                    <p>
+                        Published: {edition.year_pub} by {publisher.name}
+                    </p>
+                    <EditPublisher edition={edition} publishers={publishers} />
+                </div>
                 <p>
                     Language: {language.name}
                 </p>

@@ -1,3 +1,5 @@
+'use server'
+
 import { revalidatePath } from "next/cache";
 import { auth } from "../auth";
 import { SimpleResult } from "./actions";
@@ -83,10 +85,9 @@ export async function updatePublisher(prevState: SimpleResult, formData: FormDat
 {
   const session = await auth();
   if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
-  const bookId = formData.get('bookId');
-  if (!bookId) return {success: false, error: "Book ID was not provided." };
-  const book = await fetchBookById(bookId.toString());
-  if (!book) return {success: false, error: "Book not found." };
+
+  const editionId = formData.get('editionId');
+  if (!editionId) return {success: false, error: "Edition ID was not provided." };
 
   const publisher = formData.get('name');
   if (!publisher) return {success: false, error: 'Name is required'};
@@ -105,12 +106,13 @@ export async function updatePublisher(prevState: SimpleResult, formData: FormDat
 
   try 
   {
-    console.log(`Updating publisher for book with id ${formData.get('bookId')}...`);
+    console.log(`Updating publisher for edition with id ${formData.get('editionId')}...`);
     const result = await pool.query(
-      'UPDATE book SET publisher_id = $1 WHERE id = $2 RETURNING *', 
-      [publisherId, bookId]
+      'UPDATE edition SET publisher_id = $1 WHERE id = $2 RETURNING *', 
+      [publisherId, editionId]
     );
-    revalidatePath(`/book/${bookId}`);
+    const bookId = formData.get('bookId');
+    revalidatePath(`/book/${bookId}/edition/${editionId}`);
     return {success: true};
   } 
   catch (error) 

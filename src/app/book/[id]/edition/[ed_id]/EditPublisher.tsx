@@ -1,15 +1,15 @@
 'use client'
-import { updateBookAuthor } from "@/app/actions/book-actions";
-import { Author, Book } from "@/app/lib/definitions";
+import { updatePublisher } from "@/app/actions/edition-actions";
+import { Edition, Publisher } from "@/app/lib/definitions";
 import Button from "@/components/Button";
 import ClosableDialog from "@/components/ClosableDialog";
 import { TextInput } from "@/components/TextInput";
 import { useActionState, useEffect, useState } from "react";
 
-export default function EditAuthor({book, authors}: {book: Book, authors: Author[]})
+export default function EditAuthor({edition, publishers}: {edition: Edition, publishers: Publisher[]})
 {
     const [open, setOpen] = useState(false);
-    const [formState, formAction, isPending] = useActionState(updateBookAuthor, {success: false, error: ''});
+    const [formState, formAction, isPending] = useActionState(updatePublisher, {success: false, error: ''});
 
     useEffect(() => 
     {
@@ -22,12 +22,13 @@ export default function EditAuthor({book, authors}: {book: Book, authors: Author
             onClick={() => setOpen(true)}
             className="text-sm text-gray-500 hover:underline cursor-pointer"
         > 
-            edit author 
+            edit publisher 
         </button>
         <ClosableDialog open={open} setOpen={setOpen} >
             <form action={formAction} className="flex flex-col gap-4 text-black">
-                <TextInput name="name" label="Name" disabled={false} list={authors} required={true} />
-                <input type="hidden" name="bookId" value={book.id} />
+                <TextInput name="name" label="Name" disabled={false} list={publishers} required={true} />
+                <input type="hidden" name="editionId" value={edition.id} />
+                <input type="hidden" name="bookId" value={edition.book_id} />
                 <Button label="Submit" disabled={isPending} />
                 {!formState.success &&
                     <p className="Error"> {formState.error} </p>
