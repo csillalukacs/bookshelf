@@ -5,6 +5,7 @@ import LinkComponent from "@/components/LinkComponent";
 import Heading from "@/components/Heading";
 import { DeleteBookButton } from "./DeleteBook";
 import AddEdition from "@/app/book/[id]/AddEdition";
+import EditAuthor from "./EditAuthor";
 
 export default async function Page({ params }: { params: { id: string } }) 
 {
@@ -20,10 +21,15 @@ export default async function Page({ params }: { params: { id: string } })
     return (
         <div>
             <div className="flex flex-col gap-4">
-                <Heading size={2}>{book.title}</Heading>
-                <LinkComponent href={`/author/${author.id}`}>
-                    {author.name}
-                </LinkComponent>
+                <div className="flex flex-col gap-0">
+                    <Heading size={2}>{book.title}</Heading>
+                    <div className="flex flex-row gap-2">
+                        <LinkComponent href={`/author/${author.id}`}>
+                            {author.name}
+                        </LinkComponent>
+                        <EditAuthor book={book} authors={authors} />
+                    </div>
+                </div>
                 <p>
                     First published: {book.first_pub}
                 </p>

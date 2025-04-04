@@ -6,7 +6,6 @@ import UploadImage from "./UploadImage";
 import AddToList from "@/components/AddToList";
 import { fetchAuthors, fetchListsByUserId } from "@/app/lib/data";
 import { auth } from "@/app/auth";
-import EditAuthor from "./EditAuthor";
 
 
 export default async function EditionPage( 
@@ -42,12 +41,9 @@ export default async function EditionPage(
             <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-0">
                     <Heading size={2}>{edition.ed_title}</Heading>
-                    <div className="flex flex-row gap-2">
-                        <LinkComponent href={`/author/${author.id}`}>
-                            {author.name}
-                        </LinkComponent>
-                        <EditAuthor book={book} authors={authors} />
-                    </div>
+                    <LinkComponent href={`/author/${author.id}`}>
+                        {author.name}
+                    </LinkComponent>
                 </div>
                 <p>
                     Published: {edition.year_pub} by {publisher.name}
@@ -55,6 +51,7 @@ export default async function EditionPage(
                 <p>
                     Language: {language.name}
                 </p>
+                <p> Dimensions (mm): {edition.height} x {edition.width} x {edition.thickness}</p>
                 <LinkComponent href={`/book/${book.id}`}>See all editions</LinkComponent>
             </div>
         </div>
