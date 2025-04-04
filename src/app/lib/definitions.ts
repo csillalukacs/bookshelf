@@ -26,6 +26,9 @@ export type Edition =
   cover_img?: string;
   spine_img?: string;
   thickness: number;
+  height: number;
+  width: number;
+  pages: number;  
 }
 
 export type Language =
