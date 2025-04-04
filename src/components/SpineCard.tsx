@@ -16,7 +16,7 @@ export default async function SpineCard(
     if (session?.user?.id) list = await fetchListsByUserId(session.user.id!);
 
     return (
-        <div key={edition.id} className={`relative inline-block bg-white w-[${edition.thickness * 10}px] h-[200px]`}>
+        <div key={edition.id} className={`relative inline-block bg-white `}>
             <Link 
                 href={`/book/${book.id}` + (linkToBook ? '' : `/edition/${edition.id}`)} 
             >
@@ -24,10 +24,10 @@ export default async function SpineCard(
                     src={spineUrl} 
                     alt={edition.ed_title} 
                     title={edition.ed_title + ', ' + edition.year_pub + ', ISBN:' + edition.isbn} 
-                    width={edition.thickness*10} 
-                    height={150}
-                    className="object-cover w-full h-full hover:border-white hover:border-2 hover:rounded-lg hover:shadow-md"
-                    style={{objectFit: 'cover'}}
+                    width={edition.thickness} 
+                    height={edition.height}
+                    className="hover:border-white hover:border-2 hover:rounded-lg hover:shadow-md"
+                    style={{height: `${edition.height}px`, width: `${edition.thickness}px`}}
                 />
             </Link>
         </div>

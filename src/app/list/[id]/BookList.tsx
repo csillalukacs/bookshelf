@@ -14,7 +14,7 @@ export default function BookList({list, showSpines, editions} :
                 <Heading size={2}>{list.name}</Heading>
             </LinkComponent>
             {showSpines ?
-                <div className="mx-auto flex flex-row">
+                <div className="mx-auto flex flex-row items-end">
                     {editions.map(async (edition) => 
                         <SpineCard key={edition.id} edition={edition} />
                     )

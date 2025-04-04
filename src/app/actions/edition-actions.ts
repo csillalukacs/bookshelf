@@ -161,3 +161,43 @@ export async function updateSpineImg(newSpineImg: string, editionId: string): Pr
     return {success: false, error: 'Unknown database error'};
   }
 }
+
+export async function updateDimensions(prevState: SimpleResult, formData: FormData): Promise<SimpleResult>
+{
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+
+  const editionId = formData.get('editionId');
+  if (!editionId) return {success: false, error: "Edition ID was not provided." };
+
+  const height = formData.get('height');
+  const width = formData.get('width');
+  const thickness = formData.get('thickness');
+
+  if (!height || !width || !thickness) return {success: false, error: 'One or more fields are missing!'};
+
+  const heightNum = parseInt(height.toString());
+  const widthNum = parseInt(width.toString());
+  const thicknessNum = parseInt(thickness.toString());
+
+  if (heightNum <= 0) return {success: false, error: 'Height must be greater than 0'};
+  if (widthNum <= 0) return {success: false, error: 'Width must be greater than 0'};
+  if (thicknessNum <= 0) return {success: false, error: 'Thickness must be greater than 0'};
+
+  try 
+  {
+    console.log(`Updating dimensions for edition with id ${formData.get('editionId')}...`);
+    const result = await pool.query(
+      'UPDATE edition SET height = $1, width = $2, thickness = $3 WHERE id = $4 RETURNING *', 
+      [heightNum, widthNum, thicknessNum, editionId]
+    );
+    const bookId = formData.get('bookId');
+    revalidatePath(`/book/${bookId}/edition/${editionId}`);
+    return {success: true};
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    return  {success: false, error: 'Unknown database error'};
+  } 
+}

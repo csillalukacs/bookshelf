@@ -6,8 +6,8 @@ import UploadImage from "./UploadImage";
 import AddToList from "@/components/AddToList";
 import { fetchListsByUserId, fetchPublishers } from "@/app/lib/data";
 import { auth } from "@/app/auth";
-import { Edit } from "@mui/icons-material";
 import EditPublisher from "./EditPublisher";
+import EditDimensions from "./EditDimensions";
 
 
 export default async function EditionPage( 
@@ -26,7 +26,7 @@ export default async function EditionPage(
                     {spineUrl && <Image 
                         src={spineUrl} 
                         alt={edition.ed_title} 
-                        width={edition.thickness * 10} 
+                        width={edition.thickness * (200/edition.height)} 
                         height={200}
                     />}
                     <Image 
@@ -56,7 +56,10 @@ export default async function EditionPage(
                 <p>
                     Language: {language.name}
                 </p>
-                <p> Dimensions (mm): {edition.height} x {edition.width} x {edition.thickness}</p>
+                <div className="flex flex-row gap-2">
+                    <p> Dimensions (mm): {edition.height} x {edition.width} x {edition.thickness}</p>
+                    <EditDimensions edition={edition} />
+                </div>
                 <LinkComponent href={`/book/${book.id}`}>See all editions</LinkComponent>
             </div>
         </div>
