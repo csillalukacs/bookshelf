@@ -3,8 +3,8 @@ import EditionCard from "@/components/EditionCard";
 import CardList from "@/components/CardList";
 import LinkComponent from "@/components/LinkComponent";
 import Heading from "@/components/Heading";
-import { DeleteBookButton } from "./delete-button";
-import AddEdition from "@/components/AddEdition";
+import { DeleteBookButton } from "./DeleteBook";
+import AddEdition from "@/app/book/[id]/AddEdition";
 
 export default async function Page({ params }: { params: { id: string } }) 
 {

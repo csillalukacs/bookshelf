@@ -1,10 +1,10 @@
 'use client'
 
 import NewBookForm from "@/app/book/new/NewBookForm";
-import Button from "./Button";
+import Button from "@/components/Button";
 import { useState } from "react";
 import { Author, Language } from "@/app/lib/definitions";
-import ClosableDialog from "./ClosableDialog";
+import ClosableDialog from "@/components/ClosableDialog";
 
 export default function AddABook({ authors, languages }: { authors: Author[], languages: Language[] }) 
 {

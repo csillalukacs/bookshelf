@@ -1,5 +1,5 @@
 import { fetchAuthors, fetchBooks, fetchLanguages } from "@/app/lib/data";
-import AddABook from "@/components/AddABook";
+import AddABook from "./AddABook";
 import BookCard from "@/components/BookCard";
 import CardList from "@/components/CardList";
 import Heading from "@/components/Heading";

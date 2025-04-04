@@ -1,10 +1,10 @@
 'use client'
 
-import Button from "./Button";
+import Button from "@/components/Button";
 import { useState } from "react";
 import { Author, Book, Language, Publisher } from "@/app/lib/definitions";
 import NewEditionForm from "@/app/book/[id]/edition/new/NewEditionForm";
-import ClosableDialog from "./ClosableDialog";
+import ClosableDialog from "@/components/ClosableDialog";
 
 export default function AddEdition(
     { authors, languages, publishers, book }: 
@@ -14,7 +14,7 @@ export default function AddEdition(
     const [open, setOpen] = useState(false);
 
     return (<>
-        <Button label="Add another edition" disabled={false} onClick={() => setOpen(true)} />
+        <Button label="Add edition" disabled={false} onClick={() => setOpen(true)} />
         <ClosableDialog open={open} setOpen={setOpen} >
                 <NewEditionForm 
                     authors={authors} 

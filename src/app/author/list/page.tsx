@@ -1,9 +1,9 @@
 import { fetchAuthors } from "@/app/lib/data";
-import DeleteButton from "./delete-button";
+import DeleteButton from "./DeleteAuthor";
 import { auth } from "@/app/auth";
 import LinkComponent from "@/components/LinkComponent";
 import Heading from "@/components/Heading";
-import AddAuthor from "@/components/AddAuthor";
+import AddAuthor from "./AddAuthor";
 
 export default async function Page() 
 {

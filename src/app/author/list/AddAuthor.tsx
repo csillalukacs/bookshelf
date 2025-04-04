@@ -1,9 +1,9 @@
 'use client'
 
-import Button from "./Button";
+import Button from "@/components/Button";
 import { useState } from "react";
 import NewAuthorForm from "@/app/author/new/NewAuthorForm";
-import ClosableDialog from "./ClosableDialog";
+import ClosableDialog from "@/components/ClosableDialog";
 
 export default function AddAuthor() 
 {
