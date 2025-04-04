@@ -4,8 +4,9 @@ import LinkComponent from "@/components/LinkComponent";
 import Heading from "@/components/Heading";
 import UploadImage from "./UploadImage";
 import AddToList from "@/components/AddToList";
-import { fetchListsByUserId } from "@/app/lib/data";
+import { fetchAuthors, fetchListsByUserId } from "@/app/lib/data";
 import { auth } from "@/app/auth";
+import EditAuthor from "./EditAuthor";
 
 
 export default async function EditionPage( 
@@ -15,7 +16,8 @@ export default async function EditionPage(
 {
     const session = await auth();
     const lists = await fetchListsByUserId(session?.user?.id!);
-    
+    const authors = await fetchAuthors();
+
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col gap-1 items-center">
@@ -38,19 +40,21 @@ export default async function EditionPage(
                 <AddToList edition={edition} lists={lists}/>
             </div>
             <div className="flex flex-col gap-4">
-                <Heading size={2}>{edition.ed_title}</Heading>
-                <LinkComponent href={`/author/${author.id}`}>
-                    {author.name}
-                </LinkComponent>
+                <div className="flex flex-col gap-0">
+                    <Heading size={2}>{edition.ed_title}</Heading>
+                    <div className="flex flex-row gap-2">
+                        <LinkComponent href={`/author/${author.id}`}>
+                            {author.name}
+                        </LinkComponent>
+                        <EditAuthor book={book} authors={authors} />
+                    </div>
+                </div>
                 <p>
                     Published: {edition.year_pub} by {publisher.name}
                 </p>
                 <p>
                     Language: {language.name}
                 </p>
-                <button>
-                    Edit details
-                </button>
                 <LinkComponent href={`/book/${book.id}`}>See all editions</LinkComponent>
             </div>
         </div>

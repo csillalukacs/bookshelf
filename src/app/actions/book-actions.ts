@@ -5,7 +5,7 @@ import { auth } from "../auth";
 import { getAuthorByName } from "../lib/data";
 import { Book } from "../lib/definitions";
 import { pool } from "../postgres";
-import { Result } from "./actions";
+import { Result, SimpleResult } from "./actions";
 import { insertAuthorIntoDb } from "./author-actions";
 import { revalidatePath } from "next/cache";
 
@@ -74,5 +74,45 @@ export async function deleteBook(id: string)
   {
     console.error('Database Error:', error);
     return  {error: 'Unknown database error'};
+  }
+}
+
+export async function updateBookAuthor(prevState: SimpleResult, formData: FormData): Promise<SimpleResult>
+{
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+
+  const author = formData.get('name');
+  if (!author) return {success: false, error: 'Name is required'};
+  let authorStr = author.toString();
+  authorStr = authorStr.trim();
+  if (authorStr.length === 0) return  {success: false, error: 'Name is required'};
+  let authorId = (await getAuthorByName(authorStr))?.id;
+
+  const bookId = formData.get('bookId');
+
+  if (!authorId) 
+  {
+    console.log('Author not found, inserting...');
+
+    const result = await insertAuthorIntoDb(authorStr);
+    if (!result.success) return result;
+    authorId = result.value.id;
+  }
+
+  try 
+  {
+    console.log(`Updating author for book with id ${formData.get('bookId')}...`);
+    const result = await pool.query(
+      'UPDATE book SET author_id = $1 WHERE id = $2 RETURNING *', 
+      [authorId, bookId]
+    );
+    revalidatePath(`/book/${bookId}`);
+    return {success: true};
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    return  {success: false, error: 'Unknown database error'};
   }
 }
