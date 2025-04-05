@@ -8,6 +8,7 @@ import { pool } from "../postgres";
 import { Result } from "./actions";
 import { insertPublisherIntoDb } from "./actions";
 import { Edition } from "../lib/definitions";
+import { redirect, RedirectType } from "next/navigation";
 
 export async function addEdition(prevState: Result<Edition>, formData: FormData): Promise<Result<Edition>>
 {
@@ -216,5 +217,21 @@ export async function fetchEditionsByPublisherId(id: string): Promise<Edition[]>
   {
     console.error('Database Error:', error);
     throw new Error(`Failed to fetch editions by publisher with id ${id}`);
+  }
+}
+
+export async function deleteEdition(id: string, bookId: string)
+{
+  try
+  {
+    console.log(`Deleting edition with id ${id}...`);
+    const result = await pool.query('DELETE FROM edition WHERE id = $1', [id]);
+
+    redirect(`/book/${bookId}`, RedirectType.push)
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    throw new Error(`Failed to delete edition with id ${id}`);
   }
 }

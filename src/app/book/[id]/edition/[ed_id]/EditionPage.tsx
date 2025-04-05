@@ -8,6 +8,7 @@ import { fetchListsByUserId, fetchPublishers } from "@/app/lib/data";
 import { auth } from "@/app/auth";
 import EditPublisher from "./EditPublisher";
 import EditDimensions from "./EditDimensions";
+import DeleteButton from "./DeleteButton";
 
 
 export default async function EditionPage( 
@@ -61,6 +62,7 @@ export default async function EditionPage(
                     <EditDimensions edition={edition} />
                 </div>
                 <LinkComponent href={`/book/${book.id}`}>See all editions</LinkComponent>
+                <DeleteButton id={edition.id} bookId={book.id} />
             </div>
         </div>
     )
