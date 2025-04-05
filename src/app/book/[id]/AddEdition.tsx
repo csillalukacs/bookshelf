@@ -3,7 +3,7 @@
 import Button from "@/components/Button";
 import { useState } from "react";
 import { Author, Book, Language, Publisher } from "@/app/lib/definitions";
-import NewEditionForm from "@/app/book/[id]/edition/new/NewEditionForm";
+import NewEditionForm from "@/app/book/[id]/NewEditionForm";
 import ClosableDialog from "@/components/ClosableDialog";
 
 export default function AddEdition(
@@ -21,7 +21,6 @@ export default function AddEdition(
                     languages={languages} 
                     publishers={publishers} 
                     book={book}
-                    isDialog={true} 
                     closeSelf={() => setOpen(false)} 
                 />
         </ClosableDialog>

@@ -4,25 +4,21 @@ import { addEdition } from "@/app/actions/edition-actions";
 import { Author, Book, Language, Publisher } from "@/app/lib/definitions";
 import Button from "@/components/Button";
 import Heading from "@/components/Heading";
-import LinkComponent from "@/components/LinkComponent";
 import { NumberInput } from "@/components/NumberInput";
 import { SelectInput } from "@/components/SelectInput";
 import { TextInput } from "@/components/TextInput";
 import { useActionState, useEffect } from "react";
 
 export default function NewEditionForm(
-  { authors, languages, book, publishers, isDialog = false, closeSelf }:
-    { authors: Author[], languages: Language[], book: Book, publishers: Publisher[], isDialog?: boolean, closeSelf?: () => void }
+  { authors, languages, book, publishers, closeSelf }:
+    { authors: Author[], languages: Language[], book: Book, publishers: Publisher[], closeSelf: () => void }
 ) 
 {
   const [formState, formAction, isPending] = useActionState(addEdition, { success: false, error: '' });
 
   useEffect(() => 
   {
-    if (isDialog && closeSelf && formState?.success) 
-    {
-      closeSelf();
-    }
+    if (formState.success) closeSelf();
   }, [formState])
 
   return (
@@ -30,7 +26,6 @@ export default function NewEditionForm(
       <Heading size={2}>Add a new Edition</Heading>
       <form action={formAction} className="flex flex-col gap-4 text-black">
         <input type="hidden" name="bookId" value={book.id} />
-
         <TextInput
           name="title"
           label="Title"
@@ -115,18 +110,7 @@ export default function NewEditionForm(
           />
         </div>
         <Button disabled={isPending} label="Submit" />
-        {!formState.success &&
-          <p className="Error">
-            {formState.error}
-          </p>
-        }
-        {formState.success && 
-          <p className="Error">
-            Successfully added{" "}
-            <LinkComponent href={`/book/${book.id}/edition/${formState.value.id}`}>{formState.value.ed_title}</LinkComponent>
-            !
-          </p>
-        }
+        { !formState.success && <p className="Error"> {formState.error} </p> }
       </form>
     </>
   );
