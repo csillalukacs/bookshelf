@@ -35,6 +35,8 @@ async function insertListIntoDb(nameStr: string, user_id: string) : Promise<Resu
     console.log('Adding new list...');
     const result = await pool.query('INSERT INTO list (name, created, user_id) VALUES ($1, $2, $3) RETURNING *', 
       [nameStr, new Date(), user_id]);
+    
+    revalidatePath(('/profile/lists'));
     return {success: true as const, value: {...result.rows[0]}}
   } 
   catch (error) 
@@ -65,7 +67,7 @@ export async function addEditionToList(prevState: SimpleResult, formData: FormDa
       'INSERT INTO list_edition (list_id, edition_id) VALUES ($1, $2) RETURNING *', 
       [listId, editionId]
     );
-    revalidatePath(('/profile/books'));
+    revalidatePath(('/profile/lists'));
     return {success: true};
   }
   catch (error) 
@@ -92,7 +94,7 @@ export async function removeEditionFromList(editionId: string, listId: string) :
       'DELETE FROM list_edition WHERE list_id = $1 AND edition_id = $2',
       [listId, editionId]
     );
-    revalidatePath(('/profile/books'));
+    revalidatePath(('/profile/lists'));
     return {success: true};
   }
   catch (error) 

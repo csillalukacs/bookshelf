@@ -12,7 +12,7 @@ export default async function NavBar()
 
     return (
         <div className="bg-[var(--dark)] text-white shadow-md font-family-[var(--font-header)]">
-            <div className="container w-m mx-auto">
+            <div className="container w-[70%] mx-auto">
                 <div className="flex flex-row gap-4 justify-between items-center">
                     <div className="flex flex-row items-center gap-2">
                         <Logo />
@@ -21,7 +21,7 @@ export default async function NavBar()
                         </LinkComponent>
                     </div>
                     <div className="flex gap-[24px] flex-wrap items-center justify-center ">
-                        {session && <LinkComponent href="/profile/books" nav={true}>My Books</LinkComponent>}
+                        {session && <LinkComponent href="/profile/lists" nav={true}>My Lists</LinkComponent>}
                         <LinkComponent href="/publisher/list" nav={true}>Publishers</LinkComponent>
                         <LinkComponent href="/author/list" nav={true}>Authors</LinkComponent>
                         <LinkComponent href="/book/list" nav={true}>Books</LinkComponent>
