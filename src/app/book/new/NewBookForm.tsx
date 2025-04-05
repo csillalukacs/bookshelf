@@ -31,22 +31,24 @@ export default function NewBookForm(
         <form action={formAction} className="flex flex-col gap-4 text-black">
           <TextInput
             name="title"
+            label="Title"
             disabled={isPending}
           />
           <TextInput 
             name="author"
+            label="Author"
             disabled={isPending}
             list={authors}
           />
           <div className="flex flex-row gap-2 justify-between">
             <NumberInput
                 name="year"
-                label="first published"
+                label="First published"
                 disabled={isPending}
             />
             <SelectInput
                 name="language"
-                label="original language"
+                label="Original language"
                 list={languages}
                 disabled={isPending}
             />

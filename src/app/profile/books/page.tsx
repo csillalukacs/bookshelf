@@ -13,8 +13,9 @@ export default async function Profile()
   const lists = await fetchListsByUserId(session.user.id!);
 
   return (
-    <div >
+    <div className="flex flex-col gap-4">
       <Heading size={3}>My lists</Heading>
+      <Link href={'/list/new'}><Button label="Create a new list" disabled={false} /></Link>
       <div className="flex flex-col gap-4">
         {lists.map(async list => 
         {
@@ -25,7 +26,6 @@ export default async function Profile()
           </div>
       })}
       </div>
-      <Link href={'/list/new'}><Button label="Create a new list" disabled={false} /></Link>
     </div>
   );
 }

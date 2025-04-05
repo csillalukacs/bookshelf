@@ -26,7 +26,11 @@ export default function CardMenu(
 
     return (
         <div className="absolute top-0 right-0">
-            <IconButton onClick={handleClick}>
+            <IconButton 
+                className="bg-white" 
+                onClick={handleClick} 
+                sx={{backgroundColor: "#ffffff55"}}
+            >
                 <MoreVert />
             </IconButton>
             <Menu

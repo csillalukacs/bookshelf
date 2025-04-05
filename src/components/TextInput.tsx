@@ -1,15 +1,15 @@
 
 
 export function TextInput(
-    { disabled, name, list, label, required, className = "", defaultValue } : 
+    { disabled, name, list, label, required, className = "", defaultValue, placeholder } : 
     { disabled: boolean, name: string, list?: any[], label? : string, 
-        required?: boolean, className? : string, defaultValue? : string }
+        required?: boolean, className? : string, defaultValue? : string, placeholder? : string }
 ) 
 {
     return (
         <div className={"flex flex-col gap-1 " + className} >
             <label className="text-gray-500 text-sm" htmlFor={name + "Input"}>
-                {label || name}
+                {label}
             </label>
             <input
                 className="bg-white text-black border-1 border-black rounded-lg p-2"
@@ -21,6 +21,7 @@ export function TextInput(
                 autoComplete="off"
                 required={required}
                 defaultValue={defaultValue}
+                placeholder={placeholder}
             />
             {  
             list &&          

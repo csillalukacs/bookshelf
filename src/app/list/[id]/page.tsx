@@ -1,6 +1,7 @@
 
 import { fetchEditionsByListId, fetchListById } from "@/app/lib/data";
 import BookList from "./BookList";
+import DeleteButton from "./DeleteButton";
 
 
 export default async function Page({ params }: { params: { id: string } }) 
@@ -12,7 +13,10 @@ export default async function Page({ params }: { params: { id: string } })
     const showSpines = editions.every(e => e.spine_img);
 
     return (
-        <BookList list={list} showSpines={showSpines} editions={editions} />
+        <>
+            <BookList list={list} showSpines={showSpines} editions={editions} />
+            <DeleteButton id={list.id} />
+        </>
     )
 }
 

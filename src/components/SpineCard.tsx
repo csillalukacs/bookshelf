@@ -20,7 +20,7 @@ export default async function SpineCard(
     const width = edition.thickness * scale;
 
     return (
-        <div key={edition.id} className={`relative inline-block bg-white `}>
+        <div key={edition.id} className={`relative inline-block bg-white rounded-tl-sm rounded-tr-sm overflow-hidden`}>
             <Link 
                 href={`/book/${book.id}` + (linkToBook ? '' : `/edition/${edition.id}`)} 
             >

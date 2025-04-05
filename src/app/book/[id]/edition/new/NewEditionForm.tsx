@@ -33,6 +33,7 @@ export default function NewEditionForm(
 
         <TextInput
           name="title"
+          label="Title"
           disabled={isPending}
           defaultValue={book.title}
           required={true}
@@ -40,13 +41,14 @@ export default function NewEditionForm(
         <div className="flex flex-row justify-between align-center">
           <SelectInput
             name="language"
-            label="language"
+            label="Language"
             list={languages}
             disabled={isPending}
             className="w-[30%]"
           />
           <TextInput
             name="translator (optional)"
+            label="Translator (optional)"
             disabled={isPending}
             list={authors}
             className="w-[65%]"
@@ -55,6 +57,7 @@ export default function NewEditionForm(
         <div className="flex flex-row justify-between">
           <TextInput 
             name="publisher"
+            label="Publisher"
             disabled={isPending}
             list={publishers}
             className="w-[65%]"
@@ -62,7 +65,7 @@ export default function NewEditionForm(
           />
           <NumberInput
             name="year"
-            label="publication year"
+            label="Publication year"
             disabled={isPending}
             className="w-[30%]"
             required={true}
@@ -71,14 +74,14 @@ export default function NewEditionForm(
         <div className="flex flex-row gap-2 justify-between">
           <TextInput
             name="isbn"
-            label="isbn"
+            label="ISBN"
             disabled={isPending}
             className="w-[70%]"
             required={true}
           />
           <NumberInput
             name="pages"
-            label="pages"
+            label="Pages"
             disabled={isPending}
             className="w-[25%]"
             required={true}
@@ -88,7 +91,7 @@ export default function NewEditionForm(
         <div className="flex flex-row gap-2 justify-between">
           <NumberInput
             name="height"
-            label="height (mm)"
+            label="Height (mm)"
             disabled={isPending}
             className="w-[100px]"
             defaultValue={198}
@@ -96,7 +99,7 @@ export default function NewEditionForm(
           />
           <NumberInput
             name="width"
-            label="width (mm)"
+            label="Width (mm)"
             disabled={isPending}
             className="w-[100px]"
             defaultValue={130}
@@ -104,7 +107,7 @@ export default function NewEditionForm(
           />          
           <NumberInput
             name="thickness"
-            label="thickness (mm)"
+            label="Thickness (mm)"
             disabled={isPending}
             className="w-[100px]"
             defaultValue={20}
