@@ -49,7 +49,7 @@ export default async function EditionPage(
                 </div>
                 <div className="flex flex-row gap-2">
                     <p>
-                        Published: {edition.year_pub} by {publisher.name}
+                        Published: {edition.year_pub} by <LinkComponent href={`/publisher/${publisher.id}`}>{publisher.name}</LinkComponent>
                     </p>
                     <EditPublisher edition={edition} publishers={publishers} />
                 </div>

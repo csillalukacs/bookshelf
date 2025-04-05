@@ -201,3 +201,20 @@ export async function updateDimensions(prevState: SimpleResult, formData: FormDa
     return  {success: false, error: 'Unknown database error'};
   } 
 }
+
+export async function fetchEditionsByPublisherId(id: string): Promise<Edition[]>
+{
+  try
+  {
+    console.log(`Fetching editions by publisher with id ${id}...`);
+    const data = await pool.query(
+      'SELECT * FROM edition WHERE publisher_id = $1;',
+      [id]);
+    return data.rows;
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    throw new Error(`Failed to fetch editions by publisher with id ${id}`);
+  }
+}
