@@ -5,7 +5,7 @@ export default function Logo() {
   return (
     <div className="p-2 rounded-full">
         <Image
-          src={"/logo.svg"}
+          src={"/logo2.svg"}
           alt="logo"
           width={40}
           height={40}

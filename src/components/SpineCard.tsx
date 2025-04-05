@@ -15,6 +15,10 @@ export default async function SpineCard(
     let list: List[] = [];
     if (session?.user?.id) list = await fetchListsByUserId(session.user.id!);
 
+    const scale = 1.5
+    const height = edition.height * scale;
+    const width = edition.thickness * scale;
+
     return (
         <div key={edition.id} className={`relative inline-block bg-white `}>
             <Link 
@@ -24,10 +28,10 @@ export default async function SpineCard(
                     src={spineUrl} 
                     alt={edition.ed_title} 
                     title={edition.ed_title + ', ' + edition.year_pub + ', ISBN:' + edition.isbn} 
-                    width={edition.thickness} 
-                    height={edition.height}
+                    width={width} 
+                    height={height}
                     className="hover:border-white hover:border-2 hover:rounded-lg hover:shadow-md"
-                    style={{height: `${edition.height}px`, width: `${edition.thickness}px`}}
+                    style={{height: `${height}px`, width: `${width}px`}}
                 />
             </Link>
         </div>

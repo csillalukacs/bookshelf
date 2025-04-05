@@ -33,7 +33,7 @@ export default function RootLayout({
           <SessionProvider>
             <NavBar />
             <div
-              className="bg-orange-50 container w-m mx-auto p-4 shadow-md h-screen" >
+              className="bg-white container w-m mx-auto p-4 shadow-md h-screen font-family-[var(--font-body)]" >
               <main className="flex flex-col gap-3 row-start-2 items-start">
                 {children}
               </main>
