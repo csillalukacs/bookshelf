@@ -6,6 +6,8 @@ import { Result, SimpleResult } from "./actions";
 import { pool } from "../postgres";
 import { List } from "../lib/definitions";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { RedirectType } from "next/navigation";
 
 
 export async function addList(prevState: Result<List>, formData: FormData): Promise<Result<List>> 
@@ -102,4 +104,27 @@ export async function removeEditionFromList(editionId: string, listId: string) :
     console.error('Database Error:', error);
     return  {success: false, error: 'Unknown database error'};
   }
+}
+
+export async function deleteList(id: string)
+{
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+
+  const list = await fetchListById(id.toString());
+  if (!list) return {success: false, error: "List not found." };
+  
+  if (list.user_id !== session.user.id) 
+    return {success: false, error: "You are not authorized to perform this action." };
+
+  try {
+    console.log(`Deleting list with id ${id}...`);
+    const result = await pool.query('DELETE FROM list WHERE id = $1', [id]);
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    return  {error: 'Unknown database error'};
+  }
+  redirect('/profile/lists', RedirectType.push);
 }

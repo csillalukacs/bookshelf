@@ -1,4 +1,5 @@
 'use client'
+import { deleteList } from "@/app/actions/list-actions";
 import Button from "@/components/Button";
 
 export default function DeleteButton({ id }: { id: string })
@@ -8,7 +9,8 @@ export default function DeleteButton({ id }: { id: string })
             label={"Delete this list"} 
             type="text"
             disabled={false}
-            onClick={()=>{}}
+            red={true}
+            onClick={()=>{deleteList(id)}}
         />
             
     )
