@@ -68,13 +68,13 @@ export async function deleteBook(id: string)
   {
     console.log(`Deleting book with id ${id}...`);
     const result = await pool.query('DELETE FROM book WHERE id = $1', [id]);
-    redirect('/book/list', RedirectType.push)
   } 
   catch (error) 
   {
     console.error('Database Error:', error);
     return  {error: 'Unknown database error'};
   }
+  redirect('/book/list', RedirectType.push)
 }
 
 export async function updateBookAuthor(prevState: SimpleResult, formData: FormData): Promise<SimpleResult>
