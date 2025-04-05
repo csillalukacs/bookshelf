@@ -1,9 +1,8 @@
 import { auth } from "@/app/auth";
-import Link from "next/link";
 import { fetchEditionsByListId, fetchListsByUserId } from "@/app/lib/data";
-import Button from "@/components/Button";
 import BookList from "@/app/list/[id]/BookList";
 import Heading from "@/components/Heading";
+import CreateList from "./CreateNewList";
 
 export default async function Profile() 
 {
@@ -14,8 +13,10 @@ export default async function Profile()
 
   return (
     <div className="flex flex-col gap-4">
-      <Heading size={3}>My lists</Heading>
-      <Link href={'/list/new'}><Button label="Create a new list" disabled={false} /></Link>
+      <div className="flex flex-row gap-4 justify-between items-center">
+        <Heading size={3}>My lists</Heading>
+        <CreateList userId={session.user.id!} />
+      </div>
       <div className="flex flex-col gap-4">
         {lists.map(async list => 
         {

@@ -12,11 +12,11 @@ export default async function Page() {
 
   return (
     <>
-      <div className="w-[100%] flex flex-row justify-between items-center">
+      <div className="w-full flex flex-row justify-between items-center">
         <Heading size={3}>Books</Heading>
-        <TextInput disabled={false} name="search" placeholder="Search" />
+        <AddABook authors={authors} languages={languages} />
       </div>
-      <AddABook authors={authors} languages={languages} />
+      <TextInput disabled={false} name="search" placeholder="Search" />
       <CardList>
         {books.map(book => <BookCard key={book.id} book={book} />)}
       </CardList>

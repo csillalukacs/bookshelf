@@ -12,8 +12,10 @@ export default async function Page()
 
   return (
     <>
-      <Heading size={3}>Authors</Heading>
-      <AddAuthor />
+      <div className="flex flex-row gap-4 justify-between items-center w-full">
+        <Heading size={3}>Authors</Heading>
+        <AddAuthor />        
+      </div>
       <ul className="self-start">
           {authors.map(a=>
             <li key={a.id}>

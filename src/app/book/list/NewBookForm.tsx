@@ -11,15 +11,15 @@ import { TextInput } from "@/components/TextInput";
 import { useActionState, useEffect } from "react";
 
 export default function NewBookForm(
-    {authors, languages, isDialog = false, closeSelf}: 
-    {authors: Author[], languages: Language[], isDialog?: boolean, closeSelf?: () => void}
+    {authors, languages, closeSelf}: 
+    {authors: Author[], languages: Language[], closeSelf: () => void}
 )
 {
     const [formState, formAction, isPending] = useActionState(addBook, {success: false, error: ''});
 
     useEffect(() => 
     {
-      if (isDialog && closeSelf && formState?.success) 
+      if (formState.success) 
       {
         closeSelf();
       }
@@ -57,13 +57,6 @@ export default function NewBookForm(
           {!formState.success  &&
             <p className="Error">
               {formState.error}
-            </p>
-          }
-          {formState.success &&
-            <p>
-              Successfully added{" "}
-                <LinkComponent href={`/book/${formState.value.id}`}>{formState.value.title}</LinkComponent> 
-              !
             </p>
           }
         </form>

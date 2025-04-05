@@ -2,17 +2,17 @@
 
 import Button from "@/components/Button";
 import { useState } from "react";
-import NewAuthorForm from "@/app/author/list/NewAuthorForm";
 import ClosableDialog from "@/components/ClosableDialog";
+import NewListForm from "@/app/profile/lists/NewListForm";
 
-export default function AddAuthor() 
+export default function CreateList({userId} : {userId: string})
 {
     const [open, setOpen] = useState(false);
 
     return (<>
-        <Button label="Add author" disabled={false} onClick={() => setOpen(true)} />
+        <Button label="Create list" disabled={false} onClick={() => setOpen(true)} />
         <ClosableDialog open={open} setOpen={setOpen} >       
-                <NewAuthorForm closeSelf={() => setOpen(false)} />
+                <NewListForm userId={userId} closeSelf={() => setOpen(false)} />
         </ClosableDialog>
     </>
     )

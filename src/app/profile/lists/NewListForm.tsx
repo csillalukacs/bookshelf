@@ -3,13 +3,20 @@
 import { addList } from "@/app/actions/list-actions";
 import Button from "@/components/Button";
 import Heading from "@/components/Heading";
-import LinkComponent from "@/components/LinkComponent";
 import { TextInput } from "@/components/TextInput";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 
-export default function NewListForm({userId} : {userId: string}) 
+export default function NewListForm({userId, closeSelf}: {userId: string, closeSelf: () => void})
 {
   const [formState, formAction, isPending] = useActionState(addList, {success: false, error: '' });
+
+  useEffect(() => 
+  {
+    if (formState.success) 
+    {
+      closeSelf();
+    }
+  }, [formState])
 
   return (
     <>
@@ -26,13 +33,6 @@ export default function NewListForm({userId} : {userId: string})
         {!formState.success &&
           <p className="Error">
             {formState.error}
-          </p>
-        }
-        {formState.success &&
-          <p className="Error">
-            Successfully created{" "}
-            <LinkComponent href={`/list/${formState.value.id}`}>{formState.value.name}</LinkComponent>
-            !
           </p>
         }
       </form>

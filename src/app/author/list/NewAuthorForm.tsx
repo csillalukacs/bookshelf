@@ -6,13 +6,13 @@ import LinkComponent from "@/components/LinkComponent";
 import { TextInput } from "@/components/TextInput";
 import { useActionState, useEffect } from "react";
 
-export default function Form({isDialog = false, closeSelf}: {isDialog?: boolean, closeSelf?: () => void})
+export default function Form({closeSelf}: {closeSelf: () => void})
 {
     const [formState, formAction, isPending] = useActionState(addAuthor, {success: false, error: ''});
 
     useEffect(() => 
     {
-      if (isDialog && closeSelf && formState?.success) 
+      if (formState?.success) 
       {
         closeSelf();
       }
@@ -21,11 +21,9 @@ export default function Form({isDialog = false, closeSelf}: {isDialog?: boolean,
     return (
       <>
         <Heading size={2}>Add a new author</Heading>
-        <p>
-          To add a new author to the database, enter their name here.
-        </p>
         <form action={formAction} className="flex flex-col gap-4 text-black">
           <TextInput 
+            label="Name"
             required={true}
             name="name"
             disabled={isPending}
