@@ -7,8 +7,8 @@ import { Edition, List } from "@/app/lib/definitions";
 import { removeEditionFromList } from "@/app/actions/list-actions";
 
 export default function CardMenu(
-    {lists, edition, currentList} : 
-    {lists: List[], edition: Edition, currentList?: List}
+    {lists, edition, currentList, userId} : 
+    {lists: List[], edition: Edition, currentList?: List, userId: string}
 ) 
 {
     const [showListSelection, setShowListSelection] = useState(false);
@@ -42,9 +42,11 @@ export default function CardMenu(
                 <MenuItem onClick={() => setShowListSelection(true)}>
                     Add to list
                 </MenuItem>
-                {currentList && <MenuItem onClick={() => removeEditionFromList(edition.id, currentList.id)}>
-                    Remove from list
-                </MenuItem>}
+                {currentList && userId === currentList.user_id &&
+                    <MenuItem onClick={() => removeEditionFromList(edition.id, currentList.id)}>
+                        Remove from list
+                    </MenuItem>
+                }
             </Menu>
                 <ListSelectionDialog 
                     lists={lists} 
