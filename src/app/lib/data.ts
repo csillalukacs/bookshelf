@@ -1,4 +1,4 @@
-import { Author, Book, Edition, Language, List, Publisher } from './definitions';
+import { Author, Book, Edition, Language, List, Publisher, User } from './definitions';
 import { pool } from '../postgres';
  
  
@@ -275,5 +275,37 @@ export async function fetchEditionsByListId(id: string): Promise<Edition[]>
   {
     console.error('Database Error:', error);
     throw new Error(`Failed to fetch editions by list with id ${id}`);
+  }
+}
+
+export async function fetchUserByEmail(email: string): Promise<User | null> 
+{
+  try
+  {
+    console.log(`Fetching user with email ${email}...`);
+    const data = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    if (data.rows.length === 0) return null;
+    return data.rows[0];
+  }
+  catch (error)
+  {
+    console.error('Database Error:', error);
+    throw new Error(`Failed to fetch user with email ${email}`);
+  }
+}
+
+export async function fetchUserById(id: string): Promise<User | null>
+{
+  try
+  {
+    console.log(`Fetching user with id ${id}...`);
+    const data = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+    if (data.rows.length === 0) return null;
+    return data.rows[0];
+  }
+  catch (error)
+  {
+    console.error('Database Error:', error);
+    throw new Error(`Failed to fetch user with id ${id}`);
   }
 }

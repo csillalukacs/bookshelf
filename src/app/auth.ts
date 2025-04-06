@@ -2,7 +2,7 @@ import NextAuth from "next-auth"
 import authConfig from "./auth.config"
 import PostgresAdapter from "@auth/pg-adapter"
 import { pool } from "./postgres"
-
+import { fetchUserByEmail } from "./lib/data"
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     adapter: PostgresAdapter(pool),
@@ -20,6 +20,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           token.uid = user.id;
         }
         return token;
+      },
+      async signIn({ user, account, profile })
+      {
+        const existingUser = await fetchUserByEmail(user.email!);
+        if (!existingUser) 
+        {
+          console.log("wow you're new!")
+        }
+        else 
+        {
+          console.log("you're old", existingUser)
+        }
+        return true;
       },
     },
   });
