@@ -4,7 +4,7 @@ export default function Button(
 )
 {
     const className = "bg-[var(--button)] hover:bg-[var(--button-hover)] text-white font-bold py-2 px-4 rounded-full cursor-pointer"
-    const textClassName = "py-2 px-4 hover:underline cursor-pointer" + (red ? ` text-red-600` : "text-[var(--dark)]")
+    const textClassName = "py-2 px-4 hover:underline cursor-pointer " + (red ? 'text-red-600' : 'text-[var(--dark)]')
     
     return (
         <button 
