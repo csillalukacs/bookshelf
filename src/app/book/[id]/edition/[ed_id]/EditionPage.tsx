@@ -54,6 +54,7 @@ export default async function EditionPage(
                     </p>
                     <EditPublisher edition={edition} publishers={publishers} />
                 </div>
+                <p>ISBN: {edition.isbn} </p>
                 <p>
                     Language: {language.name}
                 </p>
