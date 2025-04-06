@@ -1,12 +1,11 @@
 'use client';
 
 import { IconButton, Menu, MenuItem } from '@mui/material';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { SignOut } from './sign-out';
-import UserAvatar from './UserAvatar';
 import Link from 'next/link';
 
-export default function AccountMenu() 
+export default function AccountMenu({children} : {children: React.ReactNode})
 {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -22,7 +21,7 @@ export default function AccountMenu()
 
     return (<>
         <IconButton onClick={handleClick}>
-            <UserAvatar />
+            {children}
         </IconButton>
         <Menu
             open={open}

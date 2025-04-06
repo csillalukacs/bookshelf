@@ -4,11 +4,13 @@ import LinkComponent from "./LinkComponent";
 import Heading from "./Heading";
 import SignIn from "./sign-in";
 import Logo from "./Logo";
+import UserAvatar from "./UserAvatar";
 
 
 export default async function NavBar() 
 {
     const session = await auth();
+    const userId = session?.user?.id;
 
     return (
         <div className="bg-[var(--dark)] text-white shadow-md font-family-[var(--font-header)]">
@@ -21,11 +23,11 @@ export default async function NavBar()
                         </LinkComponent>
                     </div>
                     <div className="flex gap-[24px] flex-wrap items-center justify-center ">
-                        {session && <LinkComponent href="/profile/lists" nav={true}>My Lists</LinkComponent>}
+                        {userId && <LinkComponent href="/profile/lists" nav={true}>My Lists</LinkComponent>}
                         <LinkComponent href="/publisher/list" nav={true}>Publishers</LinkComponent>
                         <LinkComponent href="/author/list" nav={true}>Authors</LinkComponent>
                         <LinkComponent href="/book/list" nav={true}>Books</LinkComponent>
-                        {session ? <AccountMenu /> : <SignIn/>}
+                        {userId ? <AccountMenu><UserAvatar userId={userId} /></AccountMenu> : <SignIn/>}
                     </div>
                 </div>
             </div>
