@@ -1,10 +1,9 @@
 import UserAvatar from "@/components/UserAvatar";
 import { SignOut } from "@/components/sign-out";
 import { auth } from "@/app/auth";
-import Link from "next/link";
 import { fetchListsByUserId } from "../lib/data";
-import Button from "@/components/Button";
 import LinkComponent from "@/components/LinkComponent";
+import CreateList from "./lists/CreateNewList";
 
 export default async function Profile() 
 {
@@ -26,7 +25,7 @@ export default async function Profile()
       <ul>
         {lists.map(list => <li key={list.id}><LinkComponent href={`/list/${list.id}`}>{list.name}</LinkComponent></li>)}
       </ul>
-      <Link href={'/list/new'}><Button label="Create a new list" disabled={false} /></Link>
+      <CreateList userId={session.user.id!} />
     </div>
   );
 }

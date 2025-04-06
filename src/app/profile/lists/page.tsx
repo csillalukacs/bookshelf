@@ -12,8 +12,8 @@ export default async function Profile()
   const lists = await fetchListsByUserId(session.user.id!);
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex flex-row gap-4 justify-between items-center">
+    <div className="w-full flex flex-col gap-4">
+      <div className="w-full flex flex-row gap-4 justify-between items-center">
         <Heading size={3}>My lists</Heading>
         <CreateList userId={session.user.id!} />
       </div>
