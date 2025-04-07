@@ -15,11 +15,15 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.1",
     "@mui/material": "^7.0.1",
+    "@react-three/drei": "^10.0.6",
+    "@react-three/fiber": "^9.1.2",
     "next": "15.2.3",
     "next-auth": "^5.0.0-beta.25",
     "pg": "^8.14.1",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "three": "^0.175.0",
+    "three-stdlib": "^2.35.15"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

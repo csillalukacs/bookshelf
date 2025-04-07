@@ -1,7 +1,8 @@
 import { fetchEditionsByListId, fetchListsByUserId, fetchUserById } from "@/app/lib/data";
-import BookList from "@/app/list/[id]/BookList";
 import Heading from "@/components/Heading";
 import { notFound } from "next/navigation";
+import Bookshelf from "./Bookshelf";
+import BookList from "@/app/list/[id]/BookList";
 
 export default async function Page({ params }: { params: { id: string } }) 
 {
@@ -11,11 +12,13 @@ export default async function Page({ params }: { params: { id: string } })
     if (!user) notFound();
 
     const lists = await fetchListsByUserId(id);
+    const featuredBooks = await fetchEditionsByListId(lists[1].id);
 
 
     return (
-        <div>
+        <div className="flex flex-col gap-4 w-full">
             <Heading size={4}>{user.username}</Heading>
+            <Bookshelf list={featuredBooks}/>
             <div className="flex flex-col gap-4">
                 {lists.map(async list => {
                     const editions = await fetchEditionsByListId(list.id);
