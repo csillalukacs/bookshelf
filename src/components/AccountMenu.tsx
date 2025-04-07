@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { SignOut } from './sign-out';
 import Link from 'next/link';
 
-export default function AccountMenu({children} : {children: React.ReactNode})
+export default function AccountMenu({children, userId} : {children: React.ReactNode, userId: string})
 {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -30,7 +30,10 @@ export default function AccountMenu({children} : {children: React.ReactNode})
             onClick={handleClose}
         >
             <MenuItem>
-                <Link href="/profile">Profile</Link>
+                <Link href={`/profile/${userId}`}>Profile</Link>
+            </MenuItem>
+            <MenuItem>
+                <Link href="/profile">Account Settings</Link>
             </MenuItem>
             <MenuItem>
                 <SignOut />

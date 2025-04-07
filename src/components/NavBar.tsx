@@ -27,7 +27,7 @@ export default async function NavBar()
                         <LinkComponent href="/publisher/list" nav={true}>Publishers</LinkComponent>
                         <LinkComponent href="/author/list" nav={true}>Authors</LinkComponent>
                         <LinkComponent href="/book/list" nav={true}>Books</LinkComponent>
-                        {userId ? <AccountMenu><UserAvatar userId={userId} /></AccountMenu> : <SignIn/>}
+                        {userId ? <AccountMenu userId={userId}><UserAvatar userId={userId} /></AccountMenu> : <SignIn/>}
                     </div>
                 </div>
             </div>
