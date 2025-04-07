@@ -1,4 +1,5 @@
-import { fetchBookById, fetchListsByUserId, getCoverUrl } from "@/app/lib/data";
+import { fetchBookById, fetchListsByUserId } from "@/app/lib/data";
+import { getCoverUrl } from "@/app/lib/utils";
 import  Image from "next/image";
 import { Edition, List } from "@/app/lib/definitions";
 import Link from "next/link";
@@ -10,7 +11,7 @@ export default async function EditionCard(
     { edition, linkToBook = false, currentList }: 
     { edition: Edition, linkToBook?: boolean, currentList?: List })
 {
-    const coverUrl = await getCoverUrl(edition);
+    const coverUrl = getCoverUrl(edition);
     const session = await auth();
     const book = await fetchBookById(edition.book_id);
     let list: List[] = [];

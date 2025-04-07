@@ -234,18 +234,6 @@ export async function fetchEditionById(id: string): Promise<Edition>
   }
 }
 
-export async function getCoverUrl(edition: Edition): Promise<string>
-{
-  if (edition.cover_img) return process.env.CLOUDFRONT_URL + edition.cover_img;
-  else return `https://covers.openlibrary.org/b/isbn/${edition.isbn}-M.jpg`;
-}
-
-export async function getSpineUrl(edition: Edition): Promise<string>
-{
-  if (edition.spine_img) return process.env.CLOUDFRONT_URL + edition.spine_img;
-  else return '';
-}
-
 export async function fetchListById(id: string): Promise<List>
 {
   try
