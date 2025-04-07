@@ -1,10 +1,11 @@
 'use server'
 
+import { revalidatePath } from "next/cache";
 import { auth } from "../auth";
 import { pool } from "../postgres";
 import { SimpleResult } from "./actions";
 
-export async function editUsername(prevState: any, formData: FormData): Promise<SimpleResult>
+export async function editUsername(prevState: SimpleResult, formData: FormData): Promise<SimpleResult>
 {
     const session = await auth();
     if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
@@ -25,6 +26,7 @@ export async function editUsername(prevState: any, formData: FormData): Promise<
             'UPDATE users SET username = $1 WHERE id = $2 RETURNING *', 
             [usernameStr, userId]
         );
+        revalidatePath('/profile');
         return {success: true};
     }
     catch (error) 
