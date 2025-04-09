@@ -12,7 +12,7 @@ export default async function Page({ params }: { params: { id: string } })
     if (!user) notFound();
 
     const lists = await fetchListsByUserId(id);
-    const featuredBooks = await fetchEditionsByListId(lists[1].id);
+    const featuredBooks = await fetchEditionsByListId(lists[0].id);
 
 
     return (

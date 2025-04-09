@@ -113,7 +113,7 @@ export async function updatePublisher(prevState: SimpleResult, formData: FormDat
       [publisherId, editionId]
     );
     const bookId = formData.get('bookId');
-    revalidatePath(`/book/${bookId}/edition/${editionId}`);
+    revalidatePath(`/edition/${editionId}`);
     return {success: true};
   } 
   catch (error) 
@@ -192,8 +192,8 @@ export async function updateDimensions(prevState: SimpleResult, formData: FormDa
       'UPDATE edition SET height = $1, width = $2, thickness = $3 WHERE id = $4 RETURNING *', 
       [heightNum, widthNum, thicknessNum, editionId]
     );
-    const bookId = formData.get('bookId');
-    revalidatePath(`/book/${bookId}/edition/${editionId}`);
+
+    revalidatePath(`/edition/${editionId}`);
     return {success: true};
   } 
   catch (error) 
@@ -226,12 +226,11 @@ export async function deleteEdition(id: string, bookId: string)
   {
     console.log(`Deleting edition with id ${id}...`);
     const result = await pool.query('DELETE FROM edition WHERE id = $1', [id]);
-
-    redirect(`/book/${bookId}`, RedirectType.push)
   } 
   catch (error) 
   {
     console.error('Database Error:', error);
     throw new Error(`Failed to delete edition with id ${id}`);
   }
+  redirect(`/book/${bookId}`, RedirectType.push)
 }

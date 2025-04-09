@@ -1,4 +1,4 @@
-import { fetchBookById, fetchListsByUserId } from "@/app/lib/data";
+import { fetchListsByUserId } from "@/app/lib/data";
 import { getSpineUrl } from "@/app/lib/utils";
 import  Image from "next/image";
 import { Edition, List } from "@/app/lib/definitions";
@@ -7,12 +7,11 @@ import { auth } from "@/app/auth";
 
 
 export default async function SpineCard(
-    { edition, linkToBook = false }: 
-    { edition: Edition, linkToBook?: boolean })
+    { edition }: 
+    { edition: Edition })
 {
     const spineUrl = getSpineUrl(edition);
     const session = await auth();
-    const book = await fetchBookById(edition.book_id);
     let list: List[] = [];
     if (session?.user?.id) list = await fetchListsByUserId(session.user.id!);
 
@@ -23,7 +22,7 @@ export default async function SpineCard(
     return (
         <div key={edition.id} className={`relative inline-block bg-white rounded-tl-sm rounded-tr-sm overflow-hidden`}>
             <Link 
-                href={`/book/${book.id}` + (linkToBook ? '' : `/edition/${edition.id}`)} 
+                href={`/edition/${edition.id}`} 
             >
                 <Image 
                     src={spineUrl} 

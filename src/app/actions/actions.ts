@@ -70,7 +70,7 @@ export async function uploadImage(prevState: any, formData: FormData): Promise<S
       await updateSpineImg(fileKey, editionId.toString());
     }
 
-    revalidatePath(`/book/${bookId}/edition/${editionId}`);
+    revalidatePath(`/edition/${editionId}`);
     return { success: true };
   } 
   catch (error) 

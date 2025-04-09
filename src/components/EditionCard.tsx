@@ -23,7 +23,7 @@ export default async function EditionCard(
                 <CardMenu edition={edition} lists={list} currentList={currentList} userId={session.user.id} />
             }
             <Link 
-                href={`/book/${book.id}` + (linkToBook ? '' : `/edition/${edition.id}`)} 
+                href={ linkToBook ? `/book/${book.id}` : `/edition/${edition.id}`} 
             >
                 <Image 
                     src={coverUrl} 
