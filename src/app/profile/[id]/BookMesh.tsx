@@ -4,10 +4,9 @@ import { Edition } from "@/app/lib/definitions";
 import { getCoverUrl, getSpineUrl } from "@/app/lib/utils";
 import { useTexture } from "@react-three/drei";
 
-export default function BookMesh({edition, position}: 
-    {edition: Edition, position: [number, number, number]})
+export default function BookMesh({edition, position, scale}: 
+    {edition: Edition, position: [number, number, number], scale: number})
 {
-    const scale = 0.02; 
     
     let coverUrl = getCoverUrl(edition)
     if (!coverUrl) coverUrl = "/cover.jpeg";
