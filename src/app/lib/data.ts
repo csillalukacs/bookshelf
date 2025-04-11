@@ -297,3 +297,22 @@ export async function fetchUserById(id: string): Promise<User | null>
     throw new Error(`Failed to fetch user with id ${id}`);
   }
 }
+
+export async function fetchListsByEditionId(id: string): Promise<List[]>
+{
+  try
+  {
+    console.log(`Fetching lists by edition with id ${id}...`);
+
+    const data = await pool.query(
+      'SELECT l.* FROM list l JOIN list_edition le ON l.id = le.list_id WHERE le.edition_id = $1;',
+      [id]);
+
+    return data.rows;
+  }
+  catch (error)
+  {
+    console.error('Database Error:', error);
+    throw new Error(`Failed to fetch lists by edition with id ${id}`);
+  }
+}
