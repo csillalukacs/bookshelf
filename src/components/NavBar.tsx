@@ -24,7 +24,7 @@ export default async function NavBar()
                     </div>
                     <div className="flex gap-[24px] flex-wrap items-center justify-center ">
                         {userId && <LinkComponent href="/profile/lists" nav={true}>My Lists</LinkComponent>}
-                        <LinkComponent href="/publisher/list" nav={true}>Publishers</LinkComponent>
+                        {/* <LinkComponent href="/publisher/list" nav={true}>Publishers</LinkComponent> */}
                         <LinkComponent href="/author/list" nav={true}>Authors</LinkComponent>
                         <LinkComponent href="/book/list" nav={true}>Books</LinkComponent>
                         {userId ? <AccountMenu userId={userId}><UserAvatar userId={userId} /></AccountMenu> : <SignIn/>}
