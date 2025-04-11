@@ -41,13 +41,13 @@ export default function NewEditionForm(
             disabled={isPending}
             className="w-[30%]"
           />
-          <TextInput
+          {/* <TextInput
             name="translator (optional)"
             label="Translator (optional)"
             disabled={isPending}
             list={authors}
             className="w-[65%]"
-          />
+          /> */}
         </div>
         <div className="flex flex-row justify-between">
           <TextInput 
