@@ -25,7 +25,7 @@ export default async function SpineCard(
                 href={`/edition/${edition.id}`} 
             >
                 <Image 
-                    src={spineUrl} 
+                    src={spineUrl || '/spine.png'} 
                     alt={edition.ed_title} 
                     title={edition.ed_title + ', ' + edition.year_pub + ', ISBN:' + edition.isbn} 
                     width={width} 
