@@ -12,9 +12,6 @@ export default async function Page({ params }: { params: { id: string } })
     return (
         <div>
             <Heading size={2}>{author.name}</Heading>
-            <button>
-                Edit details
-            </button>
             <CardList>
                 {books.map(book => <BookCard key={book.id} book={book} /> )}
             </CardList>

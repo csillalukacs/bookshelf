@@ -36,9 +36,6 @@ export default async function Page({ params }: { params: { id: string } })
                 <p>
                     Original language: {language.name}
                 </p>
-                <button>
-                    Edit details
-                </button>
                 <AddEdition book={book} authors={authors} languages={languages} publishers={publishers} />
                 <p>Editions</p>
                 <CardList>
