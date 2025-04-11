@@ -23,7 +23,7 @@ export default async function Page({ params }: { params: { id: string } })
                 {lists.map(async list => {
                     const editions = await fetchEditionsByListId(list.id);
                     return <div key={list.id}>
-                        <BookList list={list} showSpines={false} editions={editions} />
+                        <BookList list={list} view={"cover"} allowViewSwitch={false} editions={editions} />
                     </div>
                 })}
             </div>

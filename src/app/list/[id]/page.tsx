@@ -4,13 +4,23 @@ import BookList from "./BookList";
 import DeleteButton from "./DeleteButton";
 import { auth } from "@/app/auth";
 import { notFound } from "next/navigation";
+import { View } from "@/app/lib/definitions";
 
+function isValidView(view: string | string[] | null | undefined): view is View
+{
+    if (!view) return false;
+    if (typeof view === "string") return ["cover", "spine", "3d"].includes(view);
 
-export default async function Page({ params }: { params: { id: string } }) 
+    return false;
+}
+
+export default async function Page({ params, searchParams }: 
+    { params: { id: string }, searchParams: Promise<{ [key: string]: string | string[] | undefined}> })
 {
     const id = params.id;
     const list = await fetchListById(id);
 
+    const viewQueryParam = (await searchParams).view;
     if (!list) notFound()
     
     const editions = await fetchEditionsByListId(id);
@@ -18,12 +28,15 @@ export default async function Page({ params }: { params: { id: string } })
     const session = await auth();
     const userId = session?.user?.id;
 
-    const showSpines = editions.every(e => e.spine_img);
-
     return (
         <>
-            <BookList list={list} showSpines={showSpines} editions={editions} />
-            {userId === list.user_id && <DeleteButton id={list.id} />}
+            <BookList 
+                list={list} 
+                view={isValidView(viewQueryParam) ? viewQueryParam : "cover"} 
+                allowViewSwitch={true}
+                editions={editions} 
+            />
+            { userId === list.user_id && <DeleteButton id={list.id} /> }
         </>
     )
 }

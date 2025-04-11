@@ -21,9 +21,8 @@ export default async function Profile()
         {lists.map(async list => 
         {
           const editions = await fetchEditionsByListId(list.id);
-          const showSpines = editions.every(e => e.spine_img);
           return <div key={list.id}>
-            <BookList list={list} showSpines={false && showSpines} editions={editions} />
+            <BookList list={list} view={"cover"} allowViewSwitch={false} editions={editions} />
           </div>
       })}
       </div>

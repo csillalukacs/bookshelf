@@ -61,3 +61,5 @@ export type User =
   username: string | null;
   uploadedImage: string | null;
 }
+
+export type View = "cover" | "spine" | "3d";
