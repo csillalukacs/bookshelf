@@ -5,6 +5,7 @@ import { Author } from "../lib/definitions";
 import { Result } from "./actions";
 import { auth } from "../auth";
 import { pool } from "../postgres";
+import { redirect, RedirectType } from "next/navigation";
 
 
 export async function addAuthor(prevState: Result<Author>, formData: FormData): Promise<Result<Author>> 
@@ -56,5 +57,6 @@ export async function deleteAuthor(id: string)
     console.error('Database Error:', error);
     return  {error: 'Unknown database error'};
   }
-  revalidatePath('/author/list')
+  revalidatePath('/author/list');
+  redirect('/author/list', RedirectType.replace);
 }

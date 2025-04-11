@@ -1,5 +1,4 @@
 import { fetchAuthors } from "@/app/lib/data";
-import DeleteButton from "./DeleteAuthor";
 import { auth } from "@/app/auth";
 import LinkComponent from "@/components/LinkComponent";
 import Heading from "@/components/Heading";
@@ -19,7 +18,6 @@ export default async function Page()
       <ul className="self-start">
           {authors.map(a=>
             <li key={a.id}>
-              {session && <DeleteButton id={a.id}/>}
               <LinkComponent href={`/author/${a.id}`}>
                 {a.name}
               </LinkComponent>
