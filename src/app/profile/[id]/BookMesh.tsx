@@ -13,7 +13,10 @@ export default function BookMesh({edition, position, scale}:
     const [rotationX, setRotationX] = useState(0)
     const [positionZ, setPositionZ] = useState(position[2])
 
-    const myMesh = useRef<Mesh>(null);
+    const speed = 0.01;
+    const tolerance = 0.01;
+
+    const mesh = useRef<Mesh>(null);
     
     let coverUrl = getCoverUrl(edition)
     if (!coverUrl) coverUrl = "/cover.jpeg";
@@ -25,37 +28,41 @@ export default function BookMesh({edition, position, scale}:
 
     useFrame(({ clock }) => 
     {
-        if (myMesh.current)
+        if (mesh.current)
         {
-            if (Math.abs(myMesh.current.rotation.x - rotationX) > 0.01)
-                myMesh.current.rotation.x = 0.001 * clock.elapsedTime * (rotationX - myMesh.current.rotation.x) + myMesh.current.rotation.x;
+            if (Math.abs(mesh.current.rotation.x - rotationX) > tolerance)
+                mesh.current.rotation.x += speed * clock.elapsedTime * (rotationX - mesh.current.rotation.x);
             else 
-                myMesh.current.rotation.x = rotationX;
-            if (Math.abs(myMesh.current.position.z - positionZ) > 0.01)
-                myMesh.current.position.z = 0.001 * clock.elapsedTime * (positionZ - myMesh.current.position.z) + myMesh.current.position.z;
+                mesh.current.rotation.x = rotationX;
+            if (Math.abs(mesh.current.position.z - positionZ) > tolerance)
+                mesh.current.position.z += speed * clock.elapsedTime * (positionZ - mesh.current.position.z);
             else 
-                myMesh.current.position.z = positionZ;
+                mesh.current.position.z = positionZ;
         }    
     })
 
     const handleClick = (e: Event) => 
     {
         e.stopPropagation();
-        if (rotationX === 0) setRotationX(Math.PI/8);
+
+        if (rotationX === 0) 
+            setRotationX(Math.PI/8);
         else setRotationX(0);
-        if (positionZ === position[2]) setPositionZ(position[2] + 100 * scale);
+
+        if (positionZ === position[2]) 
+            setPositionZ(position[2] + 100 * scale);
         else setPositionZ(position[2]);
     }
 
     return (
-        <mesh position={position} ref={myMesh} onClick={handleClick}>
+        <mesh position={position} ref={mesh} onClick={handleClick}>
             <boxGeometry args={[edition.thickness*scale, edition.height*scale, edition.width*scale]}/>
             <meshStandardMaterial attach="material-0" map={cover}/> {/*right*/}
             <meshStandardMaterial attach="material-1" color={"green"}/> {/*left*/}
             <meshStandardMaterial attach="material-2" color={"yellow"}/> {/*top*/}
             <meshStandardMaterial attach="material-3" color={"yellow"}/> {/*bottom*/}
             <meshStandardMaterial attach="material-4" map={spine}/> {/*front*/}
-            <meshStandardMaterial attach="material-5" color={"purple"}/> {/*back*/}
+            <meshStandardMaterial attach="material-5" color={"yellow"}/> {/*back*/}
         </mesh>
     )
 }
