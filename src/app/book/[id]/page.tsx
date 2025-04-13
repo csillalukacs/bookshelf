@@ -36,7 +36,7 @@ export default async function Page({ params }: { params: { id: string } })
                 <p>
                     Original language: {language.name}
                 </p>
-                <AddEdition book={book} authors={authors} languages={languages} publishers={publishers} />
+                <AddEdition book={book} languages={languages} publishers={publishers} />
                 <p>Editions</p>
                 <CardList>
                     {editions.map(async (edition) => 
