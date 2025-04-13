@@ -220,6 +220,8 @@ export async function fetchEditionsByPublisherId(id: string): Promise<Edition[]>
 
 export async function deleteEdition(id: string, bookId: string)
 {
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
   try
   {
     console.log(`Deleting edition with id ${id}...`);
