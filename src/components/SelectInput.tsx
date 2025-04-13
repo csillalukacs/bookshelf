@@ -1,7 +1,7 @@
 
 
 export function SelectInput({ disabled, name, list, label, className = "" } : 
-    { disabled: boolean, name: string, list: any[], label? : string, className? : string }
+    { disabled: boolean, name: string, list: {id: string, name: string}[], label? : string, className? : string }
 ) 
 {
     return (
