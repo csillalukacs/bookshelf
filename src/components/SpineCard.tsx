@@ -1,19 +1,13 @@
-import { fetchListsByUserId } from "@/app/lib/data";
 import { getSpineUrl } from "@/app/lib/utils";
 import  Image from "next/image";
-import { Edition, List } from "@/app/lib/definitions";
+import { Edition } from "@/app/lib/definitions";
 import Link from "next/link";
-import { auth } from "@/app/auth";
-
 
 export default async function SpineCard(
     { edition }: 
     { edition: Edition })
 {
     const spineUrl = getSpineUrl(edition);
-    const session = await auth();
-    let list: List[] = [];
-    if (session?.user?.id) list = await fetchListsByUserId(session.user.id!);
 
     const scale = 1.5
     const height = edition.height * scale;
