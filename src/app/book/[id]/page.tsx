@@ -40,7 +40,7 @@ export default async function Page({ params }: { params: { id: string } })
                     Original language: {language.name}
                 </p>
                 { session && <AddEdition book={book} languages={languages} publishers={publishers} />}
-                <p>Editions</p>
+                <Heading size={1}>Editions</Heading>
                 <CardList>
                     {editions.map(async (edition) => 
                             <EditionCard key={edition.id} edition={edition} />
