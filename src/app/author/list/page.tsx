@@ -1,5 +1,4 @@
 import { fetchAuthors } from "@/app/lib/data";
-import { auth } from "@/app/auth";
 import LinkComponent from "@/components/LinkComponent";
 import Heading from "@/components/Heading";
 import AddAuthor from "./AddAuthor";
@@ -7,7 +6,6 @@ import AddAuthor from "./AddAuthor";
 export default async function Page() 
 {
   const authors = await fetchAuthors();
-  const session = await auth();
 
   return (
     <>

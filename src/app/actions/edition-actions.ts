@@ -21,7 +21,6 @@ export async function addEdition(prevState: Result<Edition>, formData: FormData)
   const bookId = formData.get('bookId');
   const isbn = formData.get('isbn');
   const publisher = formData.get('publisher');
-  const translator = formData.get('translator');
   const pages = formData.get('pages');
   const height = formData.get('height');
   const width = formData.get('width');
@@ -108,11 +107,10 @@ export async function updatePublisher(prevState: SimpleResult, formData: FormDat
   try 
   {
     console.log(`Updating publisher for edition with id ${formData.get('editionId')}...`);
-    const result = await pool.query(
+    await pool.query(
       'UPDATE edition SET publisher_id = $1 WHERE id = $2 RETURNING *', 
       [publisherId, editionId]
     );
-    const bookId = formData.get('bookId');
     revalidatePath(`/edition/${editionId}`);
     return {success: true};
   } 
@@ -130,7 +128,7 @@ export async function updateCoverImg(newCoverImg: string, editionId: string)
   try 
   {
     console.log(`Updating cover image for edition with id ${editionId}...`);
-    const result = await pool.query(
+    await pool.query(
       'UPDATE edition SET cover_img = $1 WHERE id = $2 RETURNING *', 
       [newCoverImg, editionId]
     );
@@ -150,7 +148,7 @@ export async function updateSpineImg(newSpineImg: string, editionId: string): Pr
   try 
   {
     console.log(`Updating spine image for edition with id ${editionId}...`);
-    const result = await pool.query(
+    await pool.query(
       'UPDATE edition SET spine_img = $1 WHERE id = $2 RETURNING *', 
       [newSpineImg, editionId]
     );
@@ -188,7 +186,7 @@ export async function updateDimensions(prevState: SimpleResult, formData: FormDa
   try 
   {
     console.log(`Updating dimensions for edition with id ${formData.get('editionId')}...`);
-    const result = await pool.query(
+    await pool.query(
       'UPDATE edition SET height = $1, width = $2, thickness = $3 WHERE id = $4 RETURNING *', 
       [heightNum, widthNum, thicknessNum, editionId]
     );
@@ -225,7 +223,7 @@ export async function deleteEdition(id: string, bookId: string)
   try
   {
     console.log(`Deleting edition with id ${id}...`);
-    const result = await pool.query('DELETE FROM edition WHERE id = $1', [id]);
+    await pool.query('DELETE FROM edition WHERE id = $1', [id]);
   } 
   catch (error) 
   {

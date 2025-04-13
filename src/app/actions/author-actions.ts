@@ -50,7 +50,7 @@ export async function deleteAuthor(id: string)
   try 
   {
     console.log(`Deleting author with id ${id}...`);
-    const result = await pool.query('DELETE FROM author WHERE id = $1', [id]);
+    await pool.query('DELETE FROM author WHERE id = $1', [id]);
   } 
   catch (error) 
   {

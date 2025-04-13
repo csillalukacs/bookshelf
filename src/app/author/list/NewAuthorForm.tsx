@@ -16,7 +16,7 @@ export default function Form({closeSelf}: {closeSelf: () => void})
       {
         closeSelf();
       }
-    }, [formState])
+    }, [formState, closeSelf])
 
     return (
       <>

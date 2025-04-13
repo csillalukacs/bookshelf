@@ -4,7 +4,6 @@ import { addBook } from "@/app/actions/book-actions";
 import { Author, Language } from "@/app/lib/definitions";
 import Button from "@/components/Button";
 import Heading from "@/components/Heading";
-import LinkComponent from "@/components/LinkComponent";
 import { NumberInput } from "@/components/NumberInput";
 import { SelectInput } from "@/components/SelectInput";
 import { TextInput } from "@/components/TextInput";
@@ -23,7 +22,7 @@ export default function NewBookForm(
       {
         closeSelf();
       }
-    }, [formState])
+    }, [formState, closeSelf])
 
     return (
       <>

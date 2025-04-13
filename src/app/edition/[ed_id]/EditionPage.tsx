@@ -19,7 +19,8 @@ export default async function EditionPage(
 ) 
 {
     const session = await auth();
-    const userLists = await fetchListsByUserId(session?.user?.id!);
+    let userLists: List[] = [];
+    if (session?.user?.id) userLists = await fetchListsByUserId(session?.user?.id);
     const publishers = await fetchPublishers();
 
     return (
@@ -40,9 +41,13 @@ export default async function EditionPage(
                             height={200}
                         />
                     </div>
-                    <UploadImage edition={edition} type="cover" />
-                    <UploadImage edition={edition} type="spine" />
-                    <AddToList edition={edition} lists={userLists}/>
+                    { session?.user?.id && 
+                    <>
+                        <UploadImage edition={edition} type="cover" />
+                        <UploadImage edition={edition} type="spine" />
+                        <AddToList edition={edition} lists={userLists}/>
+                    </>
+                    }
                 </div>
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col gap-0">

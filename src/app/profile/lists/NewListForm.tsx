@@ -16,7 +16,7 @@ export default function NewListForm({userId, closeSelf}: {userId: string, closeS
     {
       closeSelf();
     }
-  }, [formState])
+  }, [formState, closeSelf])
 
   return (
     <>

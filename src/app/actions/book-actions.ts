@@ -67,7 +67,7 @@ export async function deleteBook(id: string)
   try 
   {
     console.log(`Deleting book with id ${id}...`);
-    const result = await pool.query('DELETE FROM book WHERE id = $1', [id]);
+    await pool.query('DELETE FROM book WHERE id = $1', [id]);
   } 
   catch (error) 
   {
@@ -103,7 +103,7 @@ export async function updateBookAuthor(prevState: SimpleResult, formData: FormDa
   try 
   {
     console.log(`Updating author for book with id ${formData.get('bookId')}...`);
-    const result = await pool.query(
+    await pool.query(
       'UPDATE book SET author_id = $1 WHERE id = $2 RETURNING *', 
       [authorId, bookId]
     );

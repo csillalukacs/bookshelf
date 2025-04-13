@@ -65,7 +65,7 @@ export async function addEditionToList(prevState: SimpleResult, formData: FormDa
 
   try {
     console.log(`Adding edition ${editionId} to list ${listId}...`);
-    const result = await pool.query(
+    await pool.query(
       'INSERT INTO list_edition (list_id, edition_id) VALUES ($1, $2) RETURNING *', 
       [listId, editionId]
     );
@@ -92,7 +92,7 @@ export async function removeEditionFromList(editionId: string, listId: string) :
 
   try {
     console.log(`Removing edition ${editionId} from list ${listId}...`);
-    const result = await pool.query(
+    await pool.query(
       'DELETE FROM list_edition WHERE list_id = $1 AND edition_id = $2',
       [listId, editionId]
     );
@@ -119,7 +119,7 @@ export async function deleteList(id: string)
 
   try {
     console.log(`Deleting list with id ${id}...`);
-    const result = await pool.query('DELETE FROM list WHERE id = $1', [id]);
+    await pool.query('DELETE FROM list WHERE id = $1', [id]);
   } 
   catch (error) 
   {

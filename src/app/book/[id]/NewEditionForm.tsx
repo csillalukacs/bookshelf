@@ -1,7 +1,7 @@
 'use client';
 
 import { addEdition } from "@/app/actions/edition-actions";
-import { Author, Book, Language, Publisher } from "@/app/lib/definitions";
+import { Book, Language, Publisher } from "@/app/lib/definitions";
 import Button from "@/components/Button";
 import Heading from "@/components/Heading";
 import { NumberInput } from "@/components/NumberInput";
@@ -10,8 +10,8 @@ import { TextInput } from "@/components/TextInput";
 import { useActionState, useEffect } from "react";
 
 export default function NewEditionForm(
-  { authors, languages, book, publishers, closeSelf }:
-    { authors: Author[], languages: Language[], book: Book, publishers: Publisher[], closeSelf: () => void }
+  { languages, book, publishers, closeSelf }:
+    { languages: Language[], book: Book, publishers: Publisher[], closeSelf: () => void }
 ) 
 {
   const [formState, formAction, isPending] = useActionState(addEdition, { success: false, error: '' });
@@ -19,7 +19,7 @@ export default function NewEditionForm(
   useEffect(() => 
   {
     if (formState.success) closeSelf();
-  }, [formState])
+  }, [formState, closeSelf])
 
   return (
     <>

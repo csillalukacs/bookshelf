@@ -27,7 +27,7 @@ export async function logOut ()
     )
   }
 
-export async function uploadImage(prevState: any, formData: FormData): Promise<SimpleResult>
+export async function uploadImage(prevState: SimpleResult, formData: FormData): Promise<SimpleResult>
 {
   const session = await auth();
   if (!session?.user) return { success: false, error: "You must be logged in to perform this action." };

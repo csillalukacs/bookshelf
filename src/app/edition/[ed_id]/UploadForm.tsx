@@ -20,7 +20,7 @@ export default function UploadForm(
     {
       closeSelf();
     }
-  }, [formState])
+  }, [formState, closeSelf])
   
   return (
     <div>

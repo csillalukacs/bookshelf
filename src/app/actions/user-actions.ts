@@ -22,7 +22,7 @@ export async function editUsername(prevState: SimpleResult, formData: FormData):
     try 
     {
         console.log(`Updating username for user with id ${userId}...`);
-        const result = await pool.query(
+        await pool.query(
             'UPDATE users SET username = $1 WHERE id = $2 RETURNING *', 
             [usernameStr, userId]
         );

@@ -21,7 +21,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
         return token;
       },
-      async signIn({ user, account, profile })
+      async signIn({ user })
       {
         const existingUser = await fetchUserByEmail(user.email!);
         if (!existingUser) 

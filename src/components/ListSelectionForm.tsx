@@ -19,7 +19,7 @@ export default function ListSelectionForm(
       {
         closeSelf();
       }
-    }, [formState])
+    }, [formState, closeSelf])
 
     return (
         <div className="">
