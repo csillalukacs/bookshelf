@@ -60,7 +60,7 @@ export default async function EditionPage(
                         <p>
                             Published: {edition.year_pub} by <LinkComponent href={`/publisher/${publisher.id}`}>{publisher.name}</LinkComponent>
                         </p>
-                        <EditPublisher edition={edition} publishers={publishers} />
+                        { session && <EditPublisher edition={edition} publishers={publishers} />}
                     </div>
                     <p>ISBN: {edition.isbn} </p>
                     <p>
@@ -68,10 +68,10 @@ export default async function EditionPage(
                     </p>
                     <div className="flex flex-row gap-2">
                         <p> Dimensions (mm): {edition.height} x {edition.width} x {edition.thickness}</p>
-                        <EditDimensions edition={edition} />
+                        { session && <EditDimensions edition={edition} />}
                     </div>
                     <LinkComponent href={`/book/${book.id}`}>See all editions</LinkComponent>
-                    <DeleteButton id={edition.id} bookId={book.id} />
+                    { session &&<DeleteButton id={edition.id} bookId={book.id} />}
                 </div>
             </div>
             { containingLists.length > 0 &&

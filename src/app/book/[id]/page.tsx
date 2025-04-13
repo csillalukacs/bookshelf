@@ -6,6 +6,7 @@ import Heading from "@/components/Heading";
 import { DeleteBookButton } from "./DeleteBook";
 import AddEdition from "@/app/book/[id]/AddEdition";
 import EditAuthor from "./EditAuthor";
+import { auth } from "@/app/auth";
 
 export default async function Page({ params }: { params: { id: string } }) 
 {
@@ -17,6 +18,8 @@ export default async function Page({ params }: { params: { id: string } })
     const authors = await fetchAuthors();
     const languages = await fetchLanguages();
     const publishers = await fetchPublishers();
+    
+    const session = await auth();
 
     return (
         <div>
@@ -27,7 +30,7 @@ export default async function Page({ params }: { params: { id: string } })
                         <LinkComponent href={`/author/${author.id}`}>
                             {author.name}
                         </LinkComponent>
-                        <EditAuthor book={book} authors={authors} />
+                        { session && <EditAuthor book={book} authors={authors} />}
                     </div>
                 </div>
                 <p>
@@ -36,7 +39,7 @@ export default async function Page({ params }: { params: { id: string } })
                 <p>
                     Original language: {language.name}
                 </p>
-                <AddEdition book={book} languages={languages} publishers={publishers} />
+                { session && <AddEdition book={book} languages={languages} publishers={publishers} />}
                 <p>Editions</p>
                 <CardList>
                     {editions.map(async (edition) => 
@@ -44,7 +47,7 @@ export default async function Page({ params }: { params: { id: string } })
                         )
                     }
                 </CardList>
-                <DeleteBookButton book={book} />
+                { session && <DeleteBookButton book={book} />}
             </div>
         </div>
     )
