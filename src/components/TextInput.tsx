@@ -2,7 +2,7 @@
 
 export function TextInput(
     { disabled, name, list, label, required, className = "", defaultValue, placeholder } : 
-    { disabled: boolean, name: string, list?: any[], label? : string, 
+    { disabled: boolean, name: string, list?: {id: string, name: string}[], label? : string, 
         required?: boolean, className? : string, defaultValue? : string, placeholder? : string }
 ) 
 {
