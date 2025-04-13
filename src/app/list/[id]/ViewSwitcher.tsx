@@ -25,7 +25,7 @@ export default function ViewSwitcher({view}: {view: View})
                     key={option} 
                     className={`${option === selected ? "bg-[var(--dark)] text-white" : "bg-gray-100"} 
                         text-sm p-1 rounded-sm text-gray-500 cursor-pointer`}
-                    onClick={(e) => handleChange(option as View)}
+                    onClick={() => handleChange(option as View)}
                 >
                     {labels[i]}
                 </button>
