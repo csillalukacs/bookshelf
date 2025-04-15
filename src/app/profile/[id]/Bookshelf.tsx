@@ -13,7 +13,7 @@ export default function Bookshelf({list}: {list: Edition[]})
 
     return (
         <div id="canvas-container" className="w-[80%] h-[50vh] mx-auto bg-gray-100">
-            <Canvas >
+            <Canvas camera={{ fov: 45, near: 0.1, far: 1000, position: [0, 0, 5]} }>
                 <OrbitControls />
                 <ambientLight intensity={0.1} />
 
