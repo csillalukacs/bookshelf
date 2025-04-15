@@ -4,6 +4,12 @@ import LinkComponent from "@/components/LinkComponent";
 import CreateList from "./lists/CreateNewList";
 import EditUsername from "./EditUsername";
 import Image from "next/image";
+import { Metadata } from "next";
+
+export const metadata: Metadata = 
+{
+    title: 'My Account',
+};
 
 export default async function Profile() 
 {

@@ -3,6 +3,17 @@ import Heading from "@/components/Heading";
 import { notFound } from "next/navigation";
 import Bookshelf from "./Bookshelf";
 import BookList from "@/app/list/[id]/BookList";
+import { Metadata } from "next";
+import { Props } from "@/app/lib/definitions";
+
+   
+export async function generateMetadata({ params }: Props ): Promise<Metadata> 
+{
+    const { id } = await params
+    const user = await fetchUserById(id);
+
+    return { title: user?.username}
+}
 
 export default async function Page({ params }: { params: { id: string } }) 
 {
@@ -13,7 +24,6 @@ export default async function Page({ params }: { params: { id: string } })
 
     const lists = await fetchListsByUserId(id);
     const featuredBooks = await fetchEditionsByListId(lists[0].id);
-
 
     return (
         <div className="flex flex-col gap-4 w-full">

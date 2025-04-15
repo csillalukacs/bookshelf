@@ -1,12 +1,25 @@
 import { fetchAuthorById, fetchBookById, fetchEditionById, fetchLanguageById, fetchListsByEditionId, fetchPublisherById } from "@/app/lib/data";
 import { getCoverUrl, getSpineUrl } from "@/app/lib/utils";
 import EditionPage from "./EditionPage";
-
-export default async function Page({ params }: { params: { ed_id: string } }) 
+import { Metadata } from "next";
+import { Props } from "@/app/lib/definitions";
+   
+export async function generateMetadata({ params }: Props ): Promise<Metadata> 
 {
-    const { ed_id } = await params;
+    const { id } = await params;
 
-    const edition = await fetchEditionById(ed_id);
+    const edition = await fetchEditionById(id);
+    const book = await fetchBookById(edition.book_id);
+    const author = await fetchAuthorById(book.author_id);
+
+    return { title: `${edition.ed_title} by ${author.name}`}
+}
+
+export default async function Page({ params }: { params: { id: string } }) 
+{
+    const { id } = await params;
+
+    const edition = await fetchEditionById(id);
     const book = await fetchBookById(edition.book_id);
     const author = await fetchAuthorById(book.author_id);
     const language = await fetchLanguageById(edition.lang_id);

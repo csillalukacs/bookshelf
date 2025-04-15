@@ -7,6 +7,18 @@ import { DeleteBookButton } from "./DeleteBook";
 import AddEdition from "@/app/book/[id]/AddEdition";
 import EditAuthor from "./EditAuthor";
 import { auth } from "@/app/auth";
+import { Metadata } from "next";
+import { Props } from "@/app/lib/definitions";
+   
+export async function generateMetadata({ params }: Props ): Promise<Metadata> 
+{
+    const { id } = await params
+
+    const book = await fetchBookById(id);
+    const author = await fetchAuthorById(book.author_id);
+
+    return { title: `${book.title} by ${author.name}`}
+}
 
 export default async function Page({ params }: { params: { id: string } }) 
 {

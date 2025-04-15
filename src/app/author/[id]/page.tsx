@@ -4,6 +4,16 @@ import BookCard from "@/components/BookCard";
 import CardList from "@/components/CardList";
 import Heading from "@/components/Heading";
 import DeleteAuthor from "./DeleteAuthor";
+import { Metadata } from "next";
+import { Props } from "@/app/lib/definitions";
+   
+export async function generateMetadata({ params }: Props ): Promise<Metadata> 
+{
+    const { id } = await params
+    const author = await fetchAuthorById(id);
+
+    return { title: author?.name}
+}
 
 export default async function Page({ params }: { params: { id: string } }) 
 {
