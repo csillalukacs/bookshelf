@@ -4,8 +4,15 @@ import BookCard from "@/components/BookCard";
 import CardList from "@/components/CardList";
 import Heading from "@/components/Heading";
 import { TextInput } from "@/components/TextInput";
+import { Metadata } from "next";
 
-export default async function Page() {
+export const metadata: Metadata = 
+{
+    title: 'Books',
+};
+
+export default async function Page() 
+{
   const books = await fetchBooks();
   const authors = await fetchAuthors();
   const languages = await fetchLanguages();

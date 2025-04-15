@@ -2,6 +2,12 @@ import { fetchAuthors } from "@/app/lib/data";
 import LinkComponent from "@/components/LinkComponent";
 import Heading from "@/components/Heading";
 import AddAuthor from "./AddAuthor";
+import { Metadata } from "next";
+
+export const metadata: Metadata = 
+{
+    title: 'All Authors',
+};
 
 export default async function Page() 
 {

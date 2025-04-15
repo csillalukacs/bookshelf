@@ -1,10 +1,21 @@
 
-import { fetchEditionsByListId, fetchListById } from "@/app/lib/data";
+import { fetchEditionsByListId, fetchListById, fetchUserById } from "@/app/lib/data";
 import BookList from "./BookList";
 import DeleteButton from "./DeleteButton";
 import { auth } from "@/app/auth";
 import { notFound } from "next/navigation";
-import { View } from "@/app/lib/definitions";
+import { View, Props } from "@/app/lib/definitions";
+import { Metadata } from "next";
+   
+
+export async function generateMetadata({ params }: Props ): Promise<Metadata> 
+{
+    const { id } = await params
+    const list = await fetchListById(id);
+    const user = await fetchUserById(list.user_id);
+
+    return { title: `${list.name} | ${user?.username}` }
+}
 
 function isValidView(view: string | string[] | null | undefined): view is View
 {

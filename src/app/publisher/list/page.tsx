@@ -1,7 +1,14 @@
 import { fetchPublishers } from "@/app/lib/data";
 import LinkComponent from "@/components/LinkComponent";
 import Heading from "@/components/Heading";
+import { Metadata } from "next";
 
+export const metadata: Metadata = 
+{
+    title: 'Publishers',
+};
+
+//this page is currently not used (nothing links to it)
 export default async function Page() 
 {
   const publishers = await fetchPublishers();

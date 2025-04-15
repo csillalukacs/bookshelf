@@ -3,6 +3,12 @@ import { fetchEditionsByListId, fetchListsByUserId } from "@/app/lib/data";
 import BookList from "@/app/list/[id]/BookList";
 import Heading from "@/components/Heading";
 import CreateList from "./CreateNewList";
+import { Metadata } from "next";
+
+export const metadata: Metadata = 
+{
+    title: 'My Lists',
+};
 
 export default async function Profile() 
 {
