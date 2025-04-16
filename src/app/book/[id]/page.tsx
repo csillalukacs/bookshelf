@@ -9,6 +9,7 @@ import EditAuthor from "./EditAuthor";
 import { auth } from "@/app/auth";
 import { Metadata } from "next";
 import { Props } from "@/app/lib/definitions";
+import EditYear from "./EditYear";
    
 export async function generateMetadata({ params }: Props ): Promise<Metadata> 
 {
@@ -45,9 +46,12 @@ export default async function Page({ params }: { params: { id: string } })
                         { session && <EditAuthor book={book} authors={authors} />}
                     </div>
                 </div>
-                <p>
-                    First published: {book.first_pub}
-                </p>
+                <div className="flex flex-row gap-2">
+                    <p>
+                        First published: {book.first_pub}
+                    </p>
+                    { session && <EditYear book={book} />}
+                </div>
                 <p>
                     Original language: {language.name}
                 </p>

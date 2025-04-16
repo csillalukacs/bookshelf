@@ -77,6 +77,29 @@ export async function deleteBook(id: string)
   redirect('/book/list', RedirectType.push)
 }
 
+export async function updateBookYear(prevState: SimpleResult, formData: FormData): Promise<SimpleResult>
+{
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+  
+  const id = formData.get('bookId');
+  const year = formData.get('year');
+
+  if (!year) return {success: false, error: 'Year is required'};
+
+  try 
+  {
+    await pool.query('UPDATE book SET first_pub = $1 WHERE id = $2', [year, id]);
+    revalidatePath(`/book/${id}`);
+    return {success: true};
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    return  {success: false, error: 'Unknown database error'};
+  }
+}
+
 export async function updateBookAuthor(prevState: SimpleResult, formData: FormData): Promise<SimpleResult>
 {
   const session = await auth();
