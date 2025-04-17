@@ -100,6 +100,29 @@ export async function updateBookYear(prevState: SimpleResult, formData: FormData
   }
 }
 
+export async function updateBookLanguage(prevState: SimpleResult, formData: FormData): Promise<SimpleResult>
+{
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+  
+  const id = formData.get('bookId');
+  const language = formData.get('language');
+
+  if (!language) return {success: false, error: 'Language is required'};
+
+  try 
+  {
+    await pool.query('UPDATE book SET orig_lang_id = $1 WHERE id = $2', [language, id]);
+    revalidatePath(`/book/${id}`);
+    return {success: true};
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    return  {success: false, error: 'Unknown database error'};
+  }
+}
+
 export async function updateBookAuthor(prevState: SimpleResult, formData: FormData): Promise<SimpleResult>
 {
   const session = await auth();

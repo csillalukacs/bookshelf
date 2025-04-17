@@ -1,7 +1,8 @@
 
 
-export function SelectInput({ disabled, name, list, label, className = "" } : 
-    { disabled: boolean, name: string, list: {id: string, name: string}[], label? : string, className? : string }
+export function SelectInput({ disabled, name, list, label, className = "", defaultValue, required } : 
+    { disabled: boolean, name: string, list: {id: string, name: string}[], label? : string, 
+    className? : string, defaultValue? : string, required? : boolean }
 ) 
 {
     return (
@@ -14,6 +15,8 @@ export function SelectInput({ disabled, name, list, label, className = "" } :
                 name={name} 
                 disabled={disabled}
                 id={name + "Input"}
+                defaultValue={defaultValue}
+                required={required}
             >
                 {list.map((el) => (
                     <option key={el.id} value={el.id}>

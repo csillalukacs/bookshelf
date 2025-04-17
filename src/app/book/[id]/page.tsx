@@ -10,6 +10,7 @@ import { auth } from "@/app/auth";
 import { Metadata } from "next";
 import { Props } from "@/app/lib/definitions";
 import EditYear from "./EditYear";
+import EditLanguage from "./EditLanguage";
    
 export async function generateMetadata({ params }: Props ): Promise<Metadata> 
 {
@@ -52,9 +53,12 @@ export default async function Page({ params }: { params: { id: string } })
                     </p>
                     { session && <EditYear book={book} />}
                 </div>
-                <p>
-                    Original language: {language.name}
-                </p>
+                <div className="flex flex-row gap-2">
+                    <p>
+                        Original language: {language.name}
+                    </p>
+                    { session && <EditLanguage book={book} languages={languages} />}
+                </div>
                 { session && <AddEdition book={book} languages={languages} publishers={publishers} />}
                 <Heading size={1}>Editions</Heading>
                 <CardList>
