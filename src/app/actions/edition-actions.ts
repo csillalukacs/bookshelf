@@ -121,6 +121,29 @@ export async function updatePublisher(prevState: SimpleResult, formData: FormDat
   } 
 }
 
+export async function updateEditionYear(prevState: SimpleResult, formData: FormData): Promise<SimpleResult>
+{
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+  
+  const id = formData.get('editionId');
+  const year = formData.get('year');
+
+  if (!year) return {success: false, error: 'Year is required'};
+
+  try 
+  {
+    await pool.query('UPDATE edition SET year_pub = $1 WHERE id = $2', [year, id]);
+    revalidatePath(`/edition/${id}`);
+    return {success: true};
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    return  {success: false, error: 'Unknown database error'};
+  }
+}
+
 export async function updateCoverImg(newCoverImg: string, editionId: string) 
 {
   const session = await auth();

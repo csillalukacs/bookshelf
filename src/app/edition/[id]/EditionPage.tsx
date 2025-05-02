@@ -10,6 +10,7 @@ import EditPublisher from "./EditPublisher";
 import EditDimensions from "./EditDimensions";
 import DeleteButton from "./DeleteButton";
 import BookList from "@/app/list/[id]/BookList";
+import EditYear from "./EditYear";
 
 
 export default async function EditionPage( 
@@ -58,7 +59,8 @@ export default async function EditionPage(
                     </div>
                     <div className="flex flex-row gap-2">
                         <p>
-                            Published: {edition.year_pub} by <LinkComponent href={`/publisher/${publisher.id}`}>{publisher.name}</LinkComponent>
+                            Published: {edition.year_pub} <EditYear edition={edition} />
+                            {" "} by <LinkComponent href={`/publisher/${publisher.id}`}>{publisher.name}</LinkComponent>
                         </p>
                         { session && <EditPublisher edition={edition} publishers={publishers} />}
                     </div>
