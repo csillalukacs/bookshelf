@@ -144,6 +144,29 @@ export async function updateEditionYear(prevState: SimpleResult, formData: FormD
   }
 }
 
+export async function updateEditionLanguage(prevState: SimpleResult, formData: FormData): Promise<SimpleResult>
+{
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+  
+  const id = formData.get('editionId');
+  const language = formData.get('language');
+
+  if (!language) return {success: false, error: 'Language is required'};
+
+  try 
+  {
+    await pool.query('UPDATE edition SET lang_id = $1 WHERE id = $2', [language, id]);
+    revalidatePath(`/edition/${id}`);
+    return {success: true};
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    return  {success: false, error: 'Unknown database error'};
+  }
+}
+
 export async function updateCoverImg(newCoverImg: string, editionId: string) 
 {
   const session = await auth();

@@ -11,12 +11,13 @@ import EditDimensions from "./EditDimensions";
 import DeleteButton from "./DeleteButton";
 import BookList from "@/app/list/[id]/BookList";
 import EditYear from "./EditYear";
+import EditLanguage from "./EditLanguage";
 
 
 export default async function EditionPage( 
-    {coverUrl, spineUrl, edition, book, author, language, publisher, containingLists}:
+    {coverUrl, spineUrl, edition, book, author, language, publisher, containingLists, languages}:
     {coverUrl: string, spineUrl: string, edition: Edition, book: Book, author: Author, 
-        language: Language, publisher: Publisher, containingLists: List[]}
+        language: Language, publisher: Publisher, containingLists: List[], languages: Language[]}
 ) 
 {
     const session = await auth();
@@ -67,6 +68,7 @@ export default async function EditionPage(
                     <p>ISBN: {edition.isbn} </p>
                     <p>
                         Language: {language.name}
+                        {" "}<EditLanguage edition={edition} languages={languages} />
                     </p>
                     <div className="flex flex-row gap-2">
                         <p> Dimensions (mm): {edition.height} x {edition.width} x {edition.thickness}</p>
