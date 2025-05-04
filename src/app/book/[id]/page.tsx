@@ -11,6 +11,7 @@ import { Metadata } from "next";
 import { Props } from "@/app/lib/definitions";
 import EditYear from "./EditYear";
 import EditLanguage from "./EditLanguage";
+import EditTitle from "./EditTitle";
    
 export async function generateMetadata({ params }: Props ): Promise<Metadata> 
 {
@@ -39,7 +40,10 @@ export default async function Page({ params }: { params: { id: string } })
         <div>
             <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-0">
-                    <Heading size={2}>{book.title}</Heading>
+                    <div className="flex flex-row gap-2">
+                        <Heading size={2}>{book.title}</Heading>
+                        <EditTitle book={book} />
+                    </div>
                     <div className="flex flex-row gap-2">
                         <LinkComponent href={`/author/${author.id}`}>
                             {author.name}

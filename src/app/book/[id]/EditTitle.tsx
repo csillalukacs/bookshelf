@@ -1,15 +1,15 @@
 'use client'
-import { updateBookAuthor } from "@/app/actions/book-actions";
-import { Author, Book } from "@/app/lib/definitions";
+import { updateBookTitle } from "@/app/actions/book-actions";
+import { Book } from "@/app/lib/definitions";
 import Button from "@/components/Button";
 import ClosableDialog from "@/components/ClosableDialog";
 import { TextInput } from "@/components/TextInput";
 import { useActionState, useEffect, useState } from "react";
 
-export default function EditAuthor({book, authors}: {book: Book, authors: Author[]})
+export default function EditTitle({book}: {book: Book})
 {
     const [open, setOpen] = useState(false);
-    const [formState, formAction, isPending] = useActionState(updateBookAuthor, {success: false, error: ''});
+    const [formState, formAction, isPending] = useActionState(updateBookTitle, {success: false, error: ''});
 
     useEffect(() => 
     {
@@ -26,7 +26,7 @@ export default function EditAuthor({book, authors}: {book: Book, authors: Author
         </button>
         <ClosableDialog open={open} setOpen={setOpen} >
             <form action={formAction} className="flex flex-col gap-4 text-black">
-                <TextInput name="name" label="Name" disabled={false} list={authors} required={true} />
+                <TextInput name="title" label="Title" disabled={false} required={true} defaultValue={book.title} />
                 <input type="hidden" name="bookId" value={book.id} />
                 <Button label="Submit" disabled={isPending} />
                 {!formState.success &&

@@ -162,3 +162,26 @@ export async function updateBookAuthor(prevState: SimpleResult, formData: FormDa
     return  {success: false, error: 'Unknown database error'};
   }
 }
+
+export async function updateBookTitle(prevState: SimpleResult, formData: FormData): Promise<SimpleResult>
+{
+  const session = await auth();
+  if (!session?.user) return {success: false, error: "You must be logged in to perform this action." };
+  
+  const id = formData.get('bookId');
+  const title = formData.get('title');
+
+  if (!title) return {success: false, error: 'Title is required'};
+
+  try 
+  {
+    await pool.query('UPDATE book SET title = $1 WHERE id = $2', [title, id]);
+    revalidatePath(`/book/${id}`);
+    return {success: true};
+  } 
+  catch (error) 
+  {
+    console.error('Database Error:', error);
+    return  {success: false, error: 'Unknown database error'};
+  }
+}

@@ -71,7 +71,7 @@ export async function addEdition(prevState: Result<Edition>, formData: FormData)
       'VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *', 
       [titleStr, yearStr, langId, publisherId, bookId, isbn, height, width, pages, thickness]
     );
-    revalidatePath('/book/${bookId}');
+    revalidatePath(`/book/${bookId}`);
     return {success: true, value: {...result.rows[0]}}
   } 
   catch (error) 
