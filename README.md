@@ -8,7 +8,5 @@ Bookshelf is an app for people whose hobby is owning books (entirely separate fr
 
 Organise your books into lists and let your friends see what's on your shelf. 
 
-Coming soon!
-
 ![image of bookshelf](image.png)
 
