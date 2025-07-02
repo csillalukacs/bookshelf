@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Props ): Promise<Metadata>
     return { title: `${edition.ed_title} by ${author.name}`}
 }
 
-export default async function Page({ params }: { params: { id: string } }) 
+export default async function Page({ params }:  Props ) 
 {
     const { id } = await params;
 

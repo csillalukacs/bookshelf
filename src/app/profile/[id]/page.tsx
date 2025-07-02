@@ -15,9 +15,9 @@ export async function generateMetadata({ params }: Props ): Promise<Metadata>
     return { title: user?.username}
 }
 
-export default async function Page({ params }: { params: { id: string } }) 
+export default async function Page({ params }: Props) 
 {
-    const id = params.id;
+    const {id} = await params;
     const user = await fetchUserById(id);
 
     if (!user) notFound();

@@ -25,10 +25,9 @@ function isValidView(view: string | string[] | null | undefined): view is View
     return false;
 }
 
-export default async function Page({ params, searchParams }: 
-    { params: { id: string }, searchParams: Promise<{ [key: string]: string | string[] | undefined}> })
+export default async function Page({ params, searchParams }: Props)
 {
-    const id = params.id;
+    const {id} = await params;
     const list = await fetchListById(id);
 
     const viewQueryParam = (await searchParams).view;
