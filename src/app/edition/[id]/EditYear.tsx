@@ -26,7 +26,7 @@ export default function EditYear({edition}: {edition: Edition})
         </button>
         <ClosableDialog open={open} setOpen={setOpen} >
             <form action={formAction} className="flex flex-col gap-4 text-black">
-                <NumberInput name="year" label="Year" disabled={false} required={true} defaultValue={edition.first_pub} />
+                <NumberInput name="year" label="Year" disabled={false} required={true} defaultValue={edition.year_pub} />
                 <input type="hidden" name="editionId" value={edition.id} />
                 <Button label="Submit" disabled={isPending} />
                 {!formState.success &&
