@@ -23,12 +23,12 @@ export default async function Page({ params }: Props)
     if (!user) notFound();
 
     const lists = await fetchListsByUserId(id);
-    const featuredBooks = await fetchEditionsByListId(lists[0].id);
+    const featuredBooks = lists.length > 0 ? await fetchEditionsByListId(lists[0].id) : [];
 
     return (
         <div className="flex flex-col gap-4 w-full">
             <Heading size={4}>{user.username}</Heading>
-            <Bookshelf list={featuredBooks}/>
+            {lists.length > 0 && <Bookshelf list={featuredBooks}/>}
             <div className="flex flex-col gap-4">
                 {lists.map(async list => {
                     const editions = await fetchEditionsByListId(list.id);
